@@ -3,12 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view;
+package view.states;
 
 /**
  *
  * @author paula
  */
-public interface Ventana {
+public class View_Directivos {
     
 }
