@@ -5,11 +5,17 @@
  */
 package view.states;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.ListIterator;
+import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
@@ -51,20 +57,40 @@ public class View_PersonalCaja extends Ventana{
         
         private VBox menuLateral;
         
+        private HBox paneCentral;
+        
+        private VBox colunma1;
+        private VBox colunma2;
+        
+        private FlowPane pane1;
+        private FlowPane pane2;
+        private FlowPane pane3;
+        private FlowPane pane4;
+        
+        List<Boton> allBoton = new ArrayList<>();
+        
         public PrincipalContenedorCaja(){
+            pane1 = new FlowPane(Orientation.VERTICAL);
+            pane2 = new FlowPane(Orientation.VERTICAL);
+            pane3 = new FlowPane(Orientation.VERTICAL);
+            pane4 = new FlowPane(Orientation.VERTICAL);
+            
             menuLateral = new VBox();
             menuLateral.setAlignment(Pos.CENTER_LEFT);
             
-            int anchoLateral = anchoVentana / 5;
+            paneCentral = new HBox(20);
+            
+            colunma1 = new VBox(15);
+            colunma2 = new VBox(15);
+            
+            int anchoLateral = anchoVentana / 7;
+            int altoSuperior = altoVentana / 10;
             
             logo = new ImageView(new Image("util/logo2.png"));
             logo.setFitHeight(altoVentana / 10);
             logo.setFitWidth(anchoLateral);
             
-            Rectangle fondo = new Rectangle(anchoVentana, altoVentana);
-            fondo.setFill(Color.rgb(250, 250, 250));
-            
-            Rectangle barraSuperior = new Rectangle(anchoVentana, altoVentana / 10);
+            Rectangle barraSuperior = new Rectangle(anchoVentana, altoSuperior);
             barraSuperior.setFill(ColorOscuro);
             barraSuperior.setOpacity(0.7);
             
@@ -72,15 +98,132 @@ public class View_PersonalCaja extends Ventana{
             barraLateral.setFill(colorClaro);
             barraLateral.setOpacity(0.5);
             
-            int altoBotones = 45;
+            int altoBotones = 55;
+            int tamanoLetras = 20;
             
-            Boton botonAlamcen = new Boton("Almacen", 25, anchoLateral, altoBotones, Pos.CENTER_LEFT);
-            Boton botonCompras = new Boton("Compras", 25, anchoLateral, altoBotones, Pos.CENTER_LEFT);
-            Boton botonVentas = new Boton("Ventas", 25, anchoLateral, altoBotones, Pos.CENTER_LEFT);
+            VBox paneCliente = new VBox();
             
-            menuLateral.getChildren().addAll(logo, botonAlamcen, botonCompras, botonVentas);
+            Boton botonClientes = new Boton("Clientes", tamanoLetras, anchoLateral, altoBotones, Pos.CENTER_LEFT, true);
             
-            getChildren().addAll(fondo, barraLateral, barraSuperior , menuLateral);
+            Boton botonCrearClientes = new Boton(" - Añadir cliente", tamanoLetras - 5, anchoLateral, altoBotones - 20, Pos.CENTER_LEFT, false);
+            botonCrearClientes.setOnMousePressed(seccionClientes -> {
+                comportamientoBoton(botonCrearClientes);
+            });
+            
+            Boton botonConsultarClientes = new Boton(" - Consultar cliente", tamanoLetras - 5, anchoLateral, altoBotones - 20, Pos.CENTER_LEFT, false);
+            botonConsultarClientes.setOnMousePressed(seccionClientes -> {
+                comportamientoBoton(botonConsultarClientes);
+            });
+            botonClientes.setOnMousePressed(seccionClientes -> {
+                comportamientoBoton(botonClientes);
+                if(paneCliente.getChildren().contains(botonCrearClientes)){
+                    paneCliente.getChildren().removeAll(botonCrearClientes, botonConsultarClientes);
+                }
+                else{
+                    paneCliente.getChildren().addAll(botonCrearClientes, botonConsultarClientes);
+                }
+            });
+            
+            paneCliente.getChildren().add(botonClientes);
+            
+            allBoton.add(botonClientes);
+            allBoton.add(botonCrearClientes);
+            allBoton.add(botonConsultarClientes);
+            
+            Boton botonInventario = new Boton("Inventario", tamanoLetras, anchoLateral, altoBotones, Pos.CENTER_LEFT, false);
+            botonInventario.setOnMousePressed(seccionClientes -> {
+                comportamientoBoton(botonInventario);
+            });
+            
+            allBoton.add(botonInventario);
+            
+            Boton botonProveedores = new Boton("Proveedores", tamanoLetras, anchoLateral, altoBotones, Pos.CENTER_LEFT, false);
+            botonProveedores.setOnMousePressed(seccionClientes -> {
+                comportamientoBoton(botonProveedores);
+            });
+            
+            allBoton.add(botonProveedores);
+            
+            Boton botonReportes = new Boton("Reportes", tamanoLetras, anchoLateral, altoBotones, Pos.CENTER_LEFT, false);
+            botonReportes.setOnMousePressed(seccionClientes -> {
+                comportamientoBoton(botonReportes);
+            });
+            
+            allBoton.add(botonReportes);
+            
+            Boton botonVentas = new Boton("Ventas", tamanoLetras, anchoLateral, altoBotones, Pos.CENTER_LEFT, false);
+            botonVentas.setOnMousePressed(seccionClientes -> {
+                comportamientoBoton(botonVentas);
+                cambiarContenidoVentas(anchoLateral + 50);
+            });
+            
+            allBoton.add(botonVentas);
+            
+            Boton botonEmpleados = new Boton("Empleados", tamanoLetras, anchoLateral, altoBotones, Pos.CENTER_LEFT, false);
+            botonEmpleados.setOnMousePressed(seccionClientes -> {
+                comportamientoBoton(botonEmpleados);
+            });
+            
+            allBoton.add(botonEmpleados);
+            
+            Boton botonFacturacion = new Boton("Facturacion", tamanoLetras, anchoLateral, altoBotones, Pos.CENTER_LEFT, false);
+            botonFacturacion.setOnMousePressed(seccionClientes -> {
+                comportamientoBoton(botonFacturacion);
+            });
+            
+            allBoton.add(botonFacturacion);
+            
+            menuLateral.getChildren().addAll(logo, paneCliente, botonInventario, botonProveedores, botonReportes, botonVentas, botonEmpleados, botonFacturacion);
+            
+            colunma1.getChildren().addAll(pane1, pane2);
+            colunma2.getChildren().addAll(pane3, pane4);
+            
+            paneCentral.getChildren().addAll(colunma1, colunma2);
+            paneCentral.setTranslateX(anchoLateral + 15);
+            paneCentral.setTranslateY(altoSuperior + 15);
+            
+            getChildren().addAll(barraLateral, barraSuperior , menuLateral, paneCentral);
+        }
+        
+        private void generarsecciones(int ancho, int alto, Pane pane){
+            pane.getChildren().clear();
+            Rectangle fondo = new Rectangle(ancho, alto);
+            fondo.setFill(Color.rgb(255, 255, 255));
+            fondo.setArcWidth(5);
+            fondo.setArcHeight(5);
+            pane.getChildren().add(fondo);
+        }
+        
+        private void cambiarContenidoVentas(int reduccionx){
+            int colunma1 = 2 * (anchoVentana - reduccionx) / 3;
+            int colunma2 = (anchoVentana - reduccionx) / 3;
+            
+            int alto = 300;
+            
+            pane1.setPrefWrapLength(200);
+            pane2.setPrefWrapLength(200);
+            pane3.setPrefWrapLength(200);
+            pane4.setPrefWrapLength(200);
+            
+            generarsecciones(colunma1, alto, pane1);
+            generarsecciones(colunma1, alto, pane2);
+            generarsecciones(colunma2, alto, pane3);
+            generarsecciones(colunma2, alto, pane4);
+        }
+        
+        private void alldesmarcar(){
+            ListIterator<Boton> it = allBoton.listIterator();
+            
+            while(it.hasNext()){
+                Boton temp = it.next();
+                temp.desmarcar();
+            }
+        }
+        
+        private void comportamientoBoton(Boton boton){
+            alldesmarcar();
+                if(!boton.isPresionado())
+                    boton.marcar();
         }
     }
 }

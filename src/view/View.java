@@ -26,7 +26,7 @@ public class View extends Application{
     @Override
     public void start(Stage theStage) throws Exception{
         View_ssesion PaginaPrincipal = new View_ssesion();
-        PaginaPrincipal.crear_ventana(theStage, 1200, 900);
+        PaginaPrincipal.crear_ventana(theStage, 1280, 720);
         
         //Stage VentanaPaginaPuesto = new Stage();
         //PaginaPuesto PaginaPuesto = new PaginaPuesto();

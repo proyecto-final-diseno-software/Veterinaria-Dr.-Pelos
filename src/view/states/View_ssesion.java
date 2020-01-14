@@ -8,16 +8,12 @@ package view.states;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
-import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import view.tool.Boton;
 import view.tool.FieldText;
@@ -62,9 +58,9 @@ public class View_ssesion extends Ventana{
         private VBox contenedor;
         
         public PrincipalContenedor(){
-            contenedor = new VBox(35);
+            contenedor = new VBox(15);
             contenedor.setTranslateX(anchoVentana / 2 - anchoVentana / 8);
-            contenedor.setTranslateY(anchoVentana / 2 - anchoVentana / 4 - 50);
+            contenedor.setTranslateY(anchoVentana / 2 - anchoVentana / 3);
             contenedor.setAlignment(Pos.CENTER);
             
             logo = new ImageView(new Image("util/logo.png"));
