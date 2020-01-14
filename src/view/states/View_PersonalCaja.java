@@ -194,7 +194,7 @@ public class View_PersonalCaja extends Ventana{
         private void generarsecciones(FlowPane pane){
             pane.setAlignment(Pos.CENTER);
             pane.getChildren().clear();
-            pane.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), new Insets(-10, 10, 0, 0))));
+            pane.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), new Insets(-10, 0, -10, 0))));
         }
         
         private void cambiarContenidoVentas(int reduccionx, int tamanoLetras){
@@ -213,11 +213,16 @@ public class View_PersonalCaja extends Ventana{
             generarsecciones(pane3);
             generarsecciones(pane4);
             
-            FieldText buscador = new FieldText(tamanoLetras, Pos.CENTER, 3 * colunma1 / 5, Color.WHITE);
-            FieldText buscador2 = new FieldText(tamanoLetras, Pos.CENTER, 3 * colunma1 / 5, Color.WHITE);
-            FieldText buscador3 = new FieldText(tamanoLetras, Pos.CENTER, 3 * colunma2 / 5, Color.WHITE);
-            pane1.getChildren().addAll(buscador, buscador2);
-            pane3.getChildren().add(buscador3);
+            HBox ssecionBuscador = new HBox();
+            
+            FieldText textFieldBuscador = new FieldText("Buscar Producto" ,tamanoLetras, Pos.CENTER, 3 * colunma1 / 5, Color.WHITE);
+            Boton botonBuscar = new Boton("Buscar", tamanoLetras, 130, 44, Pos.CENTER, ColorOscuro);
+            botonBuscar.setOnMousePressed(buscarArticulo -> {
+                System.out.println("Buscando " + textFieldBuscador.getText());
+            });
+            
+            ssecionBuscador.getChildren().addAll(textFieldBuscador, botonBuscar);
+            pane1.getChildren().addAll(ssecionBuscador);
         }
         
         private void alldesmarcar(){

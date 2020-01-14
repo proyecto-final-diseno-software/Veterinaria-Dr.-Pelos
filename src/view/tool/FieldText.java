@@ -19,9 +19,10 @@ public class FieldText extends StackPane{
     private TextField text;
     private Rectangle cuadroFondo;
     
-    public FieldText(int size, Pos pos, int largo, Color colorCuadro){
+    public FieldText(String textFon,int size, Pos pos, int largo, Color colorCuadro){
         text = new TextField();
         text.setFont(text.getFont().font(size));
+        text.setPromptText(textFon);
         
         if(colorCuadro != null){
             cuadroFondo =  new Rectangle(largo, 50);
@@ -53,7 +54,7 @@ public class FieldText extends StackPane{
         return true;
     }
     
-    public String getInformacion() {
+    public String getText() {
         return text.getText();
     }
     

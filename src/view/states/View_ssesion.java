@@ -89,9 +89,9 @@ public class View_ssesion extends Ventana{
             });
             
             
-            FieldText entradoUser = new FieldText(20 , Pos.CENTER, anchoVentana / 4, null);
+            FieldText entradoUser = new FieldText("Ingrese su usuario" ,20 , Pos.CENTER, anchoVentana / 4, null);
             
-            FieldText entradoPassword = new FieldText(20 , Pos.CENTER, anchoVentana / 4, null);
+            FieldText entradoPassword = new FieldText("Ingrese su contraseña", 20 , Pos.CENTER, anchoVentana / 4, null);
             
             contenedor.getChildren().addAll(logo, entradoUser, entradoPassword, buttonLogin);
             
