@@ -8,11 +8,16 @@ package view.states;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import javafx.geometry.HPos;
+import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.layout.Background;
+import javafx.scene.layout.BackgroundFill;
+import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.FlowPane;
@@ -21,6 +26,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import view.tool.Boton;
+import view.tool.FieldText;
 
 /**
  *
@@ -70,10 +76,10 @@ public class View_PersonalCaja extends Ventana{
         List<Boton> allBoton = new ArrayList<>();
         
         public PrincipalContenedorCaja(){
-            pane1 = new FlowPane(Orientation.VERTICAL);
-            pane2 = new FlowPane(Orientation.VERTICAL);
-            pane3 = new FlowPane(Orientation.VERTICAL);
-            pane4 = new FlowPane(Orientation.VERTICAL);
+            pane1 = new FlowPane();
+            pane2 = new FlowPane();
+            pane3 = new FlowPane();
+            pane4 = new FlowPane();
             
             menuLateral = new VBox();
             menuLateral.setAlignment(Pos.CENTER_LEFT);
@@ -154,7 +160,7 @@ public class View_PersonalCaja extends Ventana{
             Boton botonVentas = new Boton("Ventas", tamanoLetras, anchoLateral, altoBotones, Pos.CENTER_LEFT, false);
             botonVentas.setOnMousePressed(seccionClientes -> {
                 comportamientoBoton(botonVentas);
-                cambiarContenidoVentas(anchoLateral + 50);
+                cambiarContenidoVentas(anchoLateral + 50, tamanoLetras);
             });
             
             allBoton.add(botonVentas);
@@ -180,35 +186,38 @@ public class View_PersonalCaja extends Ventana{
             
             paneCentral.getChildren().addAll(colunma1, colunma2);
             paneCentral.setTranslateX(anchoLateral + 15);
-            paneCentral.setTranslateY(altoSuperior + 15);
+            paneCentral.setTranslateY(altoSuperior + 25);
             
             getChildren().addAll(barraLateral, barraSuperior , menuLateral, paneCentral);
         }
         
-        private void generarsecciones(int ancho, int alto, Pane pane){
+        private void generarsecciones(FlowPane pane){
+            pane.setAlignment(Pos.CENTER);
             pane.getChildren().clear();
-            Rectangle fondo = new Rectangle(ancho, alto);
-            fondo.setFill(Color.rgb(255, 255, 255));
-            fondo.setArcWidth(5);
-            fondo.setArcHeight(5);
-            pane.getChildren().add(fondo);
+            pane.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), new Insets(-10, 10, 0, 0))));
         }
         
-        private void cambiarContenidoVentas(int reduccionx){
+        private void cambiarContenidoVentas(int reduccionx, int tamanoLetras){
             int colunma1 = 2 * (anchoVentana - reduccionx) / 3;
             int colunma2 = (anchoVentana - reduccionx) / 3;
             
             int alto = 300;
             
-            pane1.setPrefWrapLength(200);
-            pane2.setPrefWrapLength(200);
-            pane3.setPrefWrapLength(200);
-            pane4.setPrefWrapLength(200);
+            pane1.setPrefWrapLength(colunma1);
+            pane2.setPrefWrapLength(colunma1);
+            pane3.setPrefWrapLength(colunma2);
+            pane4.setPrefWrapLength(colunma2);
             
-            generarsecciones(colunma1, alto, pane1);
-            generarsecciones(colunma1, alto, pane2);
-            generarsecciones(colunma2, alto, pane3);
-            generarsecciones(colunma2, alto, pane4);
+            generarsecciones(pane1);
+            generarsecciones(pane2);
+            generarsecciones(pane3);
+            generarsecciones(pane4);
+            
+            FieldText buscador = new FieldText(tamanoLetras, Pos.CENTER, 3 * colunma1 / 5, Color.WHITE);
+            FieldText buscador2 = new FieldText(tamanoLetras, Pos.CENTER, 3 * colunma1 / 5, Color.WHITE);
+            FieldText buscador3 = new FieldText(tamanoLetras, Pos.CENTER, 3 * colunma2 / 5, Color.WHITE);
+            pane1.getChildren().addAll(buscador, buscador2);
+            pane3.getChildren().add(buscador3);
         }
         
         private void alldesmarcar(){

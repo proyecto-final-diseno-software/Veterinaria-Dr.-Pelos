@@ -23,7 +23,7 @@ public class FieldText extends StackPane{
         text = new TextField();
         text.setFont(text.getFont().font(size));
         
-        if(colorCuadro!=null){
+        if(colorCuadro != null){
             cuadroFondo =  new Rectangle(largo, 50);
             cuadroFondo.setFill(colorCuadro);
             cuadroFondo.setOpacity(0);
