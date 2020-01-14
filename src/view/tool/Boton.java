@@ -19,10 +19,10 @@ import javafx.scene.text.Text;
  *
  * @author ADMIN
  */
-public class BotonPersonalizado extends StackPane{
+public class Boton extends StackPane{
     private Text text;
         
-        public BotonPersonalizado(String texto, int tamanoLetra, int base,int altura, Pos alineacion, Color color){
+        public Boton(String texto, int tamanoLetra, int base,int altura, Pos alineacion, Color color){
             text = new Text(texto);
             text.setFont(text.getFont().font("Arial" ,FontWeight.BOLD, tamanoLetra));
             text.setFill(Color.WHITE);
@@ -31,8 +31,8 @@ public class BotonPersonalizado extends StackPane{
             bg.setOpacity(0.8);
             bg.setFill(color);
             bg.setEffect(new GaussianBlur(1));
-            bg.setArcWidth(30);
-            bg.setArcHeight(30);
+            bg.setArcWidth(10);
+            bg.setArcHeight(10);
             
             setAlignment(alineacion);
             getChildren().addAll(bg,text);
@@ -49,20 +49,30 @@ public class BotonPersonalizado extends StackPane{
             setOnMouseReleased(event -> setEffect(null));
         }
         
-        public BotonPersonalizado(String texto, int tamanoLetra,Pos alineacion, FontWeight textura){
+        public Boton(String texto, int tamanoLetra, int base, int altura, Pos alineacion){
             text = new Text(texto);
-            text.setFont(text.getFont().font("Arial" ,textura, tamanoLetra));
+            text.setFont(text.getFont().font("Arial" , tamanoLetra));
             text.setFill(Color.rgb(255, 255, 255));
+            text.setTranslateX(20);
+            
+            
+            
+            Rectangle bg = new Rectangle(base, altura);
+            bg.setOpacity(0);
+            bg.setFill(Color.BLACK);
+            bg.setEffect(new GaussianBlur(1));
+            bg.setArcWidth(5);
+            bg.setArcHeight(5);
             
             setAlignment(alineacion);
-            getChildren().addAll(text);
+            getChildren().addAll(bg, text);
             
             DropShadow drop = new DropShadow (50, Color.WHITE);
             drop.setInput(new Glow()); 
             
-            setOnMouseEntered(event -> text.setFill(Color.rgb(169, 177, 184)));
+            setOnMouseEntered(event -> bg.setOpacity(0.2));
             
-            setOnMouseExited(event -> text.setFill(Color.rgb(255, 255, 255)));
+            setOnMouseExited(event -> bg.setOpacity(0));
             
             setOnMousePressed(event -> setEffect(drop));
             

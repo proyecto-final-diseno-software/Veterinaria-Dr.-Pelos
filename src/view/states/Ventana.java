@@ -5,7 +5,7 @@
  */
 package view.states;
 
-import javafx.scene.Parent;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 
 /**
@@ -16,15 +16,18 @@ public abstract class Ventana {
     protected int anchoVentana;
     protected int altoVentana;
     
+    protected Pane root;
+    
     public void crear_ventana(Stage primaryStage, int anchoVentana, int altoVentana){
         this.anchoVentana = anchoVentana;
         this.altoVentana = altoVentana;
-        mostrar_ventana(primaryStage);
+        if(primaryStage != null)
+            mostrar_ventana(primaryStage);
     }
     
     abstract void mostrar_ventana(Stage primaryStage);
     
     abstract void close();
     
-    private class PrincipalContenedor extends Parent{};
+    abstract void cambiar_ventana(Pane root);
 }

@@ -15,11 +15,11 @@ import javafx.scene.shape.Rectangle;
  *
  * @author ADMIN
  */
-public class MenuTextField extends StackPane{
+public class FieldText extends StackPane{
     private TextField text;
     private Rectangle cuadroFondo;
     
-    public MenuTextField(int size, Pos pos, int largo, Color colorCuadro){
+    public FieldText(int size, Pos pos, int largo, Color colorCuadro){
         text = new TextField();
         text.setFont(text.getFont().font(size));
         
@@ -31,6 +31,7 @@ public class MenuTextField extends StackPane{
         }
         
         setAlignment(pos);
+        
         getChildren().add(text);
     }
     
