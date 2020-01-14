@@ -10,5 +10,32 @@ package modelo;
  * @author paula
  */
 public class Detalle_Pedido {
+    private int cantidad;
+    private Producto p;
+    
+    public Detalle_Pedido(Producto p, int cantidad){
+        this.p = p;
+        this.cantidad = cantidad;
+    }
+    
+    public boolean cambiarCantidad(int numero){
+        //si aun hay articulos disponibles
+        if(numero >0){
+            this.cantidad = numero;
+            return true;
+        }
+        return false;
+        
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+    
+    
     
 }

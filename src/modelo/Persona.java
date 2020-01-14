@@ -9,6 +9,9 @@ package modelo;
  *
  * @author paula
  */
-public class Persona_Caja extends Personal {
-    
+public class Persona {
+    private int id_persona;
+    private String nombre;
+    private String apellido;
+
 }

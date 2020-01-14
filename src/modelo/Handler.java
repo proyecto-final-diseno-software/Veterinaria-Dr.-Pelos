@@ -10,5 +10,6 @@ package modelo;
  * @author paula
  */
 public interface Handler {
-    
+    //public 
+    public void handle(Pedido p);
 }

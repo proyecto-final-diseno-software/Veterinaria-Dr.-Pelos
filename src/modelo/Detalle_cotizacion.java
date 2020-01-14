@@ -10,5 +10,29 @@ package modelo;
  * @author paula
  */
 public class Detalle_cotizacion {
+    public int id_detalle_ven_pro;
+    public int cantidad;
+    
+    public double calcularPrecio(){
+        return 0;
+    }
+
+    
+    public int getId_detalle_ven_pro() {
+        return id_detalle_ven_pro;
+    }
+
+    public void setId_detalle_ven_pro(int id_detalle_ven_pro) {
+        this.id_detalle_ven_pro = id_detalle_ven_pro;
+    }
+
+    public int getCantidad() {
+        return cantidad;
+    }
+
+    public void setCantidad(int cantidad) {
+        this.cantidad = cantidad;
+    }
+    
     
 }

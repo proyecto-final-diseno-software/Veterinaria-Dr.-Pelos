@@ -10,5 +10,9 @@ package modelo;
  * @author paula
  */
 public class Stock {
+    private int cantidad;
     
+    public void actualizarStock(){
+        
+    }
 }

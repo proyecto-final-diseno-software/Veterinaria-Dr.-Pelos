@@ -10,5 +10,11 @@ package modelo;
  * @author paula
  */
 public class VentaServicio {
+    private int id_ventaServicio;
+    
+    public boolean agregarDetalle_Servicio(){
+        return true;
+    } 
+    
     
 }

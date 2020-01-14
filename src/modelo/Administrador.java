@@ -9,6 +9,19 @@ package modelo;
  *
  * @author paula
  */
-public class Administrador extends Personal {
+public class Administrador extends Persona {
+    private int id_administrador;
+
+    public int getId_administrador() {
+        return id_administrador;
+    }
+
+    public void setId_administrador(int id_administrador) {
+        this.id_administrador = id_administrador;
+    }
+    
+    public boolean solicitarSuministros(){
+        return true;
+    }
     
 }

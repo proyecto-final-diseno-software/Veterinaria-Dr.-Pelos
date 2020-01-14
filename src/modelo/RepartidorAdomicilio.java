@@ -9,6 +9,8 @@ package modelo;
  *
  * @author paula
  */
-public class RepartidorAdomicilio {
+public class RepartidorAdomicilio extends HandlerRepartidor{
+    
+    
     
 }

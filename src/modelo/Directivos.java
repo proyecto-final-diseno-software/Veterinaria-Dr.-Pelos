@@ -5,10 +5,36 @@
  */
 package modelo;
 
+import java.util.LinkedList;
+
 /**
  *
  * @author paula
  */
-public class Directivos {
+public class Directivos extends Persona{
+    private int id_jefeBodega;
     
+    public LinkedList<Venta> consultarVentas(){
+        return null;
+    }
+    
+    public LinkedList<Cliente> consultarCliente(){
+        return null;
+    }
+    
+    public LinkedList<Pedido> consultarPedidos(){
+        return null;
+    }
+    
+    public LinkedList<Servicio> consultarServicios(){
+        return null;
+    }
+    
+    public LinkedList<Producto> consultarProducto(){
+        return null;
+    }
+    
+    public void mostrarVistaDir(boolean b){
+        
+    }
 }

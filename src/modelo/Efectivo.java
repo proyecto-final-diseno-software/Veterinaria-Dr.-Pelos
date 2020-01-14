@@ -9,6 +9,20 @@ package modelo;
  *
  * @author paula
  */
-public class Efectivo {
+public class Efectivo implements Forma_pago{
+    private float cantidad_efectivo;
+    
+    @Override
+    public boolean pagar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void registrar_monto() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+    
     
 }

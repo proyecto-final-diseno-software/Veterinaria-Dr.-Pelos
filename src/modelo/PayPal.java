@@ -10,5 +10,10 @@ package modelo;
  * @author paula
  */
 public class PayPal {
+    private String correo_electronico;
+    
+    public boolean confirmarCorreo(){
+        return true;
+    }
     
 }

@@ -10,5 +10,20 @@ package modelo;
  * @author paula
  */
 public class Pedido {
+    protected String descripcion;
+    //
+    
+    public Pedido agregarPedido(){
+        return null;
+    }
+    
+    public boolean eliminarPedido(){
+        return true;
+    }
+    
+    //REV
+    public boolean listaPedido(){
+        return true;
+    }
     
 }

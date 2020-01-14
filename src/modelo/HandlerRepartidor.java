@@ -9,10 +9,11 @@ package modelo;
  *
  * @author paula
  */
-public class Cliente extends Persona{
-    private int id_cliente;
-    private String direccion;
-    private String num_telefonico;
+public class HandlerRepartidor implements Handler{
     
+    @Override
+    public void handle(Pedido p) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

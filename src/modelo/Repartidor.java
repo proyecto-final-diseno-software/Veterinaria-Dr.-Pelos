@@ -10,5 +10,9 @@ package modelo;
  * @author paula
  */
 public class Repartidor {
+    private String id_repetidor;
     
+    public void asignarRuta(){
+        
+    }
 }

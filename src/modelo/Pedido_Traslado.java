@@ -9,6 +9,8 @@ package modelo;
  *
  * @author paula
  */
-public class Pedido_Traslado {
+public class Pedido_Traslado extends Pedido{
+    private int id_pedidoTraslado;
+    
     
 }
