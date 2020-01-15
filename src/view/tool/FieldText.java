@@ -17,19 +17,13 @@ import javafx.scene.shape.Rectangle;
  */
 public class FieldText extends StackPane{
     private TextField text;
-    private Rectangle cuadroFondo;
     
-    public FieldText(String textFon,int size, Pos pos, int largo, Color colorCuadro){
+    public FieldText(String textFon,int size, Pos pos, int largo, int alto){
         text = new TextField();
         text.setFont(text.getFont().font(size));
         text.setPromptText(textFon);
-        
-        if(colorCuadro != null){
-            cuadroFondo =  new Rectangle(largo, 50);
-            cuadroFondo.setFill(colorCuadro);
-            cuadroFondo.setOpacity(0);
-            getChildren().add(cuadroFondo);
-        }
+        text.setPrefHeight(alto);
+        text.setPrefWidth(largo);
         
         setAlignment(pos);
         

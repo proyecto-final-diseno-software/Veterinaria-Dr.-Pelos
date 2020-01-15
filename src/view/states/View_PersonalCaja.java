@@ -27,6 +27,7 @@ import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
 import view.tool.Boton;
 import view.tool.FieldText;
+import view.tool.Table;
 
 /**
  *
@@ -86,8 +87,8 @@ public class View_PersonalCaja extends Ventana{
             
             paneCentral = new HBox(20);
             
-            colunma1 = new VBox(15);
-            colunma2 = new VBox(15);
+            colunma1 = new VBox(35);
+            colunma2 = new VBox(35);
             
             int anchoLateral = anchoVentana / 7;
             int altoSuperior = altoVentana / 10;
@@ -215,14 +216,32 @@ public class View_PersonalCaja extends Ventana{
             
             HBox ssecionBuscador = new HBox();
             
-            FieldText textFieldBuscador = new FieldText("Buscar Producto" ,tamanoLetras, Pos.CENTER, 3 * colunma1 / 5, Color.WHITE);
+            FieldText textFieldBuscador = new FieldText("Buscar Producto" ,tamanoLetras, Pos.CENTER, 3 * colunma1 / 5, 44);
             Boton botonBuscar = new Boton("Buscar", tamanoLetras, 130, 44, Pos.CENTER, ColorOscuro);
             botonBuscar.setOnMousePressed(buscarArticulo -> {
                 System.out.println("Buscando " + textFieldBuscador.getText());
             });
             
+            HBox ssecionBuscadorCliente = new HBox();
+            
+            FieldText textFieldBuscadorCliente = new FieldText("Buscar Cliente" ,tamanoLetras, Pos.CENTER, 3 * colunma2 / 6, 40);
+            Boton botonBuscarCliente = new Boton("Buscar", tamanoLetras - 1, 90, 40, Pos.CENTER, ColorOscuro);
+            botonBuscar.setOnMousePressed(buscarCliente -> {
+                System.out.println("Buscando Cliente" + textFieldBuscadorCliente.getText());
+            });
+            
+            Table tablaRegistro = new Table(colunma1);
+            
             ssecionBuscador.getChildren().addAll(textFieldBuscador, botonBuscar);
-            pane1.getChildren().addAll(ssecionBuscador);
+            
+            ssecionBuscadorCliente.getChildren().addAll(textFieldBuscadorCliente, botonBuscarCliente);
+            
+            Table tablaPago = new Table(colunma2, null);
+            
+            pane1.getChildren().add(ssecionBuscador);
+            pane2.getChildren().add(tablaRegistro);
+            pane3.getChildren().add(ssecionBuscadorCliente);
+            pane4.getChildren().add(tablaPago);
         }
         
         private void alldesmarcar(){
