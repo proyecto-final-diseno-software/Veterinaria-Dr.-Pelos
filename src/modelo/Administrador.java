@@ -12,6 +12,10 @@ package modelo;
 public class Administrador extends Persona {
     private int id_administrador;
 
+    public Administrador(String nombre, String apellido) {
+        super(nombre, apellido);
+    }
+
     public int getId_administrador() {
         return id_administrador;
     }

@@ -12,7 +12,12 @@ package modelo;
 public class Jefe_Bodega extends Persona {
     private int id_jefeBodega;
 
+    public Jefe_Bodega(String nombre, String apellido) {
+        super(nombre, apellido);
+    }
+
     public boolean imprimirDocEnvio(){
+        //Funcionalidad en construccion
         return true;
     }
     

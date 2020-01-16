@@ -13,6 +13,10 @@ import java.util.LinkedList;
  */
 public class Directivos extends Persona{
     private int id_jefeBodega;
+
+    public Directivos(String nombre, String apellido) {
+        super(nombre, apellido);
+    }
     
     public LinkedList<Venta> consultarVentas(){
         return null;

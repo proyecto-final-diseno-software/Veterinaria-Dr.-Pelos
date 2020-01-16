@@ -12,8 +12,12 @@ package modelo;
 public class Usuario extends Persona{
     private String usuario;
     private String contrasena;
-    private boolean permiso_administrados;
+    private boolean permiso_administrador;
     private int id_usuario;
+
+    public Usuario(String nombre, String apellido) {
+        super(nombre, apellido);
+    }
     
     public boolean acceder(){
         return true;
@@ -39,12 +43,12 @@ public class Usuario extends Persona{
         this.contrasena = contrasena;
     }
 
-    public boolean isPermiso_administrados() {
-        return permiso_administrados;
+    public boolean isPermiso_administrador() {
+        return permiso_administrador;
     }
 
-    public void setPermiso_administrados(boolean permiso_administrados) {
-        this.permiso_administrados = permiso_administrados;
+    public void setPermiso_administrador(boolean permiso_administrador) {
+        this.permiso_administrador = permiso_administrador;
     }
 
     public int getId_usuario() {

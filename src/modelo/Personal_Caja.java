@@ -13,6 +13,10 @@ public class Personal_Caja extends Persona {
     private int id_persona_caja;
     private String area;
 
+    public Personal_Caja(String nombre, String apellido) {
+        super(nombre, apellido);
+    }
+
 
     public int getId_persona_caja() {
         return id_persona_caja;
