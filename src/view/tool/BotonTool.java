@@ -19,40 +19,33 @@ import javafx.scene.text.Text;
  *
  * @author ADMIN
  */
-public class Boton extends StackPane{
+public class BotonTool extends StackPane{
     private Text text;
     private Text simbolo;
     private boolean presionado;
     private Rectangle bg;
+    
+    public BotonTool(String texto, int tamanoLetra, int base,int altura, Color color){
+        text = new Text(texto);
+        text.setFont(text.getFont().font("Arial" ,FontWeight.BOLD, tamanoLetra));
+        text.setFill(Color.WHITE);
+            
+        bg = new Rectangle(base, altura);
+        bg.setOpacity(0.8);
+        bg.setFill(color);
+        bg.setEffect(new GaussianBlur(1));
+        bg.setArcWidth(10);
+        bg.setArcHeight(10);
+            
+        setOnMouseEntered(event -> bg.setOpacity(1));
+            
+        setOnMouseExited(event -> bg.setOpacity(0.8));
         
-        public Boton(String texto, int tamanoLetra, int base,int altura, Pos alineacion, Color color){
-            text = new Text(texto);
-            text.setFont(text.getFont().font("Arial" ,FontWeight.BOLD, tamanoLetra));
-            text.setFill(Color.WHITE);
-            
-            bg = new Rectangle(base, altura);
-            bg.setOpacity(0.8);
-            bg.setFill(color);
-            bg.setEffect(new GaussianBlur(1));
-            bg.setArcWidth(10);
-            bg.setArcHeight(10);
-            
-            setAlignment(alineacion);
-            getChildren().addAll(bg,text);
-            
-            DropShadow drop = new DropShadow (50, Color.WHITE);
-            drop.setInput(new Glow());
-            
-            setOnMouseEntered(event -> bg.setOpacity(1));
-            
-            setOnMouseExited(event -> bg.setOpacity(0.8));
-            
-            setOnMousePressed(event -> setEffect(drop));
-            
-            setOnMouseReleased(event -> setEffect(null));
-        }
+        setAlignment(Pos.CENTER);
+        getChildren().addAll(bg,text);
+    }
         
-        public Boton(String texto, int tamanoLetra, int base, int altura, Pos alineacion, boolean desplegable){
+        public BotonTool(String texto, int tamanoLetra, int base, int altura, boolean desplegable){
             text = new Text(texto);
             text.setFont(text.getFont().font("Arial" , tamanoLetra));
             text.setFill(Color.rgb(255, 255, 255));
@@ -73,7 +66,7 @@ public class Boton extends StackPane{
             bg.setArcWidth(5);
             bg.setArcHeight(5);
             
-            setAlignment(alineacion);
+            setAlignment(Pos.CENTER_LEFT);
             getChildren().addAll(bg, text);
             
             setOnMouseEntered(event -> bg.setOpacity(0.2));

@@ -15,8 +15,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.stage.Stage;
-import view.tool.Boton;
-import view.tool.FieldText;
+import view.tool.BotonTool;
+import view.tool.TextFieldTool;
 
 /**
  *
@@ -80,7 +80,7 @@ public class View_ssesion extends Ventana{
             
             //CuadroColaMensaje cuadroPruebaInferior = new CuadroColaMensaje("Veterinaria Dr.Pelos.", 1140, 50, Pos.CENTER_LEFT, Color.rgb(88, 180, 228), Color.WHITE);
             
-            Boton buttonLogin = new Boton("Login", 25, anchoVentana / 4, 45, Pos.CENTER, ColorOscuro);
+            BotonTool buttonLogin = new BotonTool("Login", 25, anchoVentana / 4, 45, ColorOscuro);
             
             buttonLogin.setOnMousePressed(cambioVentana -> {
                 View_PersonalCaja newContent = new View_PersonalCaja();
@@ -89,9 +89,9 @@ public class View_ssesion extends Ventana{
             });
             
             
-            FieldText entradoUser = new FieldText("Ingrese su usuario" ,20 , Pos.CENTER, anchoVentana / 4, 50);
+            TextFieldTool entradoUser = new TextFieldTool("Ingrese su usuario" ,20 , Pos.CENTER, anchoVentana / 4, 50);
             
-            FieldText entradoPassword = new FieldText("Ingrese su contraseña", 20 , Pos.CENTER, anchoVentana / 4, 50);
+            TextFieldTool entradoPassword = new TextFieldTool("Ingrese su contraseña", 20 , Pos.CENTER, anchoVentana / 4, 50);
             
             contenedor.getChildren().addAll(logo, entradoUser, entradoPassword, buttonLogin);
             

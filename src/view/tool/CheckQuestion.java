@@ -35,7 +35,7 @@ public class CheckQuestion  extends StackPane{
         paneRespuestas = new HBox(30);
         this.pregunta = pregunta;
         
-        BoxText mensajePregunta = new BoxText(pregunta, tamano, Color.rgb(0, 0, 0), FontWeight.NORMAL, Pos.CENTER_LEFT,0 , 0, null);
+        //BoxText mensajePregunta = new BoxText(pregunta, tamano, Color.rgb(0, 0, 0), FontWeight.NORMAL, Pos.CENTER_LEFT,0 , 0, null);
         
         respuesta = new ToggleGroup();
         opcionSi = new RadioButton("Si");
@@ -48,7 +48,7 @@ public class CheckQuestion  extends StackPane{
         
         paneRespuestas.getChildren().addAll(opcionSi, opcionNo, opcionNA);
        
-        paneCentral.getChildren().addAll(mensajePregunta, paneRespuestas);
+        //paneCentral.getChildren().addAll(mensajePregunta, paneRespuestas);
         
         getChildren().addAll(paneCentral);
     }
@@ -58,7 +58,7 @@ public class CheckQuestion  extends StackPane{
         paneRespuestas = new HBox(30);
         this.pregunta = pregunta;
         
-        BoxText mensajePregunta = new BoxText(pregunta, tamano, Color.rgb(0, 0, 0), FontWeight.NORMAL, Pos.CENTER_LEFT,0 , 0, null);
+        //BoxText mensajePregunta = new BoxText(pregunta, tamano, Color.rgb(0, 0, 0), FontWeight.NORMAL, Pos.CENTER_LEFT,0 , 0, null);
         
         respuesta = new ToggleGroup();
         opcionSi = new RadioButton("Si");
@@ -82,7 +82,7 @@ public class CheckQuestion  extends StackPane{
         
         paneRespuestas.getChildren().addAll(opcionSi, opcionNo, opcionNA);
        
-        paneCentral.getChildren().addAll(mensajePregunta, paneRespuestas);
+        //paneCentral.getChildren().addAll(mensajePregunta, paneRespuestas);
         
         getChildren().addAll(paneCentral);
     }

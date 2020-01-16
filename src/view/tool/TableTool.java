@@ -22,7 +22,7 @@ import javafx.scene.text.Text;
  *
  * @author ADMIN
  */
-public class Table extends StackPane{
+public class TableTool extends StackPane{
     private VBox panelCentral;
     private VBox panelProductos;
     private int ancho;
@@ -34,9 +34,9 @@ public class Table extends StackPane{
     private int altura;
     private int tamanoLetras;
     
-    private Cuadro mensaje;
+    private BoxTextTool mensaje;
     
-    public Table(int ancho){
+    public TableTool(int ancho){
        panelCentral = new VBox();
        
        panelProductos = new VBox(2);
@@ -55,7 +55,7 @@ public class Table extends StackPane{
        
        Fila cabecera = new Fila(lista , anchoColumna, altura, colorCabecera, Color.rgb(200, 200, 200),Color.BLACK, tamanoLetras);
        
-       mensaje = new Cuadro("No hay articulos en el carrito", anchoColumna, 75, Color.WHITE, null, Color.rgb(234, 200, 65), 30, FontWeight.NORMAL, Pos.CENTER);
+       mensaje = new BoxTextTool("No hay articulos en el carrito", anchoColumna, 75, Color.WHITE, null, Color.rgb(234, 200, 65), 30, FontWeight.NORMAL, Pos.CENTER);
        
        panelProductos.getChildren().add(mensaje);
        
@@ -64,7 +64,7 @@ public class Table extends StackPane{
        getChildren().add(panelCentral);
     }
     
-    public Table(int ancho, Color color){
+    public TableTool(int ancho, Color color){
        panelCentral = new VBox();
        
        this.ancho = ancho;
@@ -86,35 +86,6 @@ public class Table extends StackPane{
        getChildren().add(panelCentral);
     }
     
-    private class Cuadro extends StackPane{
-        private Text text;
-        
-        public Cuadro(String nombre, int ancho,int altura, Color colorFondo, Color colorBordes, Color colorLetras,int tamanoLetras, FontWeight tipo, Pos pos){
-            text = new Text(nombre);
-            text.setFont(text.getFont().font("Arial" , tipo, tamanoLetras));
-            text.setFill(colorLetras);
-            
-            if(colorFondo != null){
-                Rectangle bg = new Rectangle(ancho, altura);
-                bg.setOpacity(0.8);
-                bg.setFill(colorFondo);
-
-                if(colorBordes != null){
-                    bg.setStroke(colorBordes);
-                    bg.setStrokeWidth(0.5);
-                }
-                
-                bg.setEffect(new GaussianBlur(1));
-                
-                getChildren().add(bg);
-            }
-            
-            setAlignment(pos);
-            
-            getChildren().add(text);
-        }
-    }
-    
     private class Fila extends StackPane{
         private HBox pane;
         
@@ -124,18 +95,18 @@ public class Table extends StackPane{
             ListIterator<String> it = elementos.listIterator();
             
             while(it.hasNext()){
-                Cuadro nuevoCuadro = new Cuadro( it.next(), ancho, altura,  colorFondo, ColorBordes, colorLetras, tamanoLetras, FontWeight.NORMAL, Pos.CENTER);
+                BoxTextTool nuevoCuadro = new BoxTextTool( it.next(), ancho, altura,  colorFondo, ColorBordes, colorLetras, tamanoLetras, FontWeight.NORMAL, Pos.CENTER);
                 pane.getChildren().add(nuevoCuadro);
             }
             
             getChildren().add(pane);
         }
         
-        public Fila(String dato, String elemento,int ancho,int altura, Color colorFondo, Color colorLetras ,int tamanoLetras){
+        public Fila(String dato, String elemento,int ancho, int altura, Color colorFondo, Color colorLetras ,int tamanoLetras){
             pane = new HBox();
             
-            Cuadro cuadroDato = new Cuadro(dato, ancho, altura,  colorFondo, null, Color.BLACK, tamanoLetras, FontWeight.NORMAL, Pos.CENTER_LEFT);
-            Cuadro cuadroElemento = new Cuadro(elemento, ancho, altura,  colorFondo, null, colorLetras, tamanoLetras, FontWeight.NORMAL, Pos.CENTER_RIGHT);
+            BoxTextTool cuadroDato = new BoxTextTool(dato, ancho, altura,  colorFondo, null, Color.BLACK, tamanoLetras, FontWeight.NORMAL, Pos.CENTER_LEFT);
+            BoxTextTool cuadroElemento = new BoxTextTool(elemento, ancho, altura,  colorFondo, null, colorLetras, tamanoLetras, FontWeight.NORMAL, Pos.CENTER_RIGHT);
             
             pane.getChildren().addAll(cuadroDato, cuadroElemento);
             
