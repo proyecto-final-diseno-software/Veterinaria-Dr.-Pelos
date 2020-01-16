@@ -8,6 +8,7 @@ package view.tool;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.function.Function;
 import javafx.geometry.Pos;
 import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.HBox;
@@ -36,26 +37,19 @@ public class TableTool extends StackPane{
     
     private BoxTextTool mensaje;
     
-    public TableTool(int ancho){
+    public TableTool(int ancho, List<String> lista, String mensajeCentral){
        panelCentral = new VBox();
        
        panelProductos = new VBox(2);
        
        this.ancho = ancho;
-       this.anchoColumna = ancho / 5;
+       this.anchoColumna = ancho / lista.size();
        this.altura = 35;
        this.tamanoLetras = 13;
        
-       List<String> lista = new ArrayList<>();
-       lista.add("Nombre");
-       lista.add("Precio");
-       lista.add("Cantidad");
-       lista.add("Descuento");
-       lista.add("Total");
-       
        Fila cabecera = new Fila(lista , anchoColumna, altura, colorCabecera, Color.rgb(200, 200, 200),Color.BLACK, tamanoLetras);
        
-       mensaje = new BoxTextTool("No hay articulos en el carrito", anchoColumna, 75, Color.WHITE, null, Color.rgb(234, 200, 65), 30, FontWeight.NORMAL, Pos.CENTER);
+       mensaje = new BoxTextTool(mensajeCentral, anchoColumna, 75, Color.WHITE, null, Color.rgb(234, 200, 65), 30, FontWeight.NORMAL, Pos.CENTER);
        
        panelProductos.getChildren().add(mensaje);
        
@@ -64,7 +58,7 @@ public class TableTool extends StackPane{
        getChildren().add(panelCentral);
     }
     
-    public TableTool(int ancho, Color color){
+    public TableTool(int ancho){
        panelCentral = new VBox();
        
        this.ancho = ancho;
@@ -79,7 +73,6 @@ public class TableTool extends StackPane{
        Fila fila3 = new Fila("Subtotal:", "$0.00", anchoColumna, altura, Color.rgb(241, 255, 236), Color.BLACK ,tamanoLetras);
        
        Fila fila4 = new Fila("Total:", "$0.00", anchoColumna, altura, Color.WHITE, Color.BLACK,tamanoLetras * 2);
-       
        
        panelCentral.getChildren().addAll(fila1, fila2, fila3, fila4);
        
@@ -114,9 +107,8 @@ public class TableTool extends StackPane{
         }
     }
     
-    public void anadirProducto(){
+    public void anadirProducto(BotonTool boton){
         if(panelProductos.getChildren().contains(mensaje))
             panelProductos.getChildren().clear();
     }
-    
 }

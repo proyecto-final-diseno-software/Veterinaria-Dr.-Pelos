@@ -28,6 +28,7 @@ import view.tool.BotonTool;
 import view.tool.BoxTextTool;
 import view.tool.TextFieldTool;
 import view.tool.TableTool;
+import view.util.View_Busqueda;
 
 /**
  *
@@ -63,7 +64,6 @@ public class View_PersonalCaja extends Ventana{
         private ImageView logo;
         
         private VBox menuLateral;
-        
         private HBox paneCentral;
         
         private VBox colunma1;
@@ -169,7 +169,7 @@ public class View_PersonalCaja extends Ventana{
             BotonTool botonVentas = new BotonTool("Ventas", titulo2, anchoLateral, altoBotones, false);
             botonVentas.setOnMousePressed(seccionClientes -> {
                 comportamientoBoton(botonVentas);
-                cambiarContenidoVentas(anchoLateral + 50);
+                cambiarContenidoVentas(anchoLateral + 50, altoSuperior + 50);
             });
             
             allBoton.add(botonVentas);
@@ -254,7 +254,7 @@ public class View_PersonalCaja extends Ventana{
             pane1.getChildren().add(paneIngresoDatos);
         }
         
-        private void cambiarContenidoVentas(int reduccionx){
+        private void cambiarContenidoVentas(int reduccionx, int reduccionY){
             limpiarVentana();
             
             colunma1.getChildren().addAll(pane1, pane2);
@@ -283,23 +283,41 @@ public class View_PersonalCaja extends Ventana{
             BotonTool botonBuscar = new BotonTool("Buscar", titulo2, 130, 44, colorOscuro);
             botonBuscar.setOnMousePressed(buscarArticulo -> {
                 System.out.println("Buscando " + textFieldBuscador.getText());
+                
+                BotonTool cerrar = new BotonTool("X", titulo2, titulo2 * 2, titulo2 * 2, Color.RED);
+                
+                View_Busqueda ventana_busqueda = new View_Busqueda(anchoVentana - reduccionx - 10, altoVentana - reduccionY - 10, titulo2, cerrar);
+                
+                cerrar.setOnMousePressed(cerrar_vetana -> getChildren().remove(ventana_busqueda));
+                
+                getChildren().add(ventana_busqueda);
+                
+                ventana_busqueda.setTranslateX(reduccionx - 20);
+                ventana_busqueda.setTranslateY(reduccionY - 20);
             });
             
             HBox ssecionBuscadorCliente = new HBox();
             
             TextFieldTool textFieldBuscadorCliente = new TextFieldTool("Buscar Cliente" ,titulo2, Pos.CENTER, 3 * colunma2 / 6, 40);
             BotonTool botonBuscarCliente = new BotonTool("Buscar", titulo2 - 1, 90, 40, colorOscuro);
-            botonBuscar.setOnMousePressed(buscarCliente -> {
+            botonBuscarCliente.setOnMousePressed(buscarCliente -> {
                 System.out.println("Buscando Cliente" + textFieldBuscadorCliente.getText());
             });
             
-            TableTool tablaRegistro = new TableTool(colunma1);
+            List<String> lista = new ArrayList<>();
+            lista.add("Nombre");
+            lista.add("Precio");
+            lista.add("Cantidad");
+            lista.add("Descuento");
+            lista.add("Total");
+            
+            TableTool tablaRegistro = new TableTool(colunma1, lista, "No hay articulos en el carrito");
             
             ssecionBuscador.getChildren().addAll(textFieldBuscador, botonBuscar);
             
             ssecionBuscadorCliente.getChildren().addAll(textFieldBuscadorCliente, botonBuscarCliente);
             
-            TableTool tablaPago = new TableTool(colunma2, null);
+            TableTool tablaPago = new TableTool(colunma2);
             
             pane1.getChildren().add(ssecionBuscador);
             pane2.getChildren().add(tablaRegistro);
