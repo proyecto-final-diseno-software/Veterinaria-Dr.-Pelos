@@ -30,7 +30,7 @@ import view.tool.ComBoxTool;
 import view.tool.TextFieldTool;
 import view.tool.TableTool;
 import view.tool.Tool;
-import view.util.View_Busqueda;
+import view.util.VentanaBusqueda;
 
 /**
  *
@@ -168,17 +168,17 @@ public class View_PersonalCaja extends Ventana{
             BotonTool botonTrasladoMascota = new BotonTool(" - Mascotas", titulo2 - 5, anchoLateral, altoBotones - 20, false);
             botonTrasladoMascota.setOnMousePressed(trasladoMascotas -> {
                 comportamientoMenuLateral(botonTrasladoMascota);
-                cambiarContenidoTrasladoMascotas(anchoLateral + 50);
+                cambiarContenidoTraslado(anchoLateral + 50, "Traslado de mascotas", "Buscar Cliente");
             });
             botonesLateral.add(botonTrasladoMascota);
 
             
-            BotonTool botonTransladoMercaderia = new BotonTool(" - Mercaderia", titulo2 - 5, anchoLateral, altoBotones - 20, false);
+            BotonTool botonTransladoMercaderia = new BotonTool(" - Consultas entregas", titulo2 - 5, anchoLateral, altoBotones - 20, false);
             botonTransladoMercaderia.setOnMousePressed(trasladoMercaderia -> {
                 comportamientoMenuLateral(botonTransladoMercaderia);
+                cambiarConsultantregas(anchoLateral + 50, altoSuperior + 50);
             });
             botonesLateral.add(botonTransladoMercaderia);
-
             
             botonTraslado.setOnMousePressed(seccionClientes -> {
                 comportamientoMenuLateral(botonTraslado);
@@ -208,9 +208,9 @@ public class View_PersonalCaja extends Ventana{
         }
         
         private void cambiarContenidoAnadirUser(int reduccionx){
-            List<Tool> toolUsados = new ArrayList<>();
+            establecerFondoUnico(reduccionx, Pos.CENTER_LEFT);
             
-            establecerFondoUnico(reduccionx);
+            List<Tool> toolUsados = new ArrayList<>();
             
             Pane mensajeError = new Pane();
             
@@ -287,7 +287,7 @@ public class View_PersonalCaja extends Ventana{
                 
                 BotonTool cerrar = new BotonTool("X", titulo2, titulo2 * 2, titulo2 * 2, Color.RED);
                 
-                View_Busqueda ventana_busqueda = new View_Busqueda(anchoVentana - reduccionx - 10, altoVentana - reduccionY - 10, titulo2, cerrar);
+                VentanaBusqueda ventana_busqueda = new VentanaBusqueda(anchoVentana - reduccionx - 10, altoVentana - reduccionY - 10, titulo2,cerrar);
                 
                 cerrar.setOnMousePressed(cerrar_vetana -> getChildren().remove(ventana_busqueda));
                 
@@ -322,10 +322,10 @@ public class View_PersonalCaja extends Ventana{
             pane4.getChildren().add(tablaPago);
         }
         
-        private void cambiarContenidoTrasladoMascotas(int reduccionx){
+        private void cambiarContenidoTraslado(int reduccionx, String tipo, String cabeceraField ){
             List<Tool> toolUsados = new ArrayList<>();
             
-            establecerFondoUnico(reduccionx);
+            establecerFondoUnico(reduccionx, Pos.CENTER_LEFT);
             
             Pane mensajeError = new Pane();
             
@@ -333,19 +333,19 @@ public class View_PersonalCaja extends Ventana{
             paneIngresoDatos.setTranslateX(20);
             
             HBox cabecera = new HBox(5);
-            BoxTextTool cabeceraTexto = new BoxTextTool("Traslado de mascotas", Color.BLACK, titulo1, FontWeight.BOLD);
+            BoxTextTool cabeceraTexto = new BoxTextTool(tipo, Color.BLACK, titulo1, FontWeight.BOLD);
             cabecera.getChildren().add(cabeceraTexto);
             
             int mitadVentanaActiva = (anchoVentana - reduccionx) / 2 - 25;
             
             HBox primero = new HBox(20);
-            TextFieldTool textFieldBuscadorCliente = new TextFieldTool("Buscar Cliente" ,titulo2, Pos.CENTER, mitadVentanaActiva, 40);
-            BotonTool botonBuscarCliente = new BotonTool("Buscar", titulo2 - 1, 90, 40, ColorOscuro);
-            botonBuscarCliente.setOnMousePressed(buscarCliente -> {
-                if(!textFieldBuscadorCliente.isEmplyTool())
+            TextFieldTool textFieldBuscador = new TextFieldTool(cabeceraField ,titulo2, Pos.CENTER, mitadVentanaActiva, 40);
+            BotonTool botonBuscar = new BotonTool("Buscar", titulo2 - 1, 90, 40, ColorOscuro);
+            botonBuscar.setOnMousePressed(buscar -> {
+                if(!textFieldBuscador.isEmplyTool())
                     establecerTrasladoMascotas(anchoVentana - reduccionx - 35, null, paneIngresoDatos, toolUsados);
             });
-            primero.getChildren().addAll(textFieldBuscadorCliente, botonBuscarCliente);
+            primero.getChildren().addAll(textFieldBuscador, botonBuscar);
             
             paneIngresoDatos.getChildren().addAll(cabecera, primero, mensajeError);
             pane1.getChildren().add(paneIngresoDatos);
@@ -368,17 +368,30 @@ public class View_PersonalCaja extends Ventana{
             TableTool tableMascotas = new TableTool(ancho, datosMascotas, "No hay mascotas disponibles");
             
             BotonTool botonRecogerMascota = new BotonTool("Recoger Mascota", titulo2, 200, titulo2 * 2, ColorOscuro);
-            botonRecogerMascota.setOnMousePressed(recogerMascota -> {});
+            botonRecogerMascota.setOnMousePressed(recogerMascota -> {
+            });
             
             pane.getChildren().addAll(escogerRuta, escogerRepartidor, tableMascotas, botonRecogerMascota);
         }
         
-        private void establecerFondoUnico(int reduccionx){
+        private void cambiarConsultantregas(int reduccionX, int reduccionY ){
+            establecerFondoUnico(reduccionX, Pos.TOP_LEFT);
+            
+            VentanaBusqueda ventana_busqueda = new VentanaBusqueda(anchoVentana - reduccionX - 40, altoVentana - reduccionY - 10, titulo1, titulo2);
+            
+            Pane pane = new Pane();
+            pane.setTranslateX(20);
+            pane.getChildren().add(ventana_busqueda);
+            
+            pane1.getChildren().add(pane);
+        }
+        
+        private void establecerFondoUnico(int reduccionx, Pos pos){
             limpiarVentana();
             colunma1.getChildren().add(pane1);
             paneCentral.getChildren().addAll(colunma1);
             pane1.setPrefWrapLength(anchoVentana - reduccionx);
-            generarsecciones(pane1, Pos.CENTER_LEFT);
+            generarsecciones(pane1, pos);
         }
         
         private void limpiarVentana(){
@@ -387,7 +400,7 @@ public class View_PersonalCaja extends Ventana{
             
             paneCentral.getChildren().clear();
         }
-        
+            
         private void generarsecciones(FlowPane pane, Pos pos){
             pane.setAlignment(pos);
             pane.getChildren().clear();
