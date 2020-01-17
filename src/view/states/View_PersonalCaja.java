@@ -7,7 +7,6 @@ package view.states;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ListIterator;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -24,8 +23,10 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
+import modelo.Cliente;
 import view.tool.BotonTool;
 import view.tool.BoxTextTool;
+import view.tool.ComBoxTool;
 import view.tool.TextFieldTool;
 import view.tool.TableTool;
 import view.tool.Tool;
@@ -120,8 +121,7 @@ public class View_PersonalCaja extends Ventana{
                 comportamientoMenuLateral(botonClientes);
                 if(paneCliente.getChildren().contains(botonCrearClientes)){
                     paneCliente.getChildren().removeAll(botonCrearClientes, botonConsultarClientes);
-                }
-                else{
+                } else{
                     paneCliente.getChildren().addAll(botonCrearClientes, botonConsultarClientes);
                 }
             });
@@ -168,6 +168,7 @@ public class View_PersonalCaja extends Ventana{
             BotonTool botonTrasladoMascota = new BotonTool(" - Mascotas", titulo2 - 5, anchoLateral, altoBotones - 20, false);
             botonTrasladoMascota.setOnMousePressed(trasladoMascotas -> {
                 comportamientoMenuLateral(botonTrasladoMascota);
+                cambiarContenidoTrasladoMascotas(anchoLateral + 50);
             });
             botonesLateral.add(botonTrasladoMascota);
 
@@ -206,19 +207,6 @@ public class View_PersonalCaja extends Ventana{
             getChildren().addAll(barraLateral, barraSuperior , menuLateral, paneCentral);
         }
         
-        public void limpiarVentana(){
-            colunma1.getChildren().clear();
-            colunma2.getChildren().clear();
-            
-            paneCentral.getChildren().clear();
-        }
-        
-        private void generarsecciones(FlowPane pane, Pos pos){
-            pane.setAlignment(pos);
-            pane.getChildren().clear();
-            pane.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), new Insets(-10, 0, -10, 0))));
-        }
-        
         private void cambiarContenidoAnadirUser(int reduccionx){
             List<Tool> toolUsados = new ArrayList<>();
             
@@ -239,7 +227,6 @@ public class View_PersonalCaja extends Ventana{
             TextFieldTool textFieldNombre = new TextFieldTool("Ingrese nombre del nuevo cliente", "Nombre:", titulo2, Pos.CENTER_LEFT, mitadVentanaActiva, titulo2);
             TextFieldTool textFieldApellido = new TextFieldTool("Ingrese apellido del nuevo cliente", "Apellido:", titulo2, Pos.CENTER_LEFT, mitadVentanaActiva, titulo2);
             primero.getChildren().addAll(textFieldNombre, textFieldApellido);
-            
             toolUsados.add(textFieldNombre);
             toolUsados.add(textFieldApellido);
             
@@ -247,11 +234,10 @@ public class View_PersonalCaja extends Ventana{
             TextFieldTool textFieldDireccion = new TextFieldTool("Ingrese direccion del nuevo cliente", "Direccion:", titulo2, Pos.CENTER_LEFT, mitadVentanaActiva, titulo2);
             TextFieldTool textFieldtelefono = new TextFieldTool("Ingrese el telefono del nuevo cliente", "Telefono:", titulo2, Pos.CENTER_LEFT, mitadVentanaActiva, titulo2);
             segundo.getChildren().addAll(textFieldDireccion, textFieldtelefono);
-            
             toolUsados.add(textFieldDireccion);
             toolUsados.add(textFieldtelefono);
             
-            HBox botones = new HBox(5);
+            HBox botonesPane = new HBox(5);
             BotonTool guardarCliente = new BotonTool("Guardar Cliente", titulo2, 200, titulo2 * 2, ColorOscuro);
             guardarCliente.setOnMousePressed(guardarNuevoCliente -> {
                 if(comprobarCampos(toolUsados))
@@ -265,9 +251,9 @@ public class View_PersonalCaja extends Ventana{
             cancelarCliente.setOnMousePressed(cancelarNuevoCliente -> {
                 limpiarVentana();
             });
-            botones.getChildren().addAll(cancelarCliente, guardarCliente);
             
-            paneIngresoDatos.getChildren().addAll(cabecera, primero, segundo, botones, mensajeError);
+            botonesPane.getChildren().addAll(cancelarCliente, guardarCliente);
+            paneIngresoDatos.getChildren().addAll(cabecera, primero, segundo, botonesPane, mensajeError);
             pane1.getChildren().add(paneIngresoDatos);
         }
         
@@ -279,15 +265,13 @@ public class View_PersonalCaja extends Ventana{
             
             paneCentral.getChildren().addAll(colunma1, colunma2);
             
-            int colunma1 = 2 * (anchoVentana - reduccionx) / 3;
-            int colunma2 = (anchoVentana - reduccionx) / 3;
+            int anchoColunma1 = 2 * (anchoVentana - reduccionx) / 3;
+            int anchoColunma2 = (anchoVentana - reduccionx) / 3;
             
-            int alto = 300;
-            
-            pane1.setPrefWrapLength(colunma1);
-            pane2.setPrefWrapLength(colunma1);
-            pane3.setPrefWrapLength(colunma2);
-            pane4.setPrefWrapLength(colunma2);
+            pane1.setPrefWrapLength(anchoColunma1);
+            pane2.setPrefWrapLength(anchoColunma1);
+            pane3.setPrefWrapLength(anchoColunma2);
+            pane4.setPrefWrapLength(anchoColunma2);
             
             generarsecciones(pane1, Pos.CENTER);
             generarsecciones(pane2, Pos.CENTER);
@@ -296,7 +280,7 @@ public class View_PersonalCaja extends Ventana{
             
             HBox ssecionBuscador = new HBox();
             
-            TextFieldTool textFieldBuscador = new TextFieldTool("Buscar Producto" ,titulo2, Pos.CENTER, 3 * colunma1 / 5, 44);
+            TextFieldTool textFieldBuscador = new TextFieldTool("Buscar Producto" ,titulo2, Pos.CENTER, 3 * anchoColunma1 / 5, 44);
             BotonTool botonBuscar = new BotonTool("Buscar", titulo2, 130, 44, ColorOscuro);
             botonBuscar.setOnMousePressed(buscarArticulo -> {
                 System.out.println("Buscando " + ((String) textFieldBuscador.getValue()));
@@ -315,26 +299,22 @@ public class View_PersonalCaja extends Ventana{
             
             HBox ssecionBuscadorCliente = new HBox();
             
-            TextFieldTool textFieldBuscadorCliente = new TextFieldTool("Buscar Cliente" ,titulo2, Pos.CENTER, 3 * colunma2 / 6, 40);
+            TextFieldTool textFieldBuscadorCliente = new TextFieldTool("Buscar Cliente" ,titulo2, Pos.CENTER, 3 * anchoColunma2 / 6, 40);
             BotonTool botonBuscarCliente = new BotonTool("Buscar", titulo2 - 1, 90, 40, ColorOscuro);
             botonBuscarCliente.setOnMousePressed(buscarCliente -> {
                 System.out.println("Buscando Cliente" + ((String) textFieldBuscadorCliente.getValue()));
             });
             
             List<String> lista = new ArrayList<>();
-            lista.add("Nombre");
-            lista.add("Precio");
-            lista.add("Cantidad");
-            lista.add("Descuento");
-            lista.add("Total");
+            lista.add("Nombre"); lista.add("Precio"); lista.add("Cantidad"); lista.add("Descuento"); lista.add("Total");
             
-            TableTool tablaRegistro = new TableTool(colunma1, lista, "No hay articulos en el carrito");
+            TableTool tablaRegistro = new TableTool(anchoColunma1, lista, "No hay articulos en el carrito");
             
             ssecionBuscador.getChildren().addAll(textFieldBuscador, botonBuscar);
             
             ssecionBuscadorCliente.getChildren().addAll(textFieldBuscadorCliente, botonBuscarCliente);
             
-            TableTool tablaPago = new TableTool(colunma2);
+            TableTool tablaPago = new TableTool(anchoColunma2);
             
             pane1.getChildren().add(ssecionBuscador);
             pane2.getChildren().add(tablaRegistro);
@@ -353,45 +333,44 @@ public class View_PersonalCaja extends Ventana{
             paneIngresoDatos.setTranslateX(20);
             
             HBox cabecera = new HBox(5);
-            BoxTextTool cabeceraTexto = new BoxTextTool("Translado Mascotas", Color.BLACK, titulo1, FontWeight.BOLD);
+            BoxTextTool cabeceraTexto = new BoxTextTool("Traslado de mascotas", Color.BLACK, titulo1, FontWeight.BOLD);
             cabecera.getChildren().add(cabeceraTexto);
             
             int mitadVentanaActiva = (anchoVentana - reduccionx) / 2 - 25;
             
             HBox primero = new HBox(20);
-            TextFieldTool textFieldNombre = new TextFieldTool("Ingrese nombre del nuevo cliente", "Nombre:", titulo2, Pos.CENTER_LEFT, mitadVentanaActiva, titulo2);
-            TextFieldTool textFieldApellido = new TextFieldTool("Ingrese apellido del nuevo cliente", "Apellido:", titulo2, Pos.CENTER_LEFT, mitadVentanaActiva, titulo2);
-            primero.getChildren().addAll(textFieldNombre, textFieldApellido);
-            
-            toolUsados.add(textFieldNombre);
-            toolUsados.add(textFieldApellido);
-            
-            HBox segundo = new HBox(20);
-            TextFieldTool textFieldDireccion = new TextFieldTool("Ingrese direccion del nuevo cliente", "Direccion:", titulo2, Pos.CENTER_LEFT, mitadVentanaActiva, titulo2);
-            TextFieldTool textFieldtelefono = new TextFieldTool("Ingrese el telefono del nuevo cliente", "Telefono:", titulo2, Pos.CENTER_LEFT, mitadVentanaActiva, titulo2);
-            segundo.getChildren().addAll(textFieldDireccion, textFieldtelefono);
-            
-            toolUsados.add(textFieldDireccion);
-            toolUsados.add(textFieldtelefono);
-            
-            HBox botones = new HBox(5);
-            BotonTool guardarCliente = new BotonTool("Guardar Cliente", titulo2, 200, titulo2 * 2, ColorOscuro);
-            guardarCliente.setOnMousePressed(guardarNuevoCliente -> {
-                if(comprobarCampos(toolUsados))
-                    System.out.println("Valido");
-                else{
-                    mensajeError.getChildren().clear();
-                    mensajeError.getChildren().add(new BoxTextTool("Por favor ingrese los datos faltantes", Color.RED, titulo1, FontWeight.BOLD));
-                }
+            TextFieldTool textFieldBuscadorCliente = new TextFieldTool("Buscar Cliente" ,titulo2, Pos.CENTER, mitadVentanaActiva, 40);
+            BotonTool botonBuscarCliente = new BotonTool("Buscar", titulo2 - 1, 90, 40, ColorOscuro);
+            botonBuscarCliente.setOnMousePressed(buscarCliente -> {
+                if(!textFieldBuscadorCliente.isEmplyTool())
+                    establecerTrasladoMascotas(anchoVentana - reduccionx - 35, null, paneIngresoDatos, toolUsados);
             });
-            BotonTool cancelarCliente = new BotonTool("Cancelar", titulo2, 200, titulo2 * 2, colorClaro);
-            cancelarCliente.setOnMousePressed(cancelarNuevoCliente -> {
-                limpiarVentana();
-            });
-            botones.getChildren().addAll(cancelarCliente, guardarCliente);
+            primero.getChildren().addAll(textFieldBuscadorCliente, botonBuscarCliente);
             
-            paneIngresoDatos.getChildren().addAll(cabecera, primero, segundo, botones, mensajeError);
+            paneIngresoDatos.getChildren().addAll(cabecera, primero, mensajeError);
             pane1.getChildren().add(paneIngresoDatos);
+        }
+        
+        private void establecerTrasladoMascotas(int ancho, Cliente cliente, VBox pane, List<Tool> tools){
+            ComBoxTool escogerRuta = new ComBoxTool(250, "Ruta:", new ArrayList<>(), titulo2);
+            ComBoxTool escogerRepartidor = new ComBoxTool(250, "Repartidor:", new ArrayList<>(), titulo2);
+            
+            tools.add(escogerRuta);
+            tools.add(escogerRepartidor);
+            
+            List<String> datosMascotas = new ArrayList<>();
+            datosMascotas.add("Codigo");
+            datosMascotas.add("Nombre");
+            datosMascotas.add("Raza");
+            datosMascotas.add("Estado");
+            datosMascotas.add("");
+            
+            TableTool tableMascotas = new TableTool(ancho, datosMascotas, "No hay mascotas disponibles");
+            
+            BotonTool botonRecogerMascota = new BotonTool("Recoger Mascota", titulo2, 200, titulo2 * 2, ColorOscuro);
+            botonRecogerMascota.setOnMousePressed(recogerMascota -> {});
+            
+            pane.getChildren().addAll(escogerRuta, escogerRepartidor, tableMascotas, botonRecogerMascota);
         }
         
         private void establecerFondoUnico(int reduccionx){
@@ -400,6 +379,19 @@ public class View_PersonalCaja extends Ventana{
             paneCentral.getChildren().addAll(colunma1);
             pane1.setPrefWrapLength(anchoVentana - reduccionx);
             generarsecciones(pane1, Pos.CENTER_LEFT);
+        }
+        
+        private void limpiarVentana(){
+            colunma1.getChildren().clear();
+            colunma2.getChildren().clear();
+            
+            paneCentral.getChildren().clear();
+        }
+        
+        private void generarsecciones(FlowPane pane, Pos pos){
+            pane.setAlignment(pos);
+            pane.getChildren().clear();
+            pane.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), new Insets(-10, 0, -10, 0))));
         }
     }
 }
