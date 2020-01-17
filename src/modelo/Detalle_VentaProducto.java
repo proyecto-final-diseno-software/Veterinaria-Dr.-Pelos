@@ -12,9 +12,15 @@ package modelo;
 public class Detalle_VentaProducto {
     private int cantidad;
     private int id_detalle_ventaProducto;
+    private final Producto producto;
+
+    public Detalle_VentaProducto(int cantidad, Producto producto) {
+        this.cantidad = cantidad;
+        this.producto = producto;
+    }
     
     public double calcularPrecio(){
-        return 0;
+        return producto.getPrecioUnitario()*cantidad;
     }
 
     public int getCantidad() {
