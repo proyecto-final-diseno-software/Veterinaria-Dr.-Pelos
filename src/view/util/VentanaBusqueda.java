@@ -164,7 +164,6 @@ public class VentanaBusqueda extends Parent{
                     filtarMercaderia(ancho, camposMercaderia);
                 else
                     filtarMascota(ancho, camposMascotas);
-            
         });
         
         tablaProductos = new TableTool(ancho, camposMercaderia, "No hay articulos con esta descripcion");
