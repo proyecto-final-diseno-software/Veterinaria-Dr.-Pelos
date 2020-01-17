@@ -5,10 +5,16 @@
  */
 package controladores;
 
+import modelo.Usuario;
+
 /**
  *
  * @author paula
  */
 public class Ctr_Directivos {
+    
+    public void asignarAdministrador(Usuario u){
+        //En constuccion
+    }
     
 }

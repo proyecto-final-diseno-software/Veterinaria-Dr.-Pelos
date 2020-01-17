@@ -11,7 +11,34 @@ package modelo;
  */
 public class Pedido {
     protected String descripcion;
-    //
+    protected Object remitente;
+    protected Object destinatario;
+
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public Object getRemitente() {
+        return remitente;
+    }
+
+    public void setRemitente(Object remitente) {
+        this.remitente = remitente;
+    }
+
+    public Object getDestinatario() {
+        return destinatario;
+    }
+
+    public void setDestinatario(Object destinatario) {
+        this.destinatario = destinatario;
+    }
+    
+    
     
     public Pedido agregarPedido(){
         return null;

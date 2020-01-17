@@ -11,10 +11,18 @@ package modelo;
  */
 public class VentaServicio {
     private int id_ventaServicio;
+    private Servicio s;
     
-    public boolean agregarDetalle_Servicio(){
+    
+    public boolean agregarDetalle_Servicio(Servicio s){
+        //if servicio disponible
+        this.s = s;
         return true;
     } 
+    
+    public double precioServicio(){
+        return s.getPrecio();
+    }
     
     
 }

@@ -6,17 +6,57 @@
 package modelo;
 
 import java.time.LocalDate;
+import java.util.LinkedList;
 
 /**
  *
  * @author paula
  */
 public class Cotizacion {
-    public int idCotizacion;
-    public LocalDate fecha;
-    public String estado;
-    public double valor;
+    private int idCotizacion;
+    private LocalDate fecha;
+    private String estado;
+    private double valor = 0;
+    private Cliente cliente;
+    private LinkedList<Object> detalles;
 
+    public Cotizacion() {
+        this.fecha = LocalDate.now();
+        detalles = new LinkedList<>();
+        
+    }
+    
+    public void agregarProducto(Detalle_VentaProducto detallep){
+        detalles.add(detallep);
+        valor += detallep.calcularPrecio();
+        
+    }
+    
+    public void agregarServicio(VentaServicio detalleS){
+        detalles.add(detalleS);
+        valor += detalleS.precioServicio();
+    }
+    
+//    private void calcularValorTotal(){
+//        
+//    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+
+    public LinkedList<Object> getDetalles() {
+        return detalles;
+    }
+
+    public void setDetalles(LinkedList<Object> detalles) {
+        this.detalles = detalles;
+    }
+    
     public int getIdCotizacion() {
         return idCotizacion;
     }
