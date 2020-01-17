@@ -5,10 +5,32 @@
  */
 package controladores;
 
+import modelo.Producto;
+import modelo.Servicio;
+
+
 /**
- *
+ * Clase en construccion
  * @author paula
  */
 public class Ctr_Administrador {
+    
+    public void crearProducto(Producto p){
+    }
+    
+    public void crearServicio(Servicio s){
+    }
+        
+    public void modificarProducto(Producto p){
+    }
+    
+    public void modificarServicio(Servicio s){
+    }
+    
+    public void descartarProducto(Producto p){
+    }
+    
+    public void descartarServicio(Servicio s){
+    }
     
 }

@@ -5,10 +5,22 @@
  */
 package controladores;
 
+import modelo.Cliente;
+
 /**
  *
  * @author paula
  */
 public class Ctr_Personal_Caja {
+    
+    
+    public void agregarCliente(Cliente c){
+        //Agregar a base de datos
+    }
+
+    public void realizarCotizacion(){
+        
+    }
+    
     
 }
