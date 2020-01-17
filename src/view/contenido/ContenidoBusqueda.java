@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package view.util;
+package view.contenido;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +30,7 @@ import view.tool.Tool;
  *
  * @author ADMIN
  */
-public class VentanaBusqueda extends Parent{
+public class ContenidoBusqueda extends Parent{
     private VBox filas;
     private Pane paneTabla;
     
@@ -38,7 +38,7 @@ public class VentanaBusqueda extends Parent{
     
     private TableTool tablaProductos;
     
-    public VentanaBusqueda(int ancho, int alto, int titulo2, BotonTool cerrar){
+    public ContenidoBusqueda(int ancho, int alto, int titulo2, BotonTool cerrar){
         List<Tool> toolsUsado = new ArrayList<>();
         
         filas = new VBox(5);
@@ -111,7 +111,7 @@ public class VentanaBusqueda extends Parent{
         getChildren().add(filas);
     }
     
-    public VentanaBusqueda(int ancho, int alto, int titulo1,int titulo2){
+    public ContenidoBusqueda(int ancho, int alto, int titulo1, int titulo2){
         List<Tool> toolsUsado = new ArrayList<>();
         
         filas = new VBox(20);
@@ -181,6 +181,7 @@ public class VentanaBusqueda extends Parent{
         
         paneTabla.getChildren().add(tablaProductos);
     }
+    
     private void filtarMascota(int ancho, List<String> camposMascota){
         paneTabla.getChildren().clear();
                 

@@ -30,7 +30,9 @@ import view.tool.ComBoxTool;
 import view.tool.TextFieldTool;
 import view.tool.TableTool;
 import view.tool.Tool;
-import view.util.VentanaBusqueda;
+import view.contenido.ContenidoAnadirUsuario;
+import view.contenido.ContenidoBusqueda;
+import view.contenido.ContenidoTraslado;
 
 /**
  *
@@ -214,29 +216,6 @@ public class View_PersonalCaja extends Ventana{
             
             Pane mensajeError = new Pane();
             
-            VBox paneIngresoDatos = new VBox(20);
-            paneIngresoDatos.setTranslateX(20);
-            
-            HBox cabecera = new HBox(5);
-            BoxTextTool cabeceraTexto = new BoxTextTool("Registro Cliente", Color.BLACK, titulo1, FontWeight.BOLD);
-            cabecera.getChildren().add(cabeceraTexto);
-            
-            int mitadVentanaActiva = (anchoVentana - reduccionx) / 2 - 25;
-            
-            HBox primero = new HBox(20);
-            TextFieldTool textFieldNombre = new TextFieldTool("Ingrese nombre del nuevo cliente", "Nombre:", titulo2, Pos.CENTER_LEFT, mitadVentanaActiva, titulo2);
-            TextFieldTool textFieldApellido = new TextFieldTool("Ingrese apellido del nuevo cliente", "Apellido:", titulo2, Pos.CENTER_LEFT, mitadVentanaActiva, titulo2);
-            primero.getChildren().addAll(textFieldNombre, textFieldApellido);
-            toolUsados.add(textFieldNombre);
-            toolUsados.add(textFieldApellido);
-            
-            HBox segundo = new HBox(20);
-            TextFieldTool textFieldDireccion = new TextFieldTool("Ingrese direccion del nuevo cliente", "Direccion:", titulo2, Pos.CENTER_LEFT, mitadVentanaActiva, titulo2);
-            TextFieldTool textFieldtelefono = new TextFieldTool("Ingrese el telefono del nuevo cliente", "Telefono:", titulo2, Pos.CENTER_LEFT, mitadVentanaActiva, titulo2);
-            segundo.getChildren().addAll(textFieldDireccion, textFieldtelefono);
-            toolUsados.add(textFieldDireccion);
-            toolUsados.add(textFieldtelefono);
-            
             HBox botonesPane = new HBox(5);
             BotonTool guardarCliente = new BotonTool("Guardar Cliente", titulo2, 200, titulo2 * 2, ColorOscuro);
             guardarCliente.setOnMousePressed(guardarNuevoCliente -> {
@@ -248,13 +227,18 @@ public class View_PersonalCaja extends Ventana{
                 }
             });
             BotonTool cancelarCliente = new BotonTool("Cancelar", titulo2, 200, titulo2 * 2, colorClaro);
-            cancelarCliente.setOnMousePressed(cancelarNuevoCliente -> {
-                limpiarVentana();
-            });
+            cancelarCliente.setOnMousePressed(cancelarNuevoCliente -> limpiarVentana());
             
             botonesPane.getChildren().addAll(cancelarCliente, guardarCliente);
-            paneIngresoDatos.getChildren().addAll(cabecera, primero, segundo, botonesPane, mensajeError);
-            pane1.getChildren().add(paneIngresoDatos);
+            
+            int mitadVentanaActiva = (anchoVentana - reduccionx) / 2 - 25;
+            
+            ContenidoAnadirUsuario ventanaAnadirUsuario = new ContenidoAnadirUsuario(mitadVentanaActiva, titulo1, titulo2);
+            ventanaAnadirUsuario.crearContenidoCentral(toolUsados);
+            ventanaAnadirUsuario.anadirSellecionInferior(botonesPane);
+            ventanaAnadirUsuario.anadirSellecionInferior(mensajeError);
+            
+            pane1.getChildren().add(generarPaneCentral(ventanaAnadirUsuario));
         }
         
         private void cambiarContenidoVentas(int reduccionx, int reduccionY){
@@ -287,7 +271,7 @@ public class View_PersonalCaja extends Ventana{
                 
                 BotonTool cerrar = new BotonTool("X", titulo2, titulo2 * 2, titulo2 * 2, Color.RED);
                 
-                VentanaBusqueda ventana_busqueda = new VentanaBusqueda(anchoVentana - reduccionx - 10, altoVentana - reduccionY - 10, titulo2,cerrar);
+                ContenidoBusqueda ventana_busqueda = new ContenidoBusqueda(anchoVentana - reduccionx - 10, altoVentana - reduccionY - 10, titulo2,cerrar);
                 
                 cerrar.setOnMousePressed(cerrar_vetana -> getChildren().remove(ventana_busqueda));
                 
@@ -323,67 +307,27 @@ public class View_PersonalCaja extends Ventana{
         }
         
         private void cambiarContenidoTraslado(int reduccionx, String tipo, String cabeceraField ){
-            List<Tool> toolUsados = new ArrayList<>();
-            
             establecerFondoUnico(reduccionx, Pos.CENTER_LEFT);
             
-            Pane mensajeError = new Pane();
+            ContenidoTraslado ventanaTraslado= new ContenidoTraslado(reduccionx, tipo, cabeceraField, titulo1, titulo2, ColorOscuro, anchoVentana);
             
-            VBox paneIngresoDatos = new VBox(20);
-            paneIngresoDatos.setTranslateX(20);
-            
-            HBox cabecera = new HBox(5);
-            BoxTextTool cabeceraTexto = new BoxTextTool(tipo, Color.BLACK, titulo1, FontWeight.BOLD);
-            cabecera.getChildren().add(cabeceraTexto);
-            
-            int mitadVentanaActiva = (anchoVentana - reduccionx) / 2 - 25;
-            
-            HBox primero = new HBox(20);
-            TextFieldTool textFieldBuscador = new TextFieldTool(cabeceraField ,titulo2, Pos.CENTER, mitadVentanaActiva, 40);
-            BotonTool botonBuscar = new BotonTool("Buscar", titulo2 - 1, 90, 40, ColorOscuro);
-            botonBuscar.setOnMousePressed(buscar -> {
-                if(!textFieldBuscador.isEmplyTool())
-                    establecerTrasladoMascotas(anchoVentana - reduccionx - 35, null, paneIngresoDatos, toolUsados);
-            });
-            primero.getChildren().addAll(textFieldBuscador, botonBuscar);
-            
-            paneIngresoDatos.getChildren().addAll(cabecera, primero, mensajeError);
-            pane1.getChildren().add(paneIngresoDatos);
-        }
-        
-        private void establecerTrasladoMascotas(int ancho, Cliente cliente, VBox pane, List<Tool> tools){
-            ComBoxTool escogerRuta = new ComBoxTool(250, "Ruta:", new ArrayList<>(), titulo2);
-            ComBoxTool escogerRepartidor = new ComBoxTool(250, "Repartidor:", new ArrayList<>(), titulo2);
-            
-            tools.add(escogerRuta);
-            tools.add(escogerRepartidor);
-            
-            List<String> datosMascotas = new ArrayList<>();
-            datosMascotas.add("Codigo");
-            datosMascotas.add("Nombre");
-            datosMascotas.add("Raza");
-            datosMascotas.add("Estado");
-            datosMascotas.add("");
-            
-            TableTool tableMascotas = new TableTool(ancho, datosMascotas, "No hay mascotas disponibles");
-            
-            BotonTool botonRecogerMascota = new BotonTool("Recoger Mascota", titulo2, 200, titulo2 * 2, ColorOscuro);
-            botonRecogerMascota.setOnMousePressed(recogerMascota -> {
-            });
-            
-            pane.getChildren().addAll(escogerRuta, escogerRepartidor, tableMascotas, botonRecogerMascota);
+            pane1.getChildren().add(generarPaneCentral(ventanaTraslado));
         }
         
         private void cambiarConsultantregas(int reduccionX, int reduccionY ){
             establecerFondoUnico(reduccionX, Pos.TOP_LEFT);
             
-            VentanaBusqueda ventana_busqueda = new VentanaBusqueda(anchoVentana - reduccionX - 40, altoVentana - reduccionY - 10, titulo1, titulo2);
+            ContenidoBusqueda ventanaConsultaEntrega = new ContenidoBusqueda(anchoVentana - reduccionX - 40, altoVentana - reduccionY - 10, titulo1, titulo2);
             
+            pane1.getChildren().add(generarPaneCentral(ventanaConsultaEntrega));
+        }
+        
+        private Pane generarPaneCentral(Parent parent){
             Pane pane = new Pane();
             pane.setTranslateX(20);
-            pane.getChildren().add(ventana_busqueda);
+            pane.getChildren().add(parent);
             
-            pane1.getChildren().add(pane);
+            return pane;
         }
         
         private void establecerFondoUnico(int reduccionx, Pos pos){
