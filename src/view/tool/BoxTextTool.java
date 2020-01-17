@@ -17,7 +17,7 @@ import javafx.scene.text.Text;
  *
  * @author ADMIN
  */
-public class BoxTextTool extends StackPane{
+public class BoxTextTool extends StackPane implements Tool{
     private Text text;
         
     public BoxTextTool(String nombre, int ancho, int altura, Color colorFondo, Color colorBordes, Color colorLetras,int tamanoLetras, FontWeight tipo, Pos pos){
@@ -48,5 +48,15 @@ public class BoxTextTool extends StackPane{
         text.setFill(colorLetras);
             
         getChildren().add(text);
+    }
+
+    @Override
+    public boolean isEmplyTool() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object getValue() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

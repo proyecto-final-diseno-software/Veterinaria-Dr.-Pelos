@@ -5,25 +5,20 @@
  */
 package view.tool;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
-import java.util.function.Function;
 import javafx.geometry.Pos;
-import javafx.scene.effect.GaussianBlur;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 import javafx.scene.text.FontWeight;
-import javafx.scene.text.Text;
 
 /**
  *
  * @author ADMIN
  */
-public class TableTool extends StackPane{
+public class TableTool extends StackPane implements Tool{
     private VBox panelCentral;
     private VBox panelProductos;
     private int ancho;
@@ -77,6 +72,16 @@ public class TableTool extends StackPane{
        panelCentral.getChildren().addAll(fila1, fila2, fila3, fila4);
        
        getChildren().add(panelCentral);
+    }
+
+    @Override
+    public boolean isEmplyTool() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object getValue() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     private class Fila extends StackPane{

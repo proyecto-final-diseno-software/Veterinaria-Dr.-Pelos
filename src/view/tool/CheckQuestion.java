@@ -5,22 +5,17 @@
  */
 package view.tool;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
-import javafx.geometry.Pos;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.paint.Color;
-import javafx.scene.text.FontWeight;
 
 /**
  *
  * @author ADMIN
  */
-public class CheckQuestion  extends StackPane{
+public class CheckQuestion  extends StackPane implements Tool{
     private VBox paneCentral;
     private HBox paneRespuestas;
     private RadioButton opcionSi;
@@ -100,8 +95,14 @@ public class CheckQuestion  extends StackPane{
     public String getPregunta() {
         return pregunta;
     }
-    
-    public String getRespuesta(){
+
+    @Override
+    public boolean isEmplyTool() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object getValue() {
         if(opcionSi.isSelected())
             return "Si";
         else if(opcionNo.isSelected())

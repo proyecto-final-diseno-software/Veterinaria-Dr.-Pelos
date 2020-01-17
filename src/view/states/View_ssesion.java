@@ -50,11 +50,6 @@ public class View_ssesion extends Ventana{
     }
     
     private class PrincipalContenedor extends Parent{
-        private final Color colorClaro = Color.rgb(40, 171, 223);
-        private final Color ColorOscuro = Color.rgb(25, 141, 216);
-        
-        private ImageView logo;
-        
         private VBox contenedor;
         
         public PrincipalContenedor(){

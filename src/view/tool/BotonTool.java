@@ -17,7 +17,7 @@ import javafx.scene.text.Text;
  *
  * @author ADMIN
  */
-public class BotonTool extends StackPane{
+public class BotonTool extends StackPane implements Tool{
     private Text text;
     private Text simbolo;
     private boolean presionado;
@@ -103,5 +103,15 @@ public class BotonTool extends StackPane{
 
     public boolean isPresionado() {
         return presionado;
+    }
+
+    @Override
+    public boolean isEmplyTool() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Object getValue() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

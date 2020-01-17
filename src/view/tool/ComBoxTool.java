@@ -18,7 +18,7 @@ import javafx.scene.text.Text;
  *
  * @author ADMIN
  */
-public class ComBoxTool<E> extends StackPane{
+public class ComBoxTool<E> extends StackPane implements Tool{
     private final ComboBox combo;
     private VBox paneCentral;
     
@@ -41,13 +41,12 @@ public class ComBoxTool<E> extends StackPane{
         getChildren().addAll(paneCentral);
     }
     
-    public boolean isEmpltyCom() {
-        if(combo.getValue()==null)
-            return false;
-        return true;
-    }
-    
     public Object getValue(){
         return combo.getValue();
+    }
+
+    @Override
+    public boolean isEmplyTool() {
+        return combo.getValue() == null;
     }
 }

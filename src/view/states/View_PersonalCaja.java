@@ -28,6 +28,7 @@ import view.tool.BotonTool;
 import view.tool.BoxTextTool;
 import view.tool.TextFieldTool;
 import view.tool.TableTool;
+import view.tool.Tool;
 import view.util.View_Busqueda;
 
 /**
@@ -58,14 +59,6 @@ public class View_PersonalCaja extends Ventana{
     }
     
     private class PrincipalContenedorCaja extends Parent{
-        private final Color colorClaro = Color.rgb(40, 171, 223);
-        private final Color colorOscuro = Color.rgb(25, 141, 216);
-        
-        private ImageView logo;
-        
-        private VBox menuLateral;
-        private HBox paneCentral;
-        
         private VBox colunma1;
         private VBox colunma2;
         
@@ -73,12 +66,6 @@ public class View_PersonalCaja extends Ventana{
         private FlowPane pane2;
         private FlowPane pane3;
         private FlowPane pane4;
-        
-        private List<BotonTool> allBoton = new ArrayList<>();
-        
-        private int titulo1;
-        private int titulo2;
-        private int titulo3;
         
         public PrincipalContenedorCaja(){
             pane1 = new FlowPane();
@@ -94,9 +81,9 @@ public class View_PersonalCaja extends Ventana{
             colunma1 = new VBox(35);
             colunma2 = new VBox(35);
             
-            this.titulo1 = 30;
-            this.titulo2 = 20;
-            this.titulo3 = 15;
+            titulo1 = 30;
+            titulo2 = 20;
+            titulo3 = 15;
             
             int anchoLateral = anchoVentana / 7;
             int altoSuperior = altoVentana / 10;
@@ -106,7 +93,7 @@ public class View_PersonalCaja extends Ventana{
             logo.setFitWidth(anchoLateral);
             
             Rectangle barraSuperior = new Rectangle(anchoVentana, altoSuperior);
-            barraSuperior.setFill(colorOscuro);
+            barraSuperior.setFill(ColorOscuro);
             barraSuperior.setOpacity(0.7);
             
             Rectangle barraLateral = new Rectangle(anchoLateral, altoVentana);
@@ -121,16 +108,16 @@ public class View_PersonalCaja extends Ventana{
             
             BotonTool botonCrearClientes = new BotonTool(" - Añadir cliente", titulo2 - 5, anchoLateral, altoBotones - 20, false);
             botonCrearClientes.setOnMousePressed(seccionClientes -> {
-                comportamientoBoton(botonCrearClientes);
+                comportamientoMenuLateral(botonCrearClientes);
                 cambiarContenidoAnadirUser(anchoLateral + 50);
             });
             
             BotonTool botonConsultarClientes = new BotonTool(" - Consultar cliente", titulo2 - 5, anchoLateral, altoBotones - 20, false);
             botonConsultarClientes.setOnMousePressed(seccionClientes -> {
-                comportamientoBoton(botonConsultarClientes);
+                comportamientoMenuLateral(botonConsultarClientes);
             });
             botonClientes.setOnMousePressed(seccionClientes -> {
-                comportamientoBoton(botonClientes);
+                comportamientoMenuLateral(botonClientes);
                 if(paneCliente.getChildren().contains(botonCrearClientes)){
                     paneCliente.getChildren().removeAll(botonCrearClientes, botonConsultarClientes);
                 }
@@ -141,54 +128,77 @@ public class View_PersonalCaja extends Ventana{
             
             paneCliente.getChildren().add(botonClientes);
             
-            allBoton.add(botonClientes);
-            allBoton.add(botonCrearClientes);
-            allBoton.add(botonConsultarClientes);
+            botonesLateral.add(botonClientes);
+            botonesLateral.add(botonCrearClientes);
+            botonesLateral.add(botonConsultarClientes);
             
             BotonTool botonInventario = new BotonTool("Inventario", titulo2, anchoLateral, altoBotones, false);
             botonInventario.setOnMousePressed(seccionClientes -> {
-                comportamientoBoton(botonInventario);
+                comportamientoMenuLateral(botonInventario);
             });
             
-            allBoton.add(botonInventario);
+            botonesLateral.add(botonInventario);
             
             BotonTool botonProveedores = new BotonTool("Proveedores", titulo2, anchoLateral, altoBotones, false);
             botonProveedores.setOnMousePressed(seccionClientes -> {
-                comportamientoBoton(botonProveedores);
+                comportamientoMenuLateral(botonProveedores);
             });
             
-            allBoton.add(botonProveedores);
+            botonesLateral.add(botonProveedores);
             
             BotonTool botonReportes = new BotonTool("Reportes", titulo2, anchoLateral, altoBotones, false);
             botonReportes.setOnMousePressed(seccionClientes -> {
-                comportamientoBoton(botonReportes);
+                comportamientoMenuLateral(botonReportes);
             });
             
-            allBoton.add(botonReportes);
+            botonesLateral.add(botonReportes);
             
             BotonTool botonVentas = new BotonTool("Ventas", titulo2, anchoLateral, altoBotones, false);
             botonVentas.setOnMousePressed(seccionClientes -> {
-                comportamientoBoton(botonVentas);
+                comportamientoMenuLateral(botonVentas);
                 cambiarContenidoVentas(anchoLateral + 50, altoSuperior + 50);
             });
             
-            allBoton.add(botonVentas);
+            botonesLateral.add(botonVentas);
             
-            BotonTool botonEmpleados = new BotonTool("Empleados", titulo2, anchoLateral, altoBotones, false);
-            botonEmpleados.setOnMousePressed(seccionClientes -> {
-                comportamientoBoton(botonEmpleados);
+            VBox paneTraslado = new VBox();
+            
+            BotonTool botonTraslado = new BotonTool("Traslado", titulo2, anchoLateral, altoBotones, true);
+            
+            BotonTool botonTrasladoMascota = new BotonTool(" - Mascotas", titulo2 - 5, anchoLateral, altoBotones - 20, false);
+            botonTrasladoMascota.setOnMousePressed(trasladoMascotas -> {
+                comportamientoMenuLateral(botonTrasladoMascota);
+            });
+            botonesLateral.add(botonTrasladoMascota);
+
+            
+            BotonTool botonTransladoMercaderia = new BotonTool(" - Mercaderia", titulo2 - 5, anchoLateral, altoBotones - 20, false);
+            botonTransladoMercaderia.setOnMousePressed(trasladoMercaderia -> {
+                comportamientoMenuLateral(botonTransladoMercaderia);
+            });
+            botonesLateral.add(botonTransladoMercaderia);
+
+            
+            botonTraslado.setOnMousePressed(seccionClientes -> {
+                comportamientoMenuLateral(botonTraslado);
+                if(paneTraslado.getChildren().contains(botonTransladoMercaderia))
+                    paneTraslado.getChildren().removeAll(botonTransladoMercaderia, botonTrasladoMascota);
+                else
+                    paneTraslado.getChildren().addAll(botonTransladoMercaderia, botonTrasladoMascota);
             });
             
-            allBoton.add(botonEmpleados);
+            paneTraslado.getChildren().add(botonTraslado);
+            
+            botonesLateral.add(botonTraslado);
             
             BotonTool botonFacturacion = new BotonTool("Facturacion", titulo2, anchoLateral, altoBotones, false);
             botonFacturacion.setOnMousePressed(seccionClientes -> {
-                comportamientoBoton(botonFacturacion);
+                comportamientoMenuLateral(botonFacturacion);
             });
             
-            allBoton.add(botonFacturacion);
+            botonesLateral.add(botonFacturacion);
             
-            menuLateral.getChildren().addAll(logo, paneCliente, botonInventario, botonProveedores, botonReportes, botonVentas, botonEmpleados, botonFacturacion);
+            menuLateral.getChildren().addAll(logo, paneCliente, botonInventario, botonProveedores, botonReportes, botonVentas, paneTraslado, botonFacturacion);
             
             paneCentral.setTranslateX(anchoLateral + 15);
             paneCentral.setTranslateY(altoSuperior + 25);
@@ -210,15 +220,11 @@ public class View_PersonalCaja extends Ventana{
         }
         
         private void cambiarContenidoAnadirUser(int reduccionx){
-            limpiarVentana();
+            List<Tool> toolUsados = new ArrayList<>();
             
-            colunma1.getChildren().add(pane1);
+            establecerFondoUnico(reduccionx);
             
-            paneCentral.getChildren().addAll(colunma1);
-            
-            pane1.setPrefWrapLength(anchoVentana - reduccionx);
-            
-            generarsecciones(pane1, Pos.CENTER_LEFT);
+            Pane mensajeError = new Pane();
             
             VBox paneIngresoDatos = new VBox(20);
             paneIngresoDatos.setTranslateX(20);
@@ -234,15 +240,26 @@ public class View_PersonalCaja extends Ventana{
             TextFieldTool textFieldApellido = new TextFieldTool("Ingrese apellido del nuevo cliente", "Apellido:", titulo2, Pos.CENTER_LEFT, mitadVentanaActiva, titulo2);
             primero.getChildren().addAll(textFieldNombre, textFieldApellido);
             
+            toolUsados.add(textFieldNombre);
+            toolUsados.add(textFieldApellido);
+            
             HBox segundo = new HBox(20);
             TextFieldTool textFieldDireccion = new TextFieldTool("Ingrese direccion del nuevo cliente", "Direccion:", titulo2, Pos.CENTER_LEFT, mitadVentanaActiva, titulo2);
             TextFieldTool textFieldtelefono = new TextFieldTool("Ingrese el telefono del nuevo cliente", "Telefono:", titulo2, Pos.CENTER_LEFT, mitadVentanaActiva, titulo2);
             segundo.getChildren().addAll(textFieldDireccion, textFieldtelefono);
             
+            toolUsados.add(textFieldDireccion);
+            toolUsados.add(textFieldtelefono);
+            
             HBox botones = new HBox(5);
-            BotonTool guardarCliente = new BotonTool("Guardar Cliente", titulo2, 200, titulo2 * 2, colorOscuro);
+            BotonTool guardarCliente = new BotonTool("Guardar Cliente", titulo2, 200, titulo2 * 2, ColorOscuro);
             guardarCliente.setOnMousePressed(guardarNuevoCliente -> {
-                System.out.println("Se guardara nuevo Cliente");
+                if(comprobarCampos(toolUsados))
+                    System.out.println("Valido");
+                else{
+                    mensajeError.getChildren().clear();
+                    mensajeError.getChildren().add(new BoxTextTool("Por favor ingrese los datos faltantes", Color.RED, titulo1, FontWeight.BOLD));
+                }
             });
             BotonTool cancelarCliente = new BotonTool("Cancelar", titulo2, 200, titulo2 * 2, colorClaro);
             cancelarCliente.setOnMousePressed(cancelarNuevoCliente -> {
@@ -250,7 +267,7 @@ public class View_PersonalCaja extends Ventana{
             });
             botones.getChildren().addAll(cancelarCliente, guardarCliente);
             
-            paneIngresoDatos.getChildren().addAll(cabecera, primero, segundo, botones);
+            paneIngresoDatos.getChildren().addAll(cabecera, primero, segundo, botones, mensajeError);
             pane1.getChildren().add(paneIngresoDatos);
         }
         
@@ -280,9 +297,9 @@ public class View_PersonalCaja extends Ventana{
             HBox ssecionBuscador = new HBox();
             
             TextFieldTool textFieldBuscador = new TextFieldTool("Buscar Producto" ,titulo2, Pos.CENTER, 3 * colunma1 / 5, 44);
-            BotonTool botonBuscar = new BotonTool("Buscar", titulo2, 130, 44, colorOscuro);
+            BotonTool botonBuscar = new BotonTool("Buscar", titulo2, 130, 44, ColorOscuro);
             botonBuscar.setOnMousePressed(buscarArticulo -> {
-                System.out.println("Buscando " + textFieldBuscador.getText());
+                System.out.println("Buscando " + ((String) textFieldBuscador.getValue()));
                 
                 BotonTool cerrar = new BotonTool("X", titulo2, titulo2 * 2, titulo2 * 2, Color.RED);
                 
@@ -299,9 +316,9 @@ public class View_PersonalCaja extends Ventana{
             HBox ssecionBuscadorCliente = new HBox();
             
             TextFieldTool textFieldBuscadorCliente = new TextFieldTool("Buscar Cliente" ,titulo2, Pos.CENTER, 3 * colunma2 / 6, 40);
-            BotonTool botonBuscarCliente = new BotonTool("Buscar", titulo2 - 1, 90, 40, colorOscuro);
+            BotonTool botonBuscarCliente = new BotonTool("Buscar", titulo2 - 1, 90, 40, ColorOscuro);
             botonBuscarCliente.setOnMousePressed(buscarCliente -> {
-                System.out.println("Buscando Cliente" + textFieldBuscadorCliente.getText());
+                System.out.println("Buscando Cliente" + ((String) textFieldBuscadorCliente.getValue()));
             });
             
             List<String> lista = new ArrayList<>();
@@ -325,19 +342,64 @@ public class View_PersonalCaja extends Ventana{
             pane4.getChildren().add(tablaPago);
         }
         
-        private void alldesmarcar(){
-            ListIterator<BotonTool> it = allBoton.listIterator();
+        private void cambiarContenidoTrasladoMascotas(int reduccionx){
+            List<Tool> toolUsados = new ArrayList<>();
             
-            while(it.hasNext()){
-                BotonTool temp = it.next();
-                temp.desmarcar();
-            }
+            establecerFondoUnico(reduccionx);
+            
+            Pane mensajeError = new Pane();
+            
+            VBox paneIngresoDatos = new VBox(20);
+            paneIngresoDatos.setTranslateX(20);
+            
+            HBox cabecera = new HBox(5);
+            BoxTextTool cabeceraTexto = new BoxTextTool("Translado Mascotas", Color.BLACK, titulo1, FontWeight.BOLD);
+            cabecera.getChildren().add(cabeceraTexto);
+            
+            int mitadVentanaActiva = (anchoVentana - reduccionx) / 2 - 25;
+            
+            HBox primero = new HBox(20);
+            TextFieldTool textFieldNombre = new TextFieldTool("Ingrese nombre del nuevo cliente", "Nombre:", titulo2, Pos.CENTER_LEFT, mitadVentanaActiva, titulo2);
+            TextFieldTool textFieldApellido = new TextFieldTool("Ingrese apellido del nuevo cliente", "Apellido:", titulo2, Pos.CENTER_LEFT, mitadVentanaActiva, titulo2);
+            primero.getChildren().addAll(textFieldNombre, textFieldApellido);
+            
+            toolUsados.add(textFieldNombre);
+            toolUsados.add(textFieldApellido);
+            
+            HBox segundo = new HBox(20);
+            TextFieldTool textFieldDireccion = new TextFieldTool("Ingrese direccion del nuevo cliente", "Direccion:", titulo2, Pos.CENTER_LEFT, mitadVentanaActiva, titulo2);
+            TextFieldTool textFieldtelefono = new TextFieldTool("Ingrese el telefono del nuevo cliente", "Telefono:", titulo2, Pos.CENTER_LEFT, mitadVentanaActiva, titulo2);
+            segundo.getChildren().addAll(textFieldDireccion, textFieldtelefono);
+            
+            toolUsados.add(textFieldDireccion);
+            toolUsados.add(textFieldtelefono);
+            
+            HBox botones = new HBox(5);
+            BotonTool guardarCliente = new BotonTool("Guardar Cliente", titulo2, 200, titulo2 * 2, ColorOscuro);
+            guardarCliente.setOnMousePressed(guardarNuevoCliente -> {
+                if(comprobarCampos(toolUsados))
+                    System.out.println("Valido");
+                else{
+                    mensajeError.getChildren().clear();
+                    mensajeError.getChildren().add(new BoxTextTool("Por favor ingrese los datos faltantes", Color.RED, titulo1, FontWeight.BOLD));
+                }
+            });
+            BotonTool cancelarCliente = new BotonTool("Cancelar", titulo2, 200, titulo2 * 2, colorClaro);
+            cancelarCliente.setOnMousePressed(cancelarNuevoCliente -> {
+                limpiarVentana();
+            });
+            botones.getChildren().addAll(cancelarCliente, guardarCliente);
+            
+            paneIngresoDatos.getChildren().addAll(cabecera, primero, segundo, botones, mensajeError);
+            pane1.getChildren().add(paneIngresoDatos);
         }
         
-        private void comportamientoBoton(BotonTool boton){
-            alldesmarcar();
-                if(!boton.isPresionado())
-                    boton.marcar();
+        private void establecerFondoUnico(int reduccionx){
+            limpiarVentana();
+            colunma1.getChildren().add(pane1);
+            paneCentral.getChildren().addAll(colunma1);
+            pane1.setPrefWrapLength(anchoVentana - reduccionx);
+            generarsecciones(pane1, Pos.CENTER_LEFT);
         }
     }
 }

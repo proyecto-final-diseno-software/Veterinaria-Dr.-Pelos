@@ -17,7 +17,7 @@ import javafx.scene.text.Text;
  *
  * @author ADMIN
  */
-public class TextFieldTool extends StackPane{
+public class TextFieldTool extends StackPane implements Tool{
     private TextField ingresoTexto;
     private VBox paneCentral;
     
@@ -62,20 +62,17 @@ public class TextFieldTool extends StackPane{
         return true;
     }
     
-    public boolean isEmpty() {
-        if(ingresoTexto.getText().isEmpty()){
-            //cuadroFondo.setOpacity(0.2);
-            return false;
-        }
-        //cuadroFondo.setOpacity(0);
-        return true;
-    }
-    
-    public String getText() {
-        return ingresoTexto.getText();
-    }
-    
     public void limpiar(){
         ingresoTexto.clear();
+    }
+
+    @Override
+    public boolean isEmplyTool() {
+        return ingresoTexto.getText().isEmpty();
+    }
+
+    @Override
+    public Object getValue() {
+        return ingresoTexto.getText();
     }
 }

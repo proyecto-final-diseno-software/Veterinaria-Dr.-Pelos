@@ -7,6 +7,7 @@ package view.util;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -17,11 +18,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import modelo.Producto;
 import view.tool.BotonTool;
 import view.tool.ComBoxTool;
 import view.tool.TableTool;
 import view.tool.TextFieldTool;
+import view.tool.Tool;
 
 /**
  *
@@ -36,6 +37,8 @@ public class View_Busqueda extends Parent{
     private TableTool tablaProductos;
     
     public View_Busqueda(int ancho, int alto, int titulo2, BotonTool cerrar){
+        List<Tool> toolsUsado = new ArrayList<>();
+        
         filas = new VBox(5);
         filas.setAlignment(Pos.TOP_LEFT);
         filas.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), new Insets(-15))));
@@ -49,21 +52,25 @@ public class View_Busqueda extends Parent{
         HBox cabecera = new HBox(5);
         
         TextFieldTool busquedaNombre = new TextFieldTool("Buscar por nombre", "Nombre:", titulo2, Pos.CENTER_LEFT, anchoField, titulo2);
+        toolsUsado.add(busquedaNombre);
         
         List<String> listaCategorias = new ArrayList<>();
         listaCategorias.add("Opcion 1");
         ComBoxTool<String> comboCategorias = new ComBoxTool(anchoField, "Categoria:" , listaCategorias, titulo2);
+        toolsUsado.add(comboCategorias);
         
         this.cerrar = cerrar;
         cerrar.setTranslateX(anchoField - 130);
         cerrar.setTranslateY(-35);
         
         TextFieldTool busquedaDescripcion = new TextFieldTool("Buscar por descripcion", "Descripcion:", titulo2, Pos.CENTER_LEFT, anchoField, titulo2);
+        toolsUsado.add(busquedaDescripcion);
         
         List<String> listaTipo = new ArrayList<>();
         listaTipo.add("Servicio");
         listaTipo.add("Producto");
         ComBoxTool<String> comboTipo = new ComBoxTool(anchoField, "Tipo:" , listaTipo, titulo2);
+        toolsUsado.add(comboTipo);
         
         BotonTool BotonBuscarProducto = new BotonTool("Buscar", titulo2, 100, titulo2 * 2 + 3, Color.GAINSBORO);
         BotonBuscarProducto.setTranslateY(16);
@@ -86,7 +93,7 @@ public class View_Busqueda extends Parent{
         camposServicios.add("");
         
         BotonBuscarProducto.setOnMousePressed(buscarProducto -> {
-            if(comboTipo.getValue() != null){
+            if(comprobarCampos(toolsUsado)){
                 if(((String) comboTipo.getValue()).equals("Producto"))
                     filtarProducto(ancho, camposProductos);
                 else
@@ -105,7 +112,7 @@ public class View_Busqueda extends Parent{
     private void filtarProducto(int ancho, List<String> camposProductos){
         paneTabla.getChildren().clear();
                 
-        tablaProductos = new TableTool(ancho, camposProductos, "No hay articulos en el carrito");
+        tablaProductos = new TableTool(ancho, camposProductos, "No hay productos con esta descripcion");
         
         paneTabla.getChildren().add(tablaProductos);
     }
@@ -116,5 +123,16 @@ public class View_Busqueda extends Parent{
         tablaProductos = new TableTool(ancho, camposServicios, "No hay servicios con esta descripcion");
         
         paneTabla.getChildren().add(tablaProductos);
+    }
+    
+    private boolean comprobarCampos(List<Tool> toolUsados){
+        ListIterator<Tool> it = toolUsados.listIterator();
+        
+        while(it.hasNext()){
+            if(it.next().isEmplyTool())
+                return false;
+        }
+        
+        return true;
     }
 }

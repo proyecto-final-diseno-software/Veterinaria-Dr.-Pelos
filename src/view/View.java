@@ -27,14 +27,6 @@ public class View extends Application{
     public void start(Stage theStage) throws Exception{
         View_ssesion PaginaPrincipal = new View_ssesion();
         PaginaPrincipal.crear_ventana(theStage, 1280, 720);
-        
-        //Stage VentanaPaginaPuesto = new Stage();
-        //PaginaPuesto PaginaPuesto = new PaginaPuesto();
-        //PaginaPuesto.controladorPaginaPrincipal(VentanaPaginaPuesto);
-        
-        //Stage VentanaPaginaRegistro = new Stage();
-        //PaginaRegistro PaginaRegistro = new PaginaRegistro();
-        //PaginaRegistro.controladorPaginaPrincipal(VentanaPaginaRegistro);
     }
     
 }
