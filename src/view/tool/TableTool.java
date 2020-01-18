@@ -13,8 +13,6 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
-import modelo.Producto;
-import modelo.Servicio;
 
 /**
  *
@@ -124,7 +122,7 @@ public class TableTool extends StackPane implements Tool{
                 pane.getChildren().add(nuevoCuadro);
             }     
             
-            pane.setAlignment(Pos.CENTER);
+            pane.setAlignment(Pos.CENTER_LEFT);
             
             if(boton != null)
                 pane.getChildren().add(boton);
@@ -138,10 +136,6 @@ public class TableTool extends StackPane implements Tool{
             panelProductos.getChildren().clear();
         
         panelProductos.getChildren().add(new Fila(listData, boton));
-    }
-    
-    public void anadirItemCarrito(){
-        
     }
     
     public void limpiarContenido(){

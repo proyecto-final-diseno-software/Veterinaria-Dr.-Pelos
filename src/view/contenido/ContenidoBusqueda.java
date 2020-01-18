@@ -20,6 +20,9 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
+import modelo.Detalle_Venta;
+import modelo.Detalle_VentaProducto;
+import modelo.Detalle_VentaServicio;
 import modelo.Producto;
 import modelo.Servicio;
 import view.tool.BotonTool;
@@ -47,7 +50,7 @@ public class ContenidoBusqueda extends Parent{
     
     private List<Tool> toolsUsado;
     
-    public ContenidoBusqueda(int ancho, int alto, int titulo2, BotonTool cerrar, List<Producto> listProducto, List<Servicio> ListServicios){
+    public ContenidoBusqueda(int ancho, int alto, int titulo2, BotonTool cerrar, List<Detalle_Venta> itemsCarrito){
         this.titulo2 = titulo2;
         
         ctrCaja = new Ctr_Personal_Caja();
@@ -110,9 +113,9 @@ public class ContenidoBusqueda extends Parent{
         BotonBuscarProducto.setOnMousePressed(buscarProducto -> {
             if(comprobarCampos(toolsUsado)){
                 if(((String) comboTipo.getValue()).equals("Producto"))
-                    insertarProductosBusqueda(ancho, camposProductos, listProducto);
+                    insertarProductosBusqueda(ancho, camposProductos, itemsCarrito);
                 else
-                    insertarServiciosBusqueda(ancho, camposServicios, ListServicios);
+                    insertarServiciosBusqueda(ancho, camposServicios, itemsCarrito);
             }
         });
         
@@ -203,10 +206,10 @@ public class ContenidoBusqueda extends Parent{
         paneTabla.getChildren().add(tablaProductos);
     }
     
-    private void insertarProductosBusqueda(int ancho, List<String> camposProductos, List<Producto> listProducto){
+    private void insertarProductosBusqueda(int ancho, List<String> camposProductos, List<Detalle_Venta> itemsCarrito){
         paneTabla.getChildren().clear();
                 
-        tablaProductos = new TableTool(ancho, camposProductos, "No hay productos con esta descripcion",titulo2);
+        tablaProductos = new TableTool(ancho, camposProductos, "No hay productos con esta descripcion", titulo2);
         
         List<Producto> listaProductos = ctrCaja.filtarProductos(toolsUsado);
         
@@ -217,7 +220,8 @@ public class ContenidoBusqueda extends Parent{
             
             BotonTool botonAnadirCarrito = new BotonTool("Añadir", titulo2, 100, titulo2 + 5, Color.GREEN);
             botonAnadirCarrito.setOnMousePressed(anadirCarrito -> {
-                listProducto.add(pro);
+                Detalle_Venta detalle = new Detalle_VentaProducto(1, pro);
+                itemsCarrito.add(detalle);
             });
             
             tablaProductos.anadirItem(pro.retornarAllData(), botonAnadirCarrito);
@@ -226,7 +230,7 @@ public class ContenidoBusqueda extends Parent{
         paneTabla.getChildren().add(tablaProductos);
     }
     
-    private void insertarServiciosBusqueda(int ancho, List<String> camposServicios, List<Servicio> listServicios){
+    private void insertarServiciosBusqueda(int ancho, List<String> camposServicios, List<Detalle_Venta> itemsCarrito){
         paneTabla.getChildren().clear();
                 
         tablaProductos = new TableTool(ancho, camposServicios, "No hay productos con esta descripcion",titulo2);
@@ -240,7 +244,8 @@ public class ContenidoBusqueda extends Parent{
             
             BotonTool botonAnadirCarrito = new BotonTool("Añadir", titulo2, 100, titulo2 + 5, Color.GREEN);
             botonAnadirCarrito.setOnMousePressed(anadirCarrito -> {
-                listServicios.add(ser);
+                Detalle_Venta detalle = new Detalle_VentaServicio(1, ser);
+                itemsCarrito.add(detalle);
             });
             
             tablaProductos.anadirItem(ser.retornarAllData(), botonAnadirCarrito);

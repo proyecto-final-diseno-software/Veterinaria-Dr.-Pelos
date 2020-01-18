@@ -21,4 +21,8 @@ public class Detalle_VentaProducto extends Detalle_Venta{
     public double calcularPrecio(){
         return producto.getPrecioUnitario()*cantidad;
     }
+
+    public Producto getProducto() {
+        return producto;
+    }
 }

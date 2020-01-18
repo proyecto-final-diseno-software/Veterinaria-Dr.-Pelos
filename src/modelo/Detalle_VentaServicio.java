@@ -22,5 +22,8 @@ public class Detalle_VentaServicio extends Detalle_Venta{
     public double calcularPrecio() {
         return servicio.getPrecio() * cantidad;
     }
-    
+
+    public Servicio getServicio() {
+        return servicio;
+    }
 }

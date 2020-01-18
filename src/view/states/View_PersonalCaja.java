@@ -26,6 +26,9 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import modelo.Cliente;
+import modelo.Detalle_Venta;
+import modelo.Detalle_VentaProducto;
+import modelo.Detalle_VentaServicio;
 import modelo.Producto;
 import modelo.Servicio;
 import view.tool.BotonTool;
@@ -253,8 +256,7 @@ public class View_PersonalCaja extends Ventana{
         }
         
         private void cambiarContenidoVentas(int reduccionx, int reduccionY){
-            List<Producto> productoCarrito = new ArrayList<>();
-            List<Servicio> serviciosCarrito = new ArrayList<>();
+            List<Detalle_Venta> itemsCarrito = new ArrayList<>();
             
             limpiarVentana();
             
@@ -287,11 +289,11 @@ public class View_PersonalCaja extends Ventana{
             botonBuscar.setOnMousePressed(buscarArticulo -> {
                 BotonTool cerrar = new BotonTool("X", titulo2, titulo2 * 2, titulo2 * 2, Color.RED);
                 
-                ContenidoBusqueda ventana_busqueda = new ContenidoBusqueda(anchoVentana - reduccionx - 10, altoVentana - reduccionY - 10, titulo2, cerrar, productoCarrito, serviciosCarrito);
+                ContenidoBusqueda ventana_busqueda = new ContenidoBusqueda(anchoVentana - reduccionx - 10, altoVentana - reduccionY - 10, titulo2, cerrar, itemsCarrito);
                 
                 cerrar.setOnMousePressed(cerrar_ventana -> {
                     getChildren().remove(ventana_busqueda);
-                    insertarItems(productoCarrito, serviciosCarrito, tablaRegistro);
+                    insertarItems(itemsCarrito, tablaRegistro);
                 });
                 
                 getChildren().add(ventana_busqueda);
@@ -320,34 +322,27 @@ public class View_PersonalCaja extends Ventana{
             pane4.getChildren().add(tablaPago);
         }
         
-        private void insertarItems(List<Producto> listaProductos, List<Servicio> listaServicios, TableTool table){
+        private void insertarItems(List<Detalle_Venta> itemsCarrito, TableTool table){
             table.limpiarContenido();
             
-            ListIterator<Producto> it = listaProductos.listIterator();
+            ListIterator<Detalle_Venta> it = itemsCarrito.listIterator();
 
             while(it.hasNext()){
-                Producto pro = it.next();
+                Detalle_Venta det = it.next();
                 
                 List<String> dataItem = new ArrayList<>();
                 
-                dataItem.add(pro.getNombre());
-                dataItem.add(Double.toString(pro.getPrecioUnitario()));
-                dataItem.add("1");
-                dataItem.add("1");
-                
-                table.anadirItem(dataItem, null);
-            }
-            
-            ListIterator<Servicio> it2 = listaServicios.listIterator();
-
-            while(it2.hasNext()){
-                Servicio pro = it2.next();
-                List<String> dataItem = new ArrayList<>();
-                
-                dataItem.add(pro.getNombre());
-                dataItem.add(Long.toString(pro.getPrecio()));
-                dataItem.add("1");
-                dataItem.add("1");
+                if(det instanceof Detalle_VentaProducto ){
+                    dataItem.add(((Detalle_VentaProducto) det).getProducto().getNombre());
+                    dataItem.add(Double.toString(((Detalle_VentaProducto) det).getProducto().getPrecioUnitario()));
+                    dataItem.add(Integer.toString(det.getCantidad()));
+                    dataItem.add(Double.toString(((Detalle_VentaProducto) det).calcularPrecio()));
+                } else if(det instanceof Detalle_VentaServicio){
+                    dataItem.add(((Detalle_VentaServicio) det).getServicio().getNombre());
+                    dataItem.add(Double.toString(((Detalle_VentaServicio) det).getServicio().getPrecio()));
+                    dataItem.add(Integer.toString(det.getCantidad()));
+                    dataItem.add(Double.toString(((Detalle_VentaServicio) det).calcularPrecio()));
+                }
                 
                 table.anadirItem(dataItem, null);
             }
