@@ -9,38 +9,16 @@ package modelo;
  *
  * @author paula
  */
-public class Detalle_VentaProducto {
-    private int cantidad;
-    private int id_detalle_ventaProducto;
+public class Detalle_VentaProducto extends Detalle_Venta{
     private final Producto producto;
 
     public Detalle_VentaProducto(int cantidad, Producto producto) {
-        this.cantidad = cantidad;
+        super(cantidad);
         this.producto = producto;
     }
     
+    @Override
     public double calcularPrecio(){
         return producto.getPrecioUnitario()*cantidad;
     }
-
-    public int getCantidad() {
-        return cantidad;
-    }
-
-    public void setCantidad(int cantidad) {
-        this.cantidad = cantidad;
-    }
-
-    public int getId_detalle_ventaProducto() {
-        return id_detalle_ventaProducto;
-    }
-
-    public void setId_detalle_ventaProducto(int id_detalle_ventaProducto) {
-        this.id_detalle_ventaProducto = id_detalle_ventaProducto;
-    }
-    
-    
-    
-    
-    
 }

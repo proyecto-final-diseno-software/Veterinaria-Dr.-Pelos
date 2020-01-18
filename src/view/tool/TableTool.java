@@ -13,6 +13,8 @@ import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
+import modelo.Producto;
+import modelo.Servicio;
 
 /**
  *
@@ -24,25 +26,26 @@ public class TableTool extends StackPane implements Tool{
     private int ancho;
     
     private final Color colorCabecera = Color.rgb(249, 249, 249);
-    private final Color colorElementos = Color.rgb(240, 240, 240);
+    private final Color colorElementos = Color.rgb(253, 253, 253);
     
     private int anchoColumna;
     private int altura;
-    private int tamanoLetras;
+    
+    private int titulo3;
     
     private BoxTextTool mensaje;
     
-    public TableTool(int ancho, List<String> lista, String mensajeCentral){
-       panelCentral = new VBox();
+    public TableTool(int ancho, List<String> lista, String mensajeCentral, int titulo3){
+        panelCentral = new VBox();
        
        panelProductos = new VBox(2);
        
        this.ancho = ancho;
        this.anchoColumna = ancho / lista.size();
        this.altura = 35;
-       this.tamanoLetras = 13;
+       this.titulo3 = titulo3;
        
-       Fila cabecera = new Fila(lista , anchoColumna, altura, colorCabecera, Color.rgb(200, 200, 200),Color.BLACK, tamanoLetras);
+       Fila cabecera = new Fila(lista , anchoColumna, altura, colorCabecera, Color.rgb(200, 200, 200),Color.BLACK);
        
        mensaje = new BoxTextTool(mensajeCentral, anchoColumna, 75, Color.WHITE, null, Color.rgb(234, 200, 65), 30, FontWeight.NORMAL, Pos.CENTER);
        
@@ -53,21 +56,21 @@ public class TableTool extends StackPane implements Tool{
        getChildren().add(panelCentral);
     }
     
-    public TableTool(int ancho){
+    public TableTool(int ancho, int titulo1){
        panelCentral = new VBox();
        
        this.ancho = ancho;
        this.anchoColumna = ancho / 2 - 15;
        this.altura = 55;
-       this.tamanoLetras = 15;
+       this.titulo3 = titulo1;
        
-       Fila fila1 = new Fila("Descuento a todos los\nproductos %:", "Establecer Descuento", anchoColumna, altura, Color.WHITE, Color.RED, tamanoLetras);
+       Fila fila1 = new Fila("Descuento a todos los\nproductos %:", "Establecer Descuento", anchoColumna, altura, Color.WHITE, Color.RED);
        
-       Fila fila2 = new Fila("Monto fijo de descuento:", "Establecer Descuento",anchoColumna, altura, Color.WHITE, Color.RED,tamanoLetras);
+       Fila fila2 = new Fila("Monto fijo de descuento:", "Establecer Descuento",anchoColumna, altura, Color.WHITE, Color.RED);
        
-       Fila fila3 = new Fila("Subtotal:", "$0.00", anchoColumna, altura, Color.rgb(241, 255, 236), Color.BLACK ,tamanoLetras);
+       Fila fila3 = new Fila("Subtotal:", "$0.00", anchoColumna, altura, Color.rgb(241, 255, 236), Color.BLACK );
        
-       Fila fila4 = new Fila("Total:", "$0.00", anchoColumna, altura, Color.WHITE, Color.BLACK,tamanoLetras * 2);
+       Fila fila4 = new Fila("Total:", "$0.00", anchoColumna, altura, Color.WHITE, Color.BLACK);
        
        panelCentral.getChildren().addAll(fila1, fila2, fila3, fila4);
        
@@ -87,33 +90,61 @@ public class TableTool extends StackPane implements Tool{
     private class Fila extends StackPane{
         private HBox pane;
         
-        public Fila(List<String> elementos, int ancho,int altura, Color colorFondo,Color ColorBordes, Color colorLetras ,int tamanoLetras){
+        public Fila(List<String> elementos, int ancho,int altura, Color colorFondo,Color ColorBordes, Color colorLetras){
             pane = new HBox();
             
             ListIterator<String> it = elementos.listIterator();
             
             while(it.hasNext()){
-                BoxTextTool nuevoCuadro = new BoxTextTool( it.next(), ancho, altura,  colorFondo, ColorBordes, colorLetras, tamanoLetras, FontWeight.NORMAL, Pos.CENTER);
+                BoxTextTool nuevoCuadro = new BoxTextTool( it.next(), ancho, altura,  colorFondo, ColorBordes, colorLetras, titulo3, FontWeight.NORMAL, Pos.CENTER);
                 pane.getChildren().add(nuevoCuadro);
             }
             
             getChildren().add(pane);
         }
         
-        public Fila(String dato, String elemento,int ancho, int altura, Color colorFondo, Color colorLetras ,int tamanoLetras){
+        public Fila(String dato, String elemento,int ancho, int altura, Color colorFondo, Color colorLetras){
             pane = new HBox();
             
-            BoxTextTool cuadroDato = new BoxTextTool(dato, ancho, altura,  colorFondo, null, Color.BLACK, tamanoLetras, FontWeight.NORMAL, Pos.CENTER_LEFT);
-            BoxTextTool cuadroElemento = new BoxTextTool(elemento, ancho, altura,  colorFondo, null, colorLetras, tamanoLetras, FontWeight.NORMAL, Pos.CENTER_RIGHT);
+            BoxTextTool cuadroDato = new BoxTextTool(dato, ancho, altura,  colorFondo, null, Color.BLACK, titulo3, FontWeight.NORMAL, Pos.CENTER_LEFT);
+            BoxTextTool cuadroElemento = new BoxTextTool(elemento, ancho, altura,  colorFondo, null, colorLetras, titulo3, FontWeight.NORMAL, Pos.CENTER_RIGHT);
             
             pane.getChildren().addAll(cuadroDato, cuadroElemento);
             
             getChildren().add(pane);
         }
+        
+        public Fila(List<String> elementos, BotonTool boton){
+            pane = new HBox();
+            
+            ListIterator<String> it = elementos.listIterator();
+            
+            while(it.hasNext()){
+                BoxTextTool nuevoCuadro = new BoxTextTool( it.next(), anchoColumna + 1, altura,  colorElementos, null, Color.BLACK, titulo3, FontWeight.NORMAL, Pos.CENTER);
+                pane.getChildren().add(nuevoCuadro);
+            }     
+            
+            pane.setAlignment(Pos.CENTER);
+            
+            if(boton != null)
+                pane.getChildren().add(boton);
+            
+            getChildren().add(pane);
+        }
     }
     
-    public void anadirProducto(BotonTool boton){
+    public void anadirItem(List<String> listData, BotonTool boton){
         if(panelProductos.getChildren().contains(mensaje))
             panelProductos.getChildren().clear();
+        
+        panelProductos.getChildren().add(new Fila(listData, boton));
+    }
+    
+    public void anadirItemCarrito(){
+        
+    }
+    
+    public void limpiarContenido(){
+        panelProductos.getChildren().clear();
     }
 }

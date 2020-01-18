@@ -8,6 +8,7 @@ package view.states;
 import controladores.Ctr_Personal_Caja;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -25,6 +26,8 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import modelo.Cliente;
+import modelo.Producto;
+import modelo.Servicio;
 import view.tool.BotonTool;
 import view.tool.BoxTextTool;
 import view.tool.TextFieldTool;
@@ -224,14 +227,15 @@ public class View_PersonalCaja extends Ventana{
             HBox botonesPane = new HBox(5);
             BotonTool guardarCliente = new BotonTool("Guardar Cliente", titulo2, 200, titulo2 * 2, ColorOscuro);
             guardarCliente.setOnMousePressed(guardarNuevoCliente -> {
+                mensajeError.getChildren().clear();
                 if(comprobarCampos(toolUsados)){
                     Cliente nuevoCliente = contolCaja.createCliente(toolUsados);
                     if(contolCaja.addClienteDataBase(nuevoCliente))
                         cambiarPefilCliente(reduccionx, nuevoCliente);
-                } else{
-                    mensajeError.getChildren().clear();
-                    mensajeError.getChildren().add(new BoxTextTool("Por favor ingrese los datos faltantes", Color.RED, titulo1, FontWeight.BOLD));
-                }
+                    else
+                        mensajeError.getChildren().add(new BoxTextTool("Hubo un error al crear el usuario\nintento mas tarde.", Color.RED, titulo3, FontWeight.BOLD));
+                } else
+                    mensajeError.getChildren().add(new BoxTextTool("Por favor ingrese los datos faltantes.", Color.RED, titulo3, FontWeight.BOLD));
             });
             BotonTool cancelarCliente = new BotonTool("Cancelar", titulo2, 200, titulo2 * 2, colorClaro);
             cancelarCliente.setOnMousePressed(cancelarNuevoCliente -> limpiarVentana());
@@ -249,6 +253,9 @@ public class View_PersonalCaja extends Ventana{
         }
         
         private void cambiarContenidoVentas(int reduccionx, int reduccionY){
+            List<Producto> productoCarrito = new ArrayList<>();
+            List<Servicio> serviciosCarrito = new ArrayList<>();
+            
             limpiarVentana();
             
             colunma1.getChildren().addAll(pane1, pane2);
@@ -269,18 +276,23 @@ public class View_PersonalCaja extends Ventana{
             generarsecciones(pane3, Pos.CENTER);
             generarsecciones(pane4, Pos.CENTER);
             
+            List<String> lista = new ArrayList<>();
+            lista.add("Nombre"); lista.add("Precio"); lista.add("Cantidad"); lista.add("Total");
+            TableTool tablaRegistro = new TableTool(anchoColunma1, lista, "No hay articulos en el carrito", titulo3);
+            
             HBox ssecionBuscador = new HBox();
             
             TextFieldTool textFieldBuscador = new TextFieldTool("Buscar Producto" ,titulo2, Pos.CENTER, 3 * anchoColunma1 / 5, 44);
             BotonTool botonBuscar = new BotonTool("Buscar", titulo2, 130, 44, ColorOscuro);
             botonBuscar.setOnMousePressed(buscarArticulo -> {
-                System.out.println("Buscando " + ((String) textFieldBuscador.getValue()));
-                
                 BotonTool cerrar = new BotonTool("X", titulo2, titulo2 * 2, titulo2 * 2, Color.RED);
                 
-                ContenidoBusqueda ventana_busqueda = new ContenidoBusqueda(anchoVentana - reduccionx - 10, altoVentana - reduccionY - 10, titulo2,cerrar);
+                ContenidoBusqueda ventana_busqueda = new ContenidoBusqueda(anchoVentana - reduccionx - 10, altoVentana - reduccionY - 10, titulo2, cerrar, productoCarrito, serviciosCarrito);
                 
-                cerrar.setOnMousePressed(cerrar_vetana -> getChildren().remove(ventana_busqueda));
+                cerrar.setOnMousePressed(cerrar_ventana -> {
+                    getChildren().remove(ventana_busqueda);
+                    insertarItems(productoCarrito, serviciosCarrito, tablaRegistro);
+                });
                 
                 getChildren().add(ventana_busqueda);
                 
@@ -296,22 +308,50 @@ public class View_PersonalCaja extends Ventana{
                 System.out.println("Buscando Cliente" + ((String) textFieldBuscadorCliente.getValue()));
             });
             
-            List<String> lista = new ArrayList<>();
-            lista.add("Nombre"); lista.add("Precio"); lista.add("Cantidad"); lista.add("Descuento"); lista.add("Total");
-            
-            TableTool tablaRegistro = new TableTool(anchoColunma1, lista, "No hay articulos en el carrito");
-            
             ssecionBuscador.getChildren().addAll(textFieldBuscador, botonBuscar);
             
             ssecionBuscadorCliente.getChildren().addAll(textFieldBuscadorCliente, botonBuscarCliente);
             
-            TableTool tablaPago = new TableTool(anchoColunma2);
+            TableTool tablaPago = new TableTool(anchoColunma2, titulo3);
             
             pane1.getChildren().add(ssecionBuscador);
             pane2.getChildren().add(tablaRegistro);
             pane3.getChildren().add(ssecionBuscadorCliente);
             pane4.getChildren().add(tablaPago);
         }
+        
+        private void insertarItems(List<Producto> listaProductos, List<Servicio> listaServicios, TableTool table){
+            table.limpiarContenido();
+            
+            ListIterator<Producto> it = listaProductos.listIterator();
+
+            while(it.hasNext()){
+                Producto pro = it.next();
+                
+                List<String> dataItem = new ArrayList<>();
+                
+                dataItem.add(pro.getNombre());
+                dataItem.add(Double.toString(pro.getPrecioUnitario()));
+                dataItem.add("1");
+                dataItem.add("1");
+                
+                table.anadirItem(dataItem, null);
+            }
+            
+            ListIterator<Servicio> it2 = listaServicios.listIterator();
+
+            while(it2.hasNext()){
+                Servicio pro = it2.next();
+                List<String> dataItem = new ArrayList<>();
+                
+                dataItem.add(pro.getNombre());
+                dataItem.add(Long.toString(pro.getPrecio()));
+                dataItem.add("1");
+                dataItem.add("1");
+                
+                table.anadirItem(dataItem, null);
+            }
+    }
         
         private void cambiarContenidoTraslado(int reduccionx, String tipo, String cabeceraField ){
             establecerFondoUnico(reduccionx, Pos.CENTER_LEFT);

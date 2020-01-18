@@ -74,7 +74,7 @@ public class ContenidoTraslado extends Parent{
             datosMascotas.add("Estado");
             datosMascotas.add("");
             
-            TableTool tableMascotas = new TableTool(ancho, datosMascotas, "No hay mascotas disponibles");
+            TableTool tableMascotas = new TableTool(ancho, datosMascotas, "No hay mascotas disponibles",titulo2);
             
             BotonTool botonRecogerMascota = new BotonTool("Recoger Mascota", titulo2, 200, titulo2 * 2, ColorOscuro);
             botonRecogerMascota.setOnMousePressed(recogerMascota -> {

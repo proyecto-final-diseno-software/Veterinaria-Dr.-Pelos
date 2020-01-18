@@ -6,6 +6,7 @@
 package modelo;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  *
@@ -16,19 +17,19 @@ public class Servicio {
     private String nombre;
     private String descripcion;
     private ArrayList<String> colaboraciones;
-    private long precio;
+    private long precio_unitario;
 
-    public Servicio(int id_servicio, String nombre, String descripcion, ArrayList<String> colaboraciones, long precio) {
+    public Servicio(int id_servicio, String nombre, String descripcion, long precio_unitario) {
         this.id_servicio = id_servicio;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.colaboraciones = colaboraciones;
-        this.precio = precio;
+        this.colaboraciones = new ArrayList<>();
+        this.precio_unitario = precio_unitario;
     }
     
     public boolean cambiarPrecio(long precio){
         if(precio>0){
-            this.precio = precio;
+            this.precio_unitario = precio;
             return true;
         }
         return false;
@@ -77,16 +78,21 @@ public class Servicio {
     }
 
     public long getPrecio() {
-        return precio;
+        return precio_unitario;
     }
 
     public void setPrecio(long precio) {
-        this.precio = precio;
+        this.precio_unitario = precio;
     }
 
-    
-    
-    
-    
-    
+    public List<String> retornarAllData(){
+        List<String> lista = new ArrayList<>();
+        
+        lista.add(Integer.toString(id_servicio));
+        lista.add(nombre);
+        lista.add(Long.toString(precio_unitario));
+        lista.add(descripcion);
+        
+        return lista;
+    }
 }

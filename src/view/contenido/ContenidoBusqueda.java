@@ -5,6 +5,7 @@
  */
 package view.contenido;
 
+import controladores.Ctr_Personal_Caja;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -19,6 +20,8 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
+import modelo.Producto;
+import modelo.Servicio;
 import view.tool.BotonTool;
 import view.tool.BoxTextTool;
 import view.tool.ComBoxTool;
@@ -38,8 +41,18 @@ public class ContenidoBusqueda extends Parent{
     
     private TableTool tablaProductos;
     
-    public ContenidoBusqueda(int ancho, int alto, int titulo2, BotonTool cerrar){
-        List<Tool> toolsUsado = new ArrayList<>();
+    private Ctr_Personal_Caja ctrCaja;
+    
+    private int titulo2;
+    
+    private List<Tool> toolsUsado;
+    
+    public ContenidoBusqueda(int ancho, int alto, int titulo2, BotonTool cerrar, List<Producto> listProducto, List<Servicio> ListServicios){
+        this.titulo2 = titulo2;
+        
+        ctrCaja = new Ctr_Personal_Caja();
+        
+        toolsUsado = new ArrayList<>();
         
         filas = new VBox(5);
         filas.setAlignment(Pos.TOP_LEFT);
@@ -82,28 +95,28 @@ public class ContenidoBusqueda extends Parent{
         List<String> camposProductos = new ArrayList<>();
         camposProductos.add("Codigo");
         camposProductos.add("Nombre");
-        camposProductos.add("Descripcion");
         camposProductos.add("Precio Unitario");
+        camposProductos.add("Descripcion");
+        camposProductos.add("Categoria");
         camposProductos.add("");
         
         List<String> camposServicios = new ArrayList<>();
         camposServicios.add("Codigo");
         camposServicios.add("Nombre");
-        camposServicios.add("Descripcion");
-        camposServicios.add("Colaborador");
         camposServicios.add("Costo");
+        camposServicios.add("Descripcion");
         camposServicios.add("");
         
         BotonBuscarProducto.setOnMousePressed(buscarProducto -> {
             if(comprobarCampos(toolsUsado)){
                 if(((String) comboTipo.getValue()).equals("Producto"))
-                    filtarProducto(ancho, camposProductos);
+                    insertarProductosBusqueda(ancho, camposProductos, listProducto);
                 else
-                    filtrarServicio(ancho, camposServicios);
+                    insertarServiciosBusqueda(ancho, camposServicios, ListServicios);
             }
         });
         
-        tablaProductos = new TableTool(ancho, camposProductos, "No hay articulos con esta descripcion");
+        tablaProductos = new TableTool(ancho, camposProductos, "No hay articulos con esta descripcion", titulo2);
         paneTabla.getChildren().add(tablaProductos);
         
         filas.getChildren().addAll(cabecera, paneTabla);
@@ -166,7 +179,7 @@ public class ContenidoBusqueda extends Parent{
                     filtarMascota(ancho, camposMascotas);
         });
         
-        tablaProductos = new TableTool(ancho, camposMercaderia, "No hay articulos con esta descripcion");
+        tablaProductos = new TableTool(ancho, camposMercaderia, "No hay articulos con esta descripcion", titulo2);
         paneTabla.getChildren().add(tablaProductos);
         
         filas.getChildren().addAll(Tutuo, cabecera, paneTabla);
@@ -177,7 +190,7 @@ public class ContenidoBusqueda extends Parent{
     private void filtarMercaderia(int ancho, List<String> camposMercaderia){
         paneTabla.getChildren().clear();
                 
-        tablaProductos = new TableTool(ancho, camposMercaderia, "Este cliente no ha solicitado servicio a domicilio");
+        tablaProductos = new TableTool(ancho, camposMercaderia, "Este cliente no ha solicitado servicio a domicilio",titulo2);
         
         paneTabla.getChildren().add(tablaProductos);
     }
@@ -185,23 +198,53 @@ public class ContenidoBusqueda extends Parent{
     private void filtarMascota(int ancho, List<String> camposMascota){
         paneTabla.getChildren().clear();
                 
-        tablaProductos = new TableTool(ancho, camposMascota, "Este cliente no posee mascotas");
+        tablaProductos = new TableTool(ancho, camposMascota, "Este cliente no posee mascotas",titulo2);
         
         paneTabla.getChildren().add(tablaProductos);
     }
     
-    private void filtarProducto(int ancho, List<String> camposProductos){
+    private void insertarProductosBusqueda(int ancho, List<String> camposProductos, List<Producto> listProducto){
         paneTabla.getChildren().clear();
                 
-        tablaProductos = new TableTool(ancho, camposProductos, "No hay productos con esta descripcion");
+        tablaProductos = new TableTool(ancho, camposProductos, "No hay productos con esta descripcion",titulo2);
+        
+        List<Producto> listaProductos = ctrCaja.filtarProductos(toolsUsado);
+        
+        ListIterator<Producto> it = listaProductos.listIterator();
+        
+        while(it.hasNext()){
+            Producto pro = it.next();
+            
+            BotonTool botonAnadirCarrito = new BotonTool("Añadir", titulo2, 100, titulo2 + 5, Color.GREEN);
+            botonAnadirCarrito.setOnMousePressed(anadirCarrito -> {
+                listProducto.add(pro);
+            });
+            
+            tablaProductos.anadirItem(pro.retornarAllData(), botonAnadirCarrito);
+        }
         
         paneTabla.getChildren().add(tablaProductos);
     }
     
-    private void filtrarServicio(int ancho, List<String> camposServicios){
+    private void insertarServiciosBusqueda(int ancho, List<String> camposServicios, List<Servicio> listServicios){
         paneTabla.getChildren().clear();
+                
+        tablaProductos = new TableTool(ancho, camposServicios, "No hay productos con esta descripcion",titulo2);
         
-        tablaProductos = new TableTool(ancho, camposServicios, "No hay servicios con esta descripcion");
+        List<Servicio> listaProductos = ctrCaja.filtarServicio(toolsUsado);
+        
+        ListIterator<Servicio> it = listaProductos.listIterator();
+        
+        while(it.hasNext()){
+            Servicio ser = it.next();
+            
+            BotonTool botonAnadirCarrito = new BotonTool("Añadir", titulo2, 100, titulo2 + 5, Color.GREEN);
+            botonAnadirCarrito.setOnMousePressed(anadirCarrito -> {
+                listServicios.add(ser);
+            });
+            
+            tablaProductos.anadirItem(ser.retornarAllData(), botonAnadirCarrito);
+        }
         
         paneTabla.getChildren().add(tablaProductos);
     }

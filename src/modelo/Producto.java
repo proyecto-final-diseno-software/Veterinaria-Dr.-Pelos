@@ -5,15 +5,27 @@
  */
 package modelo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author paula
  */
 public class Producto {
-    private String nombre;
-    private String descripcion;
-    private double precioUnitario;
     private String id_producto;
+    private String nombre;
+    private double precioUnitario;
+    private String descripcion;
+    private Categoria categoria;
+
+    public Producto(String id_producto, double precioUnitario, String nombre, String descripcion, Categoria categoria) {
+        this.id_producto = id_producto;
+        this.precioUnitario = precioUnitario;
+        this.nombre = nombre;
+        this.descripcion = descripcion;
+        this.categoria = categoria;
+    }
     
     public boolean cambiarPrecio(){
         return true;
@@ -51,6 +63,16 @@ public class Producto {
         this.id_producto = id_producto;
     }
     
-    
+    public List<String> retornarAllData(){
+        List<String> lista = new ArrayList<>();
+        
+        lista.add(id_producto);
+        lista.add(nombre);
+        lista.add(Double.toString(precioUnitario));
+        lista.add(descripcion);
+        lista.add(categoria.getNombre());
+        
+        return lista;
+    } 
     
 }
