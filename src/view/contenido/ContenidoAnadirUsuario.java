@@ -22,10 +22,11 @@ import view.tool.Tool;
  * @author Gonzalez Eduardo
  */
 public class ContenidoAnadirUsuario extends Parent implements ContenidoCentral{
+    private final int anchoVentanaConenido;
+    private final int titulo1;
+    private final int titulo2;
+    
     private VBox paneIngresoDatos;
-    private int anchoVentanaConenido;
-    private int titulo1;
-    private int titulo2;
     
     public ContenidoAnadirUsuario(int anchoVentanaConenido, int titulo1, int titulo2){
         this.anchoVentanaConenido = anchoVentanaConenido;
@@ -45,22 +46,27 @@ public class ContenidoAnadirUsuario extends Parent implements ContenidoCentral{
         
         BoxTextTool cabeceraTexto = new BoxTextTool("Registro Cliente", Color.BLACK, titulo1, FontWeight.BOLD);
         cabecera.getChildren().add(cabeceraTexto);
+        
+        HBox primerPanel = new HBox(20);
+        TextFieldTool textFieldCedula = new TextFieldTool("Ingrese documento de identificacion", "Cedula:", titulo2, Pos.CENTER_LEFT, anchoVentanaConenido * 2 + 20, titulo2);
+        primerPanel.getChildren().add(textFieldCedula);
+        toolUsados.add(textFieldCedula);
 
-        HBox primero = new HBox(20);
+        HBox segundoPanel = new HBox(20);
         TextFieldTool textFieldNombre = new TextFieldTool("Ingrese nombre del nuevo cliente", "Nombre:", titulo2, Pos.CENTER_LEFT, anchoVentanaConenido, titulo2);
         TextFieldTool textFieldApellido = new TextFieldTool("Ingrese apellido del nuevo cliente", "Apellido:", titulo2, Pos.CENTER_LEFT, anchoVentanaConenido, titulo2);
-        primero.getChildren().addAll(textFieldNombre, textFieldApellido);
+        segundoPanel.getChildren().addAll(textFieldNombre, textFieldApellido);
         toolUsados.add(textFieldNombre);
         toolUsados.add(textFieldApellido);
 
-        HBox segundo = new HBox(20);
+        HBox tercerPanel = new HBox(20);
         TextFieldTool textFieldDireccion = new TextFieldTool("Ingrese direccion del nuevo cliente", "Direccion:", titulo2, Pos.CENTER_LEFT, anchoVentanaConenido, titulo2);
         TextFieldTool textFieldtelefono = new TextFieldTool("Ingrese el telefono del nuevo cliente", "Telefono:", titulo2, Pos.CENTER_LEFT, anchoVentanaConenido, titulo2);
-        segundo.getChildren().addAll(textFieldDireccion, textFieldtelefono);
+        tercerPanel.getChildren().addAll(textFieldDireccion, textFieldtelefono);
         toolUsados.add(textFieldDireccion);
         toolUsados.add(textFieldtelefono);
         
-        paneIngresoDatos.getChildren().addAll(cabecera, primero, segundo);
+        paneIngresoDatos.getChildren().addAll(cabecera, primerPanel, segundoPanel, tercerPanel);
         
         getChildren().add(paneIngresoDatos);
     }

@@ -5,7 +5,9 @@
  */
 package controladores;
 
+import java.util.List;
 import modelo.Cliente;
+import view.tool.Tool;
 
 /**
  *
@@ -22,5 +24,18 @@ public class Ctr_Personal_Caja {
         
     }
     
+    public Cliente createCliente(List<Tool> list){
+        String cedula = (String) list.get(0).getValue();
+        String nombre = (String) list.get(1).getValue();
+        String apellido = (String) list.get(2).getValue();
+        String direccion = (String) list.get(3).getValue();
+        String numTelefonico = (String) list.get(4).getValue();
+        
+        return new Cliente(cedula, nombre, apellido, direccion, numTelefonico);
+    }
+    
+    public boolean addClienteDataBase(Cliente cliente){
+        return true;
+    }
     
 }

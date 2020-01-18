@@ -10,13 +10,13 @@ package modelo;
  * @author paula
  */
 public class Persona {
-    private int id_persona;
-    private String nombre;
-    private String apellido;
+    protected String cedula;
+    protected String nombre;
+    protected String apellido;
 
-    public Persona(String nombre, String apellido) {
+    public Persona(String cedula, String nombre, String apellido) {
         this.nombre = nombre;
         this.apellido = apellido;
+        this.cedula = cedula;
     }
-    
 }

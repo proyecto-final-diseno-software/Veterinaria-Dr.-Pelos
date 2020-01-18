@@ -5,6 +5,7 @@
  */
 package view.states;
 
+import controladores.Ctr_Personal_Caja;
 import java.util.ArrayList;
 import java.util.List;
 import javafx.geometry.Insets;
@@ -26,12 +27,12 @@ import javafx.stage.Stage;
 import modelo.Cliente;
 import view.tool.BotonTool;
 import view.tool.BoxTextTool;
-import view.tool.ComBoxTool;
 import view.tool.TextFieldTool;
 import view.tool.TableTool;
 import view.tool.Tool;
 import view.contenido.ContenidoAnadirUsuario;
 import view.contenido.ContenidoBusqueda;
+import view.contenido.ContenidoPerfil;
 import view.contenido.ContenidoTraslado;
 
 /**
@@ -40,6 +41,8 @@ import view.contenido.ContenidoTraslado;
  */
 public class View_PersonalCaja extends Ventana{
     private PrincipalContenedorCaja ventana;
+    
+     private Ctr_Personal_Caja contolCaja;
 
     @Override
     void mostrar_ventana(Stage primaryStage) {
@@ -59,6 +62,8 @@ public class View_PersonalCaja extends Ventana{
         this.ventana = new PrincipalContenedorCaja();
         
         this.root.getChildren().add(ventana);
+        
+        this.contolCaja = new Ctr_Personal_Caja();
     }
     
     private class PrincipalContenedorCaja extends Parent{
@@ -219,9 +224,11 @@ public class View_PersonalCaja extends Ventana{
             HBox botonesPane = new HBox(5);
             BotonTool guardarCliente = new BotonTool("Guardar Cliente", titulo2, 200, titulo2 * 2, ColorOscuro);
             guardarCliente.setOnMousePressed(guardarNuevoCliente -> {
-                if(comprobarCampos(toolUsados))
-                    System.out.println("Valido");
-                else{
+                if(comprobarCampos(toolUsados)){
+                    Cliente nuevoCliente = contolCaja.createCliente(toolUsados);
+                    if(contolCaja.addClienteDataBase(nuevoCliente))
+                        cambiarPefilCliente(reduccionx, nuevoCliente);
+                } else{
                     mensajeError.getChildren().clear();
                     mensajeError.getChildren().add(new BoxTextTool("Por favor ingrese los datos faltantes", Color.RED, titulo1, FontWeight.BOLD));
                 }
@@ -314,12 +321,19 @@ public class View_PersonalCaja extends Ventana{
             pane1.getChildren().add(generarPaneCentral(ventanaTraslado));
         }
         
-        private void cambiarConsultantregas(int reduccionX, int reduccionY ){
+        private void cambiarConsultantregas(int reduccionX, int reduccionY){
             establecerFondoUnico(reduccionX, Pos.TOP_LEFT);
             
             ContenidoBusqueda ventanaConsultaEntrega = new ContenidoBusqueda(anchoVentana - reduccionX - 40, altoVentana - reduccionY - 10, titulo1, titulo2);
             
             pane1.getChildren().add(generarPaneCentral(ventanaConsultaEntrega));
+        }
+        
+        private void cambiarPefilCliente(int reduccionX, Cliente cliente){
+            establecerFondoUnico(reduccionX, Pos.TOP_LEFT);
+            ContenidoPerfil ventanaPerfilCliente= new ContenidoPerfil(anchoVentana - reduccionX,titulo1, titulo2, cliente);
+            ventanaPerfilCliente.crearContenidoCentral(null);
+            pane1.getChildren().add(generarPaneCentral(ventanaPerfilCliente));
         }
         
         private Pane generarPaneCentral(Parent parent){
@@ -348,7 +362,7 @@ public class View_PersonalCaja extends Ventana{
         private void generarsecciones(FlowPane pane, Pos pos){
             pane.setAlignment(pos);
             pane.getChildren().clear();
-            pane.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), new Insets(-10, 0, -10, 0))));
+            pane.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), new Insets(-10, 0, -20, 0))));
         }
     }
 }

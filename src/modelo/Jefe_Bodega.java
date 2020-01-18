@@ -12,8 +12,8 @@ package modelo;
 public class Jefe_Bodega extends Persona {
     private int id_jefeBodega;
 
-    public Jefe_Bodega(String nombre, String apellido) {
-        super(nombre, apellido);
+    public Jefe_Bodega(String cedula, String nombre, String apellido) {
+        super(nombre, apellido, cedula);
     }
 
     public boolean imprimirDocEnvio(){

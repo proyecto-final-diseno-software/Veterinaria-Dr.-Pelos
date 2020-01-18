@@ -15,8 +15,8 @@ public class Usuario extends Persona{
     private boolean permiso_administrador;
     private int id_usuario;
 
-    public Usuario(String nombre, String apellido) {
-        super(nombre, apellido);
+    public Usuario(String cedula, String nombre, String apellido) {
+        super(cedula, nombre, apellido);
     }
     
     public boolean acceder(){

@@ -12,8 +12,8 @@ package modelo;
 public class Administrador extends Persona {
     private int id_administrador;
 
-    public Administrador(String nombre, String apellido) {
-        super(nombre, apellido);
+    public Administrador(String cedula, String nombre, String apellido) {
+        super(nombre, apellido, cedula);
     }
 
     public int getId_administrador() {
