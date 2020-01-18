@@ -15,9 +15,9 @@ import java.util.LinkedList;
 public class Cotizacion {
     private int idCotizacion;
     private LocalDate fecha;
-    private String estado;
     private double valor = 0;
     private Cliente cliente;
+    private Personal_Caja personal_caja;
     private LinkedList<Object> detalles;
 
     public Cotizacion() {
@@ -40,6 +40,16 @@ public class Cotizacion {
 //    private void calcularValorTotal(){
 //        
 //    }
+
+    public Personal_Caja getPersonal_caja() {
+        return personal_caja;
+    }
+
+    public void setPersonal_caja(Personal_Caja personal_caja) {
+        this.personal_caja = personal_caja;
+    }
+    
+    
 
     public Cliente getCliente() {
         return cliente;
@@ -73,13 +83,6 @@ public class Cotizacion {
         this.fecha = fecha;
     }
 
-    public String getEstado() {
-        return estado;
-    }
-
-    public void setEstado(String estado) {
-        this.estado = estado;
-    }
 
     public double getValor() {
         return valor;

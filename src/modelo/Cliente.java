@@ -18,7 +18,7 @@ public class Cliente extends Persona{
         this.direccion = direccion;
         this.num_telefonico = num_telefonico;
     }
-
+    
     @Override
     public String toString() {
         return "Persona{" + "cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido + "Cliente{" + "direccion=" + direccion + ", num_telefonico=" + num_telefonico + '}';

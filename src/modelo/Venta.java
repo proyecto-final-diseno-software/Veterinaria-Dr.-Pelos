@@ -14,23 +14,47 @@ import java.time.LocalDate;
 public class Venta {
     private int id_venta;
     private LocalDate fecha;
-    private double monto_total;
-    private double descuento;//En porcentaje
+    private double total;
+    private double descuento;
+    private double subtotal;
+    private int numeroFactura;
+    private Personal_Caja personalCaja;
     
     
     public double calcularMonto(){
         if(descuento >0){
-            return monto_total*(1 - (descuento/100));
+            return total*(1 - (descuento/100));
         }
-        return monto_total;
+        return total;
     }
 
-    public Venta(int id_venta, LocalDate fecha, double monto_total, double descuento) {
-        this.id_venta = id_venta;
-        this.fecha = fecha;
-        this.monto_total = monto_total;
-        this.descuento = descuento;
+    public double getSubtotal() {
+        return subtotal;
     }
+
+    public void setSubtotal(double subtotal) {
+        this.subtotal = subtotal;
+    }
+
+    public int getNumeroFactura() {
+        return numeroFactura;
+    }
+
+    public void setNumeroFactura(int numeroFactura) {
+        this.numeroFactura = numeroFactura;
+    }
+
+
+    public Personal_Caja getPersonalCaja() {
+        return personalCaja;
+    }
+
+    public void setPersonalCaja(Personal_Caja personalCaja) {
+        this.personalCaja = personalCaja;
+    }
+
+    
+    
 
     public int getId_venta() {
         return id_venta;
@@ -48,12 +72,12 @@ public class Venta {
         this.fecha = fecha;
     }
 
-    public double getMonto_total() {
-        return monto_total;
+    public double getTotal() {
+        return total;
     }
 
-    public void setMonto_total(double monto_total) {
-        this.monto_total = monto_total;
+    public void setTotal(double total) {
+        this.total = total;
     }
 
     public double getDescuento() {
