@@ -188,4 +188,19 @@ public class Ctr_Personal_Caja {
         return lista;
     }
     
+    public Cliente selectRetornarCliente(String cedula){
+        return new Cliente("0928172487", "Eduardo", "Gonzalez", "Su casa", "0909");
+    }
+    
+    public List<Mascota> selectMascotasCliente(Cliente cli){
+        List<Mascota> listMascota = new ArrayList<>();
+        
+        listMascota.add(new Mascota(20, "Coffe", "Mestozo", "Sucursal"));
+        listMascota.add(new Mascota(21, "Filomeno", "Mestizo", "Domicilio"));
+        listMascota.add(new Mascota(22, "Cuy", "Mestizo", "Translado a domicilio"));
+        listMascota.add(new Mascota(22, "Gato", "Mestizo", "Translado a sucursal"));
+        
+        return listMascota;
+    }
+    
 }

@@ -7,6 +7,7 @@ package view.states;
 
 import controladores.Ctr_Personal_Caja;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import javafx.geometry.Insets;
@@ -282,6 +283,9 @@ public class View_PersonalCaja extends Ventana{
             generarsecciones(pane3, Pos.CENTER);
             generarsecciones(pane4, Pos.CENTER);
             
+            TableTool tablaPago = new TableTool(anchoColunma2, titulo3);
+            tablaPago.actualizarMonto(calcularMontoApagar(itemsCarrito));
+            
             List<String> lista = new ArrayList<>();
             lista.add("Nombre"); lista.add("Precio"); lista.add("Cantidad"); lista.add("Total");
             TableTool tablaRegistro = new TableTool(anchoColunma1 - 100, lista, "No hay articulos en el carrito", titulo3);
@@ -297,7 +301,8 @@ public class View_PersonalCaja extends Ventana{
                 
                 cerrar.setOnMousePressed(cerrar_ventana -> {
                     getChildren().remove(ventana_busqueda);
-                    insertarItems(itemsCarrito, tablaRegistro);
+                    insertarItems(itemsCarrito, tablaRegistro, tablaPago);
+                    tablaPago.actualizarMonto(calcularMontoApagar(itemsCarrito));
                 });
                 
                 getChildren().add(ventana_busqueda);
@@ -318,15 +323,26 @@ public class View_PersonalCaja extends Ventana{
             
             ssecionBuscadorCliente.getChildren().addAll(textFieldBuscadorCliente, botonBuscarCliente);
             
-            TableTool tablaPago = new TableTool(anchoColunma2, titulo3);
-            
             pane1.getChildren().add(ssecionBuscador);
             pane2.getChildren().add(tablaRegistro);
             pane3.getChildren().add(ssecionBuscadorCliente);
             pane4.getChildren().add(tablaPago);
         }
         
-        private void insertarItems(List<Detalle_Venta> itemsCarrito, TableTool table){
+        private long calcularMontoApagar(List<Detalle_Venta> itemsCarrito){
+            Iterator<Detalle_Venta> it = itemsCarrito.iterator();
+            
+            long monto = 0;
+            
+            while(it.hasNext()){
+                Detalle_Venta det = it.next();
+                monto += det.calcularPrecio();
+            }
+            
+            return monto;
+        }
+        
+        private void insertarItems(List<Detalle_Venta> itemsCarrito, TableTool table, TableTool tablaPago){
             table.limpiarContenido();
             
             ListIterator<Detalle_Venta> it = itemsCarrito.listIterator();
@@ -360,13 +376,15 @@ public class View_PersonalCaja extends Ventana{
                     botonSacarDetalles.setOnMousePressed(eliminarVnetanEmerrgente -> {
                         paneFondo.getChildren().remove(detalleArticulo);
                         detalleArticulo.setCantidad();
-                        insertarItems(itemsCarrito, table);
+                        insertarItems(itemsCarrito, table, tablaPago);
+                        tablaPago.actualizarMonto(calcularMontoApagar(itemsCarrito));
                     });
                     
                     botonEliminar.setOnMousePressed(eleiminarDeCarrito -> {
                         paneFondo.getChildren().remove(detalleArticulo);
                         itemsCarrito.remove(det);
-                        insertarItems(itemsCarrito, table);
+                        insertarItems(itemsCarrito, table, tablaPago);
+                        tablaPago.actualizarMonto(calcularMontoApagar(itemsCarrito));
                     });
                     
                     

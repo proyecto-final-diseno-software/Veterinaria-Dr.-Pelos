@@ -5,8 +5,10 @@
  */
 package view.contenido;
 
+import controladores.Ctr_Personal_Caja;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ListIterator;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.layout.HBox;
@@ -15,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
 import modelo.Cliente;
+import modelo.Mascota;
 import view.tool.BotonTool;
 import view.tool.BoxTextTool;
 import view.tool.ComBoxTool;
@@ -29,57 +32,124 @@ import view.tool.Tool;
 public class ContenidoTraslado extends Parent{
     private int titulo2;
     private Color ColorOscuro;
+    private Ctr_Personal_Caja ctrCaja;
+    
+    private List<Tool> toolUsados;
+    
+    private VBox paneIngresoDatos;
+    
+    private List<Mascota> mascotasATrasportar;
+    
+    private TableTool tableMascotas;
     
     public ContenidoTraslado(int reduccionx, String tipo, String cabeceraField, int titulo1, int titulo2, Color ColorOscuro, int anchoVentana){
+        mascotasATrasportar = new ArrayList<>();
+        
         this.titulo2 = titulo2;
         this.ColorOscuro = ColorOscuro;
         
-        List<Tool> toolUsados = new ArrayList<>();
+        this.ctrCaja = new Ctr_Personal_Caja();
         
-        Pane mensajeError = new Pane();
+        toolUsados = new ArrayList<>();
         
-        VBox paneIngresoDatos = new VBox(20);
+        paneIngresoDatos = new VBox(20);
         
         HBox cabecera = new HBox(5);
         BoxTextTool cabeceraTexto = new BoxTextTool(tipo, Color.BLACK, titulo1, FontWeight.BOLD);
         cabecera.getChildren().add(cabeceraTexto);
         
+        Pane paneError = new Pane();
+        Pane mensajeError = new Pane(); 
+        
         int mitadVentanaActiva = (anchoVentana - reduccionx) / 2 - 25;
         
         HBox primero = new HBox(20);
-        TextFieldTool textFieldBuscador = new TextFieldTool(cabeceraField ,titulo2, Pos.CENTER, mitadVentanaActiva, 40);
+        TextFieldTool textFieldCliente = new TextFieldTool(cabeceraField ,titulo2, Pos.CENTER, mitadVentanaActiva, 40);
         BotonTool botonBuscar = new BotonTool("Buscar", titulo2 - 1, 90, 40, ColorOscuro);
         botonBuscar.setOnMousePressed(buscar -> {
-            if(!textFieldBuscador.isEmplyTool())
-                establecerTrasladoMascotas(anchoVentana - reduccionx - 35, null, paneIngresoDatos, toolUsados);
+            paneError.getChildren().clear();
+            if(!textFieldCliente.isEmplyTool()){
+                Cliente cli = ctrCaja.selectRetornarCliente((String) textFieldCliente.getValue());
+                if(cli != null){
+                    establecerTrasladoMascotas(anchoVentana - reduccionx - 35, cli);
+                } else 
+                    paneError.getChildren().add(new BoxTextTool("Cliente no existente", Color.RED, 10, FontWeight.NORMAL));
+            } else 
+                paneError.getChildren().add(new BoxTextTool("Ingrese la cedula del cliente correctamente", Color.RED, 10, FontWeight.NORMAL));
         });
-        primero.getChildren().addAll(textFieldBuscador, botonBuscar);
+        primero.getChildren().addAll(textFieldCliente, botonBuscar);
         
         paneIngresoDatos.getChildren().addAll(cabecera, primero, mensajeError);
         
         getChildren().add(paneIngresoDatos);
     }
     
-    private void establecerTrasladoMascotas(int ancho, Cliente cliente, VBox pane, List<Tool> tools){
-            ComBoxTool escogerRuta = new ComBoxTool(250, "Ruta:", new ArrayList<>(), titulo2);
-            ComBoxTool escogerRepartidor = new ComBoxTool(250, "Repartidor:", new ArrayList<>(), titulo2);
+    private void establecerTrasladoMascotas(int ancho, Cliente cliente){
+        //ComBoxTool escogerRuta = new ComBoxTool(250, "Ruta:", new ArrayList<>(), titulo2);
+        //ComBoxTool escogerRepartidor = new ComBoxTool(250, "Repartidor:", new ArrayList<>(), titulo2);
+        
+        //toolUsados.add(escogerRuta);
+        //toolUsados.add(escogerRepartidor);
+        
+        List<String> datosMascotas = new ArrayList<>();
+        datosMascotas.add("Codigo");datosMascotas.add("Nombre");
+        datosMascotas.add("Raza");
+        datosMascotas.add("Estado");
+        datosMascotas.add("Accion");
+        
+        tableMascotas = new TableTool(ancho, datosMascotas, "No hay mascotas disponibles",titulo2);
+        
+        List<Mascota> mascotasCliente = ctrCaja.selectMascotasCliente(cliente);
+        
+        anadirMascotasTabla(mascotasCliente);
+        
+        paneIngresoDatos.getChildren().addAll(tableMascotas);
+    }
+    
+    private void anadirMascotasTabla(List<Mascota> mascotasCliente){
+        tableMascotas.limpiarContenido();
+        
+        ListIterator<Mascota> it = mascotasCliente.listIterator();
+        
+        while(it.hasNext()){
+            Mascota mas = it.next();
+            BotonTool accionBoton;
             
-            tools.add(escogerRuta);
-            tools.add(escogerRepartidor);
+            switch (mas.getEstado()) {
+                case "Translado a sucursal":
+                    accionBoton = new BotonTool("Finalizar Traslado", titulo2 - 1, 200, 40, ColorOscuro);
+                    accionBoton.setOnMousePressed(cambiarEstado -> {
+                        mas.setEstado("Sucursal");
+                        anadirMascotasTabla(mascotasCliente);
+                    });
+                    break;
+                case "Translado a domicilio":
+                    accionBoton = new BotonTool("Finalizar Traslado", titulo2 - 1, 200, 40, ColorOscuro);
+                    accionBoton.setOnMousePressed(cambiarEstado -> {
+                        mas.setEstado("Domicilio");
+                        anadirMascotasTabla(mascotasCliente);
+                    });
+                    break;
+                case "Sucursal":
+                    accionBoton = new BotonTool("Transladar domicilio", titulo2 - 1, 200, 40, Color.BLUE);
+                    accionBoton.setOnMousePressed(cambiarEstado -> {
+                        mas.setEstado("Translado a domicilio");
+                        anadirMascotasTabla(mascotasCliente);
+                    });
+                    break;
+                case "Domicilio":
+                    accionBoton = new BotonTool("Transladar sucursal", titulo2 - 1, 200, 40, Color.GREEN);
+                    accionBoton.setOnMousePressed(cambiarEstado -> {
+                        mas.setEstado("Translado a sucursal");
+                        anadirMascotasTabla(mascotasCliente);
+                    });
+                    break;
+                default:
+                    accionBoton = new BotonTool("Error", titulo2 , 200, 40, Color.RED);
+                    break;
+            }
             
-            List<String> datosMascotas = new ArrayList<>();
-            datosMascotas.add("Codigo");
-            datosMascotas.add("Nombre");
-            datosMascotas.add("Raza");
-            datosMascotas.add("Estado");
-            datosMascotas.add("");
-            
-            TableTool tableMascotas = new TableTool(ancho, datosMascotas, "No hay mascotas disponibles",titulo2);
-            
-            BotonTool botonRecogerMascota = new BotonTool("Recoger Mascota", titulo2, 200, titulo2 * 2, ColorOscuro);
-            botonRecogerMascota.setOnMousePressed(recogerMascota -> {
-            });
-            
-            pane.getChildren().addAll(escogerRuta, escogerRepartidor, tableMascotas, botonRecogerMascota);
+            tableMascotas.anadirItem(mas.retornarAllData(), accionBoton);
         }
+    }
 }

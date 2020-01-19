@@ -55,24 +55,25 @@ public class TableTool extends StackPane implements Tool{
     }
     
     public TableTool(int ancho, int titulo1){
-       panelCentral = new VBox();
+        panelCentral = new VBox();
        
-       this.ancho = ancho;
-       this.anchoColumna = ancho / 2 - 15;
-       this.altura = 55;
-       this.titulo3 = titulo1;
+        this.ancho = ancho;
+        this.anchoColumna = ancho / 2 - 15;
+        this.altura = 55;
+        this.titulo3 = titulo1;
        
-       Fila fila1 = new Fila("Descuento a todos los\nproductos %:", "Establecer Descuento", anchoColumna, altura, Color.WHITE, Color.RED);
+        getChildren().add(panelCentral);
+    }
+    
+    public void actualizarMonto(long monto){
+        panelCentral.getChildren().clear();
+        
+        Fila fila1 = new Fila("Descuento a todos los\nproductos %:", "Establecer Descuento", anchoColumna, altura, Color.WHITE, Color.RED);
+        Fila fila2 = new Fila("Monto fijo de descuento:", "Establecer Descuento",anchoColumna, altura, Color.WHITE, Color.RED);
+        Fila fila3 = new Fila("Subtotal:", Long.toString(monto), anchoColumna, altura, Color.rgb(241, 255, 236), Color.BLACK );
+        Fila fila4 = new Fila("Total:", Long.toString(monto), anchoColumna, altura, Color.WHITE, Color.BLACK);
        
-       Fila fila2 = new Fila("Monto fijo de descuento:", "Establecer Descuento",anchoColumna, altura, Color.WHITE, Color.RED);
-       
-       Fila fila3 = new Fila("Subtotal:", "$0.00", anchoColumna, altura, Color.rgb(241, 255, 236), Color.BLACK );
-       
-       Fila fila4 = new Fila("Total:", "$0.00", anchoColumna, altura, Color.WHITE, Color.BLACK);
-       
-       panelCentral.getChildren().addAll(fila1, fila2, fila3, fila4);
-       
-       getChildren().add(panelCentral);
+        panelCentral.getChildren().addAll(fila1, fila2, fila3, fila4);
     }
 
     @Override

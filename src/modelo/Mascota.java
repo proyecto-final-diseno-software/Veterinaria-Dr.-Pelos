@@ -5,6 +5,9 @@
  */
 package modelo;
 
+import java.util.ArrayList;
+import java.util.List;
+
 /**
  *
  * @author paula
@@ -63,9 +66,14 @@ public class Mascota{
         this.cliente = cliente;
     }
     
-    
-    
-    
-    
-    
+    public List<String> retornarAllData(){
+        List<String> lista = new ArrayList<>();
+        
+        lista.add(Integer.toString(mascota_id));
+        lista.add(nombre);
+        lista.add(raza);
+        lista.add(estado);
+        
+        return lista;
+    }
 }

@@ -9,7 +9,7 @@ package modelo;
  *
  * @author paula
  */
-public class Persona {
+public abstract class Persona {
     protected String cedula;
     protected String nombre;
     protected String apellido;
