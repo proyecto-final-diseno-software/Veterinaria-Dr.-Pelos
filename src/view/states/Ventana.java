@@ -36,6 +36,7 @@ public abstract class Ventana {
         
     protected VBox menuLateral;
     protected HBox paneCentral;
+    protected Pane paneFondo;
     
     protected int titulo1;
     protected int titulo2;

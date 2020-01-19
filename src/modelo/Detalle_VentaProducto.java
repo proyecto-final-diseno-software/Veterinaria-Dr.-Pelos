@@ -25,4 +25,9 @@ public class Detalle_VentaProducto extends Detalle_Venta{
     public Producto getProducto() {
         return producto;
     }
+
+    @Override
+    public String getNombre() {
+        return producto.getNombre();
+    }
 }

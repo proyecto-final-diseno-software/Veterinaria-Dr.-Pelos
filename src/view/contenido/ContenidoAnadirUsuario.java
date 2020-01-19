@@ -13,6 +13,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
+import view.tool.BotonTool;
 import view.tool.BoxTextTool;
 import view.tool.TextFieldTool;
 import view.tool.Tool;

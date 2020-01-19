@@ -26,4 +26,9 @@ public class Detalle_VentaServicio extends Detalle_Venta{
     public Servicio getServicio() {
         return servicio;
     }
+
+    @Override
+    public String getNombre() {
+        return servicio.getNombre();
+    }
 }

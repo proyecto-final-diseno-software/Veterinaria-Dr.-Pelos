@@ -6,6 +6,7 @@
 package view.contenido;
 
 import java.util.List;
+import view.tool.BotonTool;
 import view.tool.Tool;
 
 /**

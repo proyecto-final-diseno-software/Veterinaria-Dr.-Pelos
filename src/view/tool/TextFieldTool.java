@@ -75,4 +75,8 @@ public class TextFieldTool extends StackPane implements Tool{
     public Object getValue() {
         return ingresoTexto.getText();
     }
+    
+    public void setText(String value){
+        ingresoTexto.setText(value);
+    }
 }

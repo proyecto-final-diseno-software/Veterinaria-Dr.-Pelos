@@ -17,6 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
 import modelo.Cliente;
+import view.tool.BotonTool;
 import view.tool.BoxTextTool;
 import view.tool.Tool;
 
@@ -80,5 +81,4 @@ public class ContenidoPerfil extends Parent implements ContenidoCentral{
         
         getChildren().add(panelCentral);
     }
-    
 }

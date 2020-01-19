@@ -18,6 +18,7 @@ public abstract class Detalle_Venta {
     }
     
     public abstract double calcularPrecio();
+    public abstract String getNombre();
 
     public int getCantidad() {
         return cantidad;
@@ -34,4 +35,5 @@ public abstract class Detalle_Venta {
     public void setId_detalle_ventaProducto(int id_detalle_ventaProducto) {
         this.id_detalle_ventaProducto = id_detalle_ventaProducto;
     }
+    
 }

@@ -29,8 +29,6 @@ import modelo.Cliente;
 import modelo.Detalle_Venta;
 import modelo.Detalle_VentaProducto;
 import modelo.Detalle_VentaServicio;
-import modelo.Producto;
-import modelo.Servicio;
 import view.tool.BotonTool;
 import view.tool.BoxTextTool;
 import view.tool.TextFieldTool;
@@ -38,6 +36,7 @@ import view.tool.TableTool;
 import view.tool.Tool;
 import view.contenido.ContenidoAnadirUsuario;
 import view.contenido.ContenidoBusqueda;
+import view.contenido.ContenidoEspecificarDetalle;
 import view.contenido.ContenidoPerfil;
 import view.contenido.ContenidoTraslado;
 
@@ -81,6 +80,9 @@ public class View_PersonalCaja extends Ventana{
         private FlowPane pane3;
         private FlowPane pane4;
         
+        private int anchoLateral;
+        private int altoSuperior;
+        
         public PrincipalContenedorCaja(){
             pane1 = new FlowPane();
             pane2 = new FlowPane();
@@ -91,6 +93,7 @@ public class View_PersonalCaja extends Ventana{
             menuLateral.setAlignment(Pos.CENTER_LEFT);
             
             paneCentral = new HBox(20);
+            paneFondo = new Pane();
             
             colunma1 = new VBox(35);
             colunma2 = new VBox(35);
@@ -99,8 +102,8 @@ public class View_PersonalCaja extends Ventana{
             titulo2 = 20;
             titulo3 = 15;
             
-            int anchoLateral = anchoVentana / 7;
-            int altoSuperior = altoVentana / 10;
+            anchoLateral = anchoVentana / 7;
+            altoSuperior = altoVentana / 10;
             
             logo = new ImageView(new Image("util/logo2.png"));
             logo.setFitHeight(altoVentana / 10);
@@ -184,7 +187,6 @@ public class View_PersonalCaja extends Ventana{
                 cambiarContenidoTraslado(anchoLateral + 50, "Traslado de mascotas", "Buscar Cliente");
             });
             botonesLateral.add(botonTrasladoMascota);
-
             
             BotonTool botonTransladoMercaderia = new BotonTool(" - Consultas entregas", titulo2 - 5, anchoLateral, altoBotones - 20, false);
             botonTransladoMercaderia.setOnMousePressed(trasladoMercaderia -> {
@@ -214,10 +216,12 @@ public class View_PersonalCaja extends Ventana{
             
             menuLateral.getChildren().addAll(logo, paneCliente, botonInventario, botonProveedores, botonReportes, botonVentas, paneTraslado, botonFacturacion);
             
-            paneCentral.setTranslateX(anchoLateral + 15);
-            paneCentral.setTranslateY(altoSuperior + 25);
+            paneFondo.setTranslateX(anchoLateral + 15);
+            paneFondo.setTranslateY(altoSuperior + 25);
             
-            getChildren().addAll(barraLateral, barraSuperior , menuLateral, paneCentral);
+            paneFondo.getChildren().add(paneCentral);
+            
+            getChildren().addAll(barraLateral, barraSuperior , menuLateral, paneFondo);
         }
         
         private void cambiarContenidoAnadirUser(int reduccionx){
@@ -280,7 +284,7 @@ public class View_PersonalCaja extends Ventana{
             
             List<String> lista = new ArrayList<>();
             lista.add("Nombre"); lista.add("Precio"); lista.add("Cantidad"); lista.add("Total");
-            TableTool tablaRegistro = new TableTool(anchoColunma1, lista, "No hay articulos en el carrito", titulo3);
+            TableTool tablaRegistro = new TableTool(anchoColunma1 - 100, lista, "No hay articulos en el carrito", titulo3);
             
             HBox ssecionBuscador = new HBox();
             
@@ -344,7 +348,32 @@ public class View_PersonalCaja extends Ventana{
                     dataItem.add(Double.toString(((Detalle_VentaServicio) det).calcularPrecio()));
                 }
                 
-                table.anadirItem(dataItem, null);
+                BotonTool especificarDetalles = new BotonTool("Editar", titulo2, 100, titulo2 + 10, ColorOscuro);
+                especificarDetalles.setOnMousePressed(cambiarDeatalle -> {
+                    BotonTool botonSacarDetalles = new BotonTool("Aceptar", titulo2 - 1, 90, 40, ColorOscuro);
+                    BotonTool botonEliminar = new BotonTool("Eliminar", titulo2 - 1, 90, 40, Color.RED);
+                    
+                    ContenidoEspecificarDetalle detalleArticulo = new ContenidoEspecificarDetalle(anchoVentana - (anchoLateral + 15) , altoVentana - (altoSuperior + 25),titulo1, titulo2, det);
+                    detalleArticulo.crearContenidoCentral(new ArrayList<>());
+                    detalleArticulo.anadirBotones(botonSacarDetalles, botonEliminar);
+                    
+                    botonSacarDetalles.setOnMousePressed(eliminarVnetanEmerrgente -> {
+                        paneFondo.getChildren().remove(detalleArticulo);
+                        detalleArticulo.setCantidad();
+                        insertarItems(itemsCarrito, table);
+                    });
+                    
+                    botonEliminar.setOnMousePressed(eleiminarDeCarrito -> {
+                        paneFondo.getChildren().remove(detalleArticulo);
+                        itemsCarrito.remove(det);
+                        insertarItems(itemsCarrito, table);
+                    });
+                    
+                    
+                    paneFondo.getChildren().add(detalleArticulo);
+                });
+                
+                table.anadirItem(dataItem, especificarDetalles);
             }
     }
         
