@@ -14,6 +14,7 @@ import java.util.List;
 import modelo.Categoria;
 import modelo.Cliente;
 import modelo.Cotizacion;
+import modelo.Detalle_Venta;
 import modelo.Mascota;
 import modelo.Producto;
 import modelo.Servicio;
@@ -25,12 +26,13 @@ import view.tool.Tool;
  * @author paula
  */
 public class Ctr_Personal_Caja {
+    private Connection con;
     
     public void realizarCotizacion(){
         
     }
     
-    private boolean insertMascota(Connection con, Mascota m){
+    private boolean insertMascota(Mascota m){
         try {
             PreparedStatement ps = con.prepareStatement("insert into Mascota(mascota_ID,nombre,"
                     + "raza,estado,dueno_ID) values(?,?,?,?,?);");
@@ -56,7 +58,7 @@ public class Ctr_Personal_Caja {
         return true;
     }
     
-    private boolean insertCotizacion(Connection con, Cotizacion c){
+    private boolean insertCotizacion(Cotizacion c){
         try {
             PreparedStatement ps = con.prepareStatement("insert into venta(venta_ID,fecha,n_factura,sub_total,total,descuento,personal_cajas_ID, forma_pago_ID) values(?,?,?,?,?,?,?,?);");
             ps.setInt(1, c.getIdCotizacion());
@@ -80,7 +82,7 @@ public class Ctr_Personal_Caja {
         } 
     }
     
-    private boolean insertVenta(Connection con, Venta v){
+    public boolean insertVenta(Venta v){
         try {
             PreparedStatement ps = con.prepareStatement("insert into venta(venta_ID,fecha,n_factura,sub_total,total,descuento,personal_cajas_ID, forma_pago_ID) values(?,?,?,?,?,?,?,?);");
             ps.setInt(1, v.getId_venta());
@@ -107,6 +109,10 @@ public class Ctr_Personal_Caja {
             return false;
         } 
     }
+    
+    public boolean guardarDetalleVenta(Detalle_Venta ventas){
+        return true;
+    }
             
     public Cliente createCliente(List<Tool> list){
         String cedula = (String) list.get(0).getValue();
@@ -130,7 +136,7 @@ public class Ctr_Personal_Caja {
         return true;
     }
     
-    private boolean insertPersona(Connection con, Cliente c){
+    private boolean insertPersona(Cliente c){
         try {
             PreparedStatement ps = con.prepareStatement("insert into persona(cedula,nombre,apellido) values(?,?,?);");
             ps.setString(1, c.getCedula());
@@ -148,7 +154,7 @@ public class Ctr_Personal_Caja {
         
     }
     
-    private boolean insertCliente(Connection con, Cliente c){
+    private boolean insertCliente(Cliente c){
         try {
             PreparedStatement ps = con.prepareStatement("insert into cliente(cedula,direccion,telefono) values(?,?,?);");
             ps.setString(1, c.getCedula());
@@ -177,6 +183,12 @@ public class Ctr_Personal_Caja {
         lista.add(new Producto("1", 12, "Papas", "Papas Ricas", new Categoria("Alimento", "Aliemntos")));
         lista.add(new Producto("2", 30, "Tortolines", "cHIFLES", new Categoria("Alimento", "Aliemntos")));
         
+        return lista;
+    }
+    
+    public List<Cliente> retornarCliente(String cedula){
+        List<Cliente> lista = new ArrayList<>();
+        lista.add(new Cliente("0928072487", "Eduardo", "Gonzalez", "Mi casa", "090999841"));
         return lista;
     }
     

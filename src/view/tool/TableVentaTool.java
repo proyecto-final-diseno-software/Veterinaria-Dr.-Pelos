@@ -33,13 +33,13 @@ public class TableVentaTool extends StackPane implements Tool{
         getChildren().add(panelCentral);
     }
     
-    public void actualizarMonto(long monto){
+    public void actualizarMonto(double monto){
         panelCentral.getChildren().clear();
         
         FilaTool fila1 = new FilaTool("Descuento a todos los\nproductos %:", "Establecer Descuento", anchoColumna, altura, Color.WHITE, Color.RED, titulo3);
         FilaTool fila2 = new FilaTool("Monto fijo de descuento:", "Establecer Descuento",anchoColumna, altura, Color.WHITE, Color.RED, titulo3);
-        FilaTool fila3 = new FilaTool("Subtotal:", Long.toString(monto), anchoColumna, altura, Color.rgb(241, 255, 236), Color.BLACK , titulo3);
-        FilaTool fila4 = new FilaTool("Total:", Long.toString(monto), anchoColumna, altura, Color.WHITE, Color.BLACK, titulo3);
+        FilaTool fila3 = new FilaTool("Subtotal:", Double.toString(monto), anchoColumna, altura, Color.rgb(241, 255, 236), Color.BLACK , titulo3);
+        FilaTool fila4 = new FilaTool("Total:", Double.toString(monto), anchoColumna, altura, Color.WHITE, Color.BLACK, titulo3);
        
         panelCentral.getChildren().addAll(fila1, fila2, fila3, fila4);
     }

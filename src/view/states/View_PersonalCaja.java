@@ -7,9 +7,7 @@ package view.states;
 
 import controladores.Ctr_Personal_Caja;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
@@ -27,22 +25,15 @@ import javafx.scene.shape.Rectangle;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import modelo.Cliente;
-import modelo.Detalle_Venta;
-import modelo.Detalle_VentaProducto;
-import modelo.Detalle_VentaServicio;
-import modelo.Venta;
+import modelo.Personal_Caja;
 import view.tool.BotonTool;
 import view.tool.BoxTextTool;
-import view.tool.TextFieldTool;
-import view.tool.TableTool;
 import view.tool.Tool;
 import view.contenido.ContenidoAnadirUsuario;
 import view.contenido.ContenidoBusqueda;
-import view.contenido.ContenidoEspecificarDetalle;
 import view.contenido.ContenidoPerfil;
 import view.contenido.ContenidoTraslado;
 import view.contenido.ContenidoVentas;
-import view.tool.TableVentaTool;
 
 /**
  *
@@ -87,6 +78,9 @@ public class View_PersonalCaja extends Ventana{
         private int anchoLateral;
         private int altoSuperior;
         
+        private int reduccionX;
+         private int reduccionY;
+        
         public PrincipalContenedorCaja(){
             pane1 = new FlowPane();
             pane2 = new FlowPane();
@@ -109,6 +103,9 @@ public class View_PersonalCaja extends Ventana{
             anchoLateral = anchoVentana / 7;
             altoSuperior = altoVentana / 10;
             
+            reduccionX = anchoLateral + 50;
+            reduccionY = altoSuperior + 50;
+            
             logo = new ImageView(new Image("util/logo2.png"));
             logo.setFitHeight(altoVentana / 10);
             logo.setFitWidth(anchoLateral);
@@ -130,7 +127,7 @@ public class View_PersonalCaja extends Ventana{
             BotonTool botonCrearClientes = new BotonTool(" - Añadir cliente", titulo2 - 5, anchoLateral, altoBotones - 20, false);
             botonCrearClientes.setOnMousePressed(seccionClientes -> {
                 comportamientoMenuLateral(botonCrearClientes);
-                cambiarContenidoAnadirUser(anchoLateral + 50);
+                cambiarContenidoAnadirUser();
             });
             
             BotonTool botonConsultarClientes = new BotonTool(" - Consultar cliente", titulo2 - 5, anchoLateral, altoBotones - 20, false);
@@ -176,7 +173,7 @@ public class View_PersonalCaja extends Ventana{
             BotonTool botonVentas = new BotonTool("Ventas", titulo2, anchoLateral, altoBotones, false);
             botonVentas.setOnMousePressed(seccionClientes -> {
                 comportamientoMenuLateral(botonVentas);
-                cambiarContenidoVentas(anchoLateral + 50, altoSuperior + 50);
+                cambiarContenidoVentas();
             });
             
             botonesLateral.add(botonVentas);
@@ -188,14 +185,14 @@ public class View_PersonalCaja extends Ventana{
             BotonTool botonTrasladoMascota = new BotonTool(" - Mascotas", titulo2 - 5, anchoLateral, altoBotones - 20, false);
             botonTrasladoMascota.setOnMousePressed(trasladoMascotas -> {
                 comportamientoMenuLateral(botonTrasladoMascota);
-                cambiarContenidoTraslado(anchoLateral + 50, "Traslado de mascotas", "Buscar Cliente");
+                cambiarContenidoTraslado("Traslado de mascotas", "Buscar Cliente");
             });
             botonesLateral.add(botonTrasladoMascota);
             
             BotonTool botonTransladoMercaderia = new BotonTool(" - Consultas entregas", titulo2 - 5, anchoLateral, altoBotones - 20, false);
             botonTransladoMercaderia.setOnMousePressed(trasladoMercaderia -> {
                 comportamientoMenuLateral(botonTransladoMercaderia);
-                cambiarConsultantregas(anchoLateral + 50, altoSuperior + 50);
+                cambiarConsultantregas();
             });
             botonesLateral.add(botonTransladoMercaderia);
             
@@ -228,8 +225,8 @@ public class View_PersonalCaja extends Ventana{
             getChildren().addAll(barraLateral, barraSuperior , menuLateral, paneFondo);
         }
         
-        private void cambiarContenidoAnadirUser(int reduccionx){
-            establecerFondoUnico(reduccionx, Pos.CENTER_LEFT);
+        private void cambiarContenidoAnadirUser(){
+            establecerFondoUnico(Pos.CENTER_LEFT);
             
             List<Tool> toolUsados = new ArrayList<>();
             
@@ -242,7 +239,7 @@ public class View_PersonalCaja extends Ventana{
                 if(comprobarCampos(toolUsados)){
                     Cliente nuevoCliente = contolCaja.createCliente(toolUsados);
                     if(contolCaja.addClienteDataBase(nuevoCliente))
-                        cambiarPefilCliente(reduccionx, nuevoCliente);
+                        cambiarPefilCliente(nuevoCliente);
                     else
                         mensajeError.getChildren().add(new BoxTextTool("Hubo un error al crear el usuario\nintento mas tarde.", Color.RED, titulo3, FontWeight.BOLD));
                 } else
@@ -253,23 +250,23 @@ public class View_PersonalCaja extends Ventana{
             
             botonesPane.getChildren().addAll(cancelarCliente, guardarCliente);
             
-            ContenidoAnadirUsuario ventanaAnadirUsuario = new ContenidoAnadirUsuario(reduccionx, 0, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior);
+            ContenidoAnadirUsuario ventanaAnadirUsuario = new ContenidoAnadirUsuario(reduccionX, 0, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior);
             ventanaAnadirUsuario.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
             ventanaAnadirUsuario.establecerPaneles(pane1, pane2, pane3, pane4, paneFondo);
-            ventanaAnadirUsuario.contenidoAdicional((anchoVentana - reduccionx) / 2 - 25);
+            ventanaAnadirUsuario.contenidoAdicional((anchoVentana - reduccionX) / 2 - 25);
             ventanaAnadirUsuario.crearContenidoCentral(toolUsados);
             ventanaAnadirUsuario.anadirSellecionInferior(botonesPane);
             ventanaAnadirUsuario.anadirSellecionInferior(mensajeError);
         }
         
-        private void cambiarContenidoVentas(int reduccionx, int reduccionY){
+        private void cambiarContenidoVentas(){
             limpiarVentana();
             
             colunma1.getChildren().addAll(pane1, pane2);
             colunma2.getChildren().addAll(pane3, pane4);
             
-            int anchoColunma1 = 2 * (anchoVentana - reduccionx) / 3;
-            int anchoColunma2 = (anchoVentana - reduccionx) / 3;
+            int anchoColunma1 = 2 * (anchoVentana - reduccionX) / 3;
+            int anchoColunma2 = (anchoVentana - reduccionX) / 3;
             
             pane1.setPrefWrapLength(anchoColunma1);
             pane2.setPrefWrapLength(anchoColunma1);
@@ -281,7 +278,7 @@ public class View_PersonalCaja extends Ventana{
             generarsecciones(pane3, Pos.CENTER);
             generarsecciones(pane4, Pos.CENTER);
             
-            ContenidoVentas contenVentas = new ContenidoVentas(reduccionx, reduccionY, anchoVentana, altoVentana, anchoColunma1, anchoColunma2, anchoLateral, altoSuperior);
+            ContenidoVentas contenVentas = new ContenidoVentas(reduccionX, reduccionY, anchoVentana, altoVentana, anchoColunma1, anchoColunma2, anchoLateral, altoSuperior,new Personal_Caja("02", "Eduardo", "Gonzalez"));
             contenVentas.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
             contenVentas.establecerPaneles(pane1, pane2, pane3, pane4, paneFondo);
             contenVentas.crearContenidoCentral(new ArrayList<>());
@@ -289,18 +286,18 @@ public class View_PersonalCaja extends Ventana{
             paneCentral.getChildren().addAll(colunma1, colunma2);
         }
         
-        private void cambiarContenidoTraslado(int reduccionx, String tipo, String cabeceraField ){
-            establecerFondoUnico(reduccionx, Pos.CENTER_LEFT);
+        private void cambiarContenidoTraslado(String tipo, String cabeceraField ){
+            establecerFondoUnico(Pos.CENTER_LEFT);
             
-            ContenidoTraslado ventanaTraslado= new ContenidoTraslado(reduccionx, 0, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior);
+            ContenidoTraslado ventanaTraslado= new ContenidoTraslado(reduccionX, 0, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior);
             ventanaTraslado.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
             ventanaTraslado.establecerDatosAdicionales(tipo, cabeceraField);
             ventanaTraslado.establecerPaneles(pane1, null, null, null, null);
             ventanaTraslado.crearContenidoCentral(null);
         }
         
-        private void cambiarConsultantregas(int reduccionX, int reduccionY){
-            establecerFondoUnico(reduccionX, Pos.TOP_LEFT);
+        private void cambiarConsultantregas(){
+            establecerFondoUnico(Pos.TOP_LEFT);
             
             ContenidoBusqueda ventanaConsultaEntrega = new ContenidoBusqueda(anchoVentana - reduccionX - 40, altoVentana - reduccionY - 10, titulo1, titulo2);
             Pane pane = new Pane();
@@ -309,8 +306,8 @@ public class View_PersonalCaja extends Ventana{
             pane1.getChildren().add(pane);
         }
         
-        private void cambiarPefilCliente(int reduccionX, Cliente cliente){
-            establecerFondoUnico(reduccionX, Pos.TOP_LEFT);
+        private void cambiarPefilCliente(Cliente cliente){
+            establecerFondoUnico(Pos.TOP_LEFT);
             
             ContenidoPerfil ventanaTraslado= new ContenidoPerfil(reduccionX, 0, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior, cliente);
             ventanaTraslado.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
@@ -318,11 +315,11 @@ public class View_PersonalCaja extends Ventana{
             ventanaTraslado.crearContenidoCentral(null);
         }
         
-        private void establecerFondoUnico(int reduccionx, Pos pos){
+        private void establecerFondoUnico(Pos pos){
             limpiarVentana();
             colunma1.getChildren().add(pane1);
             paneCentral.getChildren().addAll(colunma1);
-            pane1.setPrefWrapLength(anchoVentana - reduccionx);
+            pane1.setPrefWrapLength(anchoVentana - reduccionX);
             generarsecciones(pane1, pos);
         }
         

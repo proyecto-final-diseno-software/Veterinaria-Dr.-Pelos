@@ -5,18 +5,24 @@
  */
 package view.contenido;
 
+import controladores.Ctr_Personal_Caja;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
+import javafx.scene.text.FontWeight;
+import modelo.Cliente;
 import modelo.Detalle_Venta;
 import modelo.Detalle_VentaProducto;
 import modelo.Detalle_VentaServicio;
+import modelo.Personal_Caja;
 import modelo.Venta;
 import view.tool.BotonTool;
+import view.tool.BoxTextTool;
 import view.tool.TableTool;
 import view.tool.TableVentaTool;
 import view.tool.TextFieldTool;
@@ -27,74 +33,104 @@ import view.tool.Tool;
  * @author ADMIN
  */
 public class ContenidoVentas extends Contenido implements ContenidoCentral{
+    private Venta nuevaVenta;
+    private Ctr_Personal_Caja ctr;
+    Personal_Caja personal;
     
-    public ContenidoVentas(int reduccionx, int reduccionY, int anchoVentana, int altoVentana, int anchoColunma1, int anchoColunma2, int anchoLateral, int altoSuperior){
+    public ContenidoVentas(int reduccionx, int reduccionY, int anchoVentana, int altoVentana, int anchoColunma1, int anchoColunma2, int anchoLateral, int altoSuperior, Personal_Caja personal){
         super(reduccionx, reduccionY, anchoVentana, altoVentana, anchoColunma1, anchoColunma2, anchoLateral, altoSuperior);
+        this.personal = personal;
     }
 
     @Override
     public void crearContenidoCentral(List<Tool> toolUsados) {
+        ctr = new Ctr_Personal_Caja();
+        
         List<Detalle_Venta> itemsCarrito = new ArrayList<>();
-            Venta nuevaVenta = new Venta();
+        nuevaVenta = new Venta();
+        
+        nuevaVenta.setPersonalCaja(personal);
+        
+        TableVentaTool tablaPago = new TableVentaTool(anchoColunma2, titulo3);
+        nuevaVenta.calcularMontoApagar(itemsCarrito);
+        tablaPago.actualizarMonto(nuevaVenta.getSubtotal());
+        
+        List<String> lista = new ArrayList<>();
+        lista.add("Nombre"); lista.add("Precio"); lista.add("Cantidad"); lista.add("Total");
+        TableTool tablaRegistro = new TableTool(anchoColunma1 - 100, lista, "No hay articulos en el carrito", titulo3);
+        
+        HBox secionBuscador = new HBox();
+        
+        TextFieldTool textFieldBuscador = new TextFieldTool("Buscar Producto" ,titulo2, Pos.CENTER, 3 * anchoColunma1 / 5, 44);
+        BotonTool botonBuscar = new BotonTool("Buscar", titulo2, 130, 44, ColorOscuro);
+        botonBuscar.setOnMousePressed(buscarArticulo -> {
+            BotonTool cerrar = new BotonTool("X", titulo2, titulo2 * 2, titulo2 * 2, Color.RED);
             
-            TableVentaTool tablaPago = new TableVentaTool(anchoColunma2, titulo3);
-            tablaPago.actualizarMonto(calcularMontoApagar(itemsCarrito));
+            ContenidoBusqueda ventana_busqueda = new ContenidoBusqueda(anchoVentana - reduccionx - 10, altoVentana - reduccionY - 10, titulo2, cerrar, itemsCarrito);
             
-            List<String> lista = new ArrayList<>();
-            lista.add("Nombre"); lista.add("Precio"); lista.add("Cantidad"); lista.add("Total");
-            TableTool tablaRegistro = new TableTool(anchoColunma1 - 100, lista, "No hay articulos en el carrito", titulo3);
-            
-            HBox ssecionBuscador = new HBox();
-            
-            TextFieldTool textFieldBuscador = new TextFieldTool("Buscar Producto" ,titulo2, Pos.CENTER, 3 * anchoColunma1 / 5, 44);
-            BotonTool botonBuscar = new BotonTool("Buscar", titulo2, 130, 44, ColorOscuro);
-            botonBuscar.setOnMousePressed(buscarArticulo -> {
-                BotonTool cerrar = new BotonTool("X", titulo2, titulo2 * 2, titulo2 * 2, Color.RED);
-                
-                ContenidoBusqueda ventana_busqueda = new ContenidoBusqueda(anchoVentana - reduccionx - 10, altoVentana - reduccionY - 10, titulo2, cerrar, itemsCarrito);
-                
-                cerrar.setOnMousePressed(cerrar_ventana -> {
-                    paneFondo.getChildren().remove(ventana_busqueda);
-                    insertarItems(itemsCarrito, tablaRegistro, tablaPago);
-                    tablaPago.actualizarMonto(calcularMontoApagar(itemsCarrito));
-                });
-                
-                paneFondo.getChildren().add(ventana_busqueda);
-                
-                ventana_busqueda.setTranslateX(15);
-                ventana_busqueda.setTranslateY(5);
+            cerrar.setOnMousePressed(cerrar_ventana -> {
+                paneFondo.getChildren().remove(ventana_busqueda);
+                insertarItems(itemsCarrito, tablaRegistro, tablaPago);
+                nuevaVenta.calcularMontoApagar(itemsCarrito);
+                tablaPago.actualizarMonto(nuevaVenta.getSubtotal());
             });
             
-            HBox ssecionBuscadorCliente = new HBox();
+            paneFondo.getChildren().add(ventana_busqueda);
             
-            TextFieldTool textFieldBuscadorCliente = new TextFieldTool("Buscar Cliente" ,titulo2, Pos.CENTER, 3 * anchoColunma2 / 6, 40);
-            BotonTool botonBuscarCliente = new BotonTool("Buscar", titulo2 - 1, 90, 40, ColorOscuro);
-            botonBuscarCliente.setOnMousePressed(buscarCliente -> {
-                System.out.println("Buscando Cliente" + ((String) textFieldBuscadorCliente.getValue()));
-            });
+            ventana_busqueda.setTranslateX(15);
+            ventana_busqueda.setTranslateY(5);
+        });
             
-            ssecionBuscador.getChildren().addAll(textFieldBuscador, botonBuscar);
+        VBox paneCliente = new VBox(10);
+        paneCliente.setAlignment(Pos.CENTER);
+        
+        VBox dataCliente = new VBox(5);
+        
+        HBox ssecionBuscadorCliente = new HBox();
+        
+        TextFieldTool textFieldBuscadorCliente = new TextFieldTool("Buscar Cliente" ,titulo2, Pos.CENTER, 3 * anchoColunma2 / 6, 40);
+        BotonTool botonBuscarCliente = new BotonTool("Buscar", titulo2 - 1, 90, 40, ColorOscuro);
+        botonBuscarCliente.setOnMousePressed(buscarCliente -> {
+            if(!textFieldBuscadorCliente.isEmplyTool()){
+                List<Cliente> clientes = ctr.retornarCliente((String) textFieldBuscadorCliente.getValue());
+                if(!clientes.isEmpty()){
+                    dataCliente.getChildren().clear();
+                    nuevaVenta.setCliente(clientes.get(0));
+                    BoxTextTool dataNombreCliente = new BoxTextTool("Nombre: " + clientes.get(0).getNombre(), Color.BLACK, titulo2, FontWeight.NORMAL);
+                    BoxTextTool dataCedulaCliente = new BoxTextTool("Cedula: " + clientes.get(0).getCedula(), Color.BLACK, titulo2, FontWeight.NORMAL);
+                    dataCliente.getChildren().addAll(dataNombreCliente, dataCedulaCliente);
+                }
+            }
+        });
+        
+        BotonTool botonConfirmarVenta = new BotonTool("Confirmar venta", titulo2 - 1, 200, 40, Color.GREEN);
+        botonConfirmarVenta.setOnMousePressed(validarVenta -> {
+            if(nuevaVenta.comprobarValidesDeVenta()){
+                System.out.println("lolis");
+                if(ctr.insertVenta(nuevaVenta)){
+                    guardarDetallesVenta(itemsCarrito);
+                }
+            }
+        });
             
-            ssecionBuscadorCliente.getChildren().addAll(textFieldBuscadorCliente, botonBuscarCliente);
-            
-            pane1.getChildren().add(ssecionBuscador);
-            pane2.getChildren().add(tablaRegistro);
-            pane3.getChildren().add(ssecionBuscadorCliente);
-            pane4.getChildren().add(tablaPago);
+        ssecionBuscadorCliente.getChildren().addAll(textFieldBuscadorCliente, botonBuscarCliente);
+        paneCliente.getChildren().addAll(ssecionBuscadorCliente, dataCliente);
+        
+        secionBuscador.getChildren().addAll(textFieldBuscador, botonBuscar);
+        pane1.getChildren().add(secionBuscador);
+        pane2.getChildren().add(tablaRegistro);
+        pane3.getChildren().add(paneCliente);
+        pane4.getChildren().addAll(tablaPago, botonConfirmarVenta);
     }
     
-    private long calcularMontoApagar(List<Detalle_Venta> itemsCarrito){
-            Iterator<Detalle_Venta> it = itemsCarrito.iterator();
-            
-            long monto = 0;
-            
-            while(it.hasNext()){
-                Detalle_Venta det = it.next();
-                monto += det.calcularPrecio();
-            }
-            
-            return monto;
+    private void guardarDetallesVenta(List<Detalle_Venta> itemsCarrito){
+        Iterator<Detalle_Venta> it = itemsCarrito.iterator();
+        
+        while(it.hasNext()){
+            Detalle_Venta det = it.next();
+            ctr.guardarDetalleVenta(det);
         }
+    }
         
         private void insertarItems(List<Detalle_Venta> itemsCarrito, TableTool table, TableVentaTool tablaPago){
             table.limpiarContenido();
@@ -133,14 +169,16 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
                         detalleArticulo.removerPanel();
                         detalleArticulo.setCantidad();
                         insertarItems(itemsCarrito, table, tablaPago);
-                        tablaPago.actualizarMonto(calcularMontoApagar(itemsCarrito));
+                        nuevaVenta.calcularMontoApagar(itemsCarrito);
+                        tablaPago.actualizarMonto(nuevaVenta.getSubtotal());
                     });
                     
                     botonEliminar.setOnMousePressed(eleiminarDeCarrito -> {
                         detalleArticulo.removerPanel();
                         itemsCarrito.remove(det);
                         insertarItems(itemsCarrito, table, tablaPago);
-                        tablaPago.actualizarMonto(calcularMontoApagar(itemsCarrito));
+                        nuevaVenta.calcularMontoApagar(itemsCarrito);
+                        tablaPago.actualizarMonto(nuevaVenta.getSubtotal());
                     });
                 });
                 

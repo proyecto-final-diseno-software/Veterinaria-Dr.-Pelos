@@ -6,6 +6,8 @@
 package modelo;
 
 import java.time.LocalDate;
+import java.util.List;
+import java.util.Iterator;
 
 /**
  *
@@ -20,6 +22,7 @@ public class Venta {
     private double descuento;
     private Personal_Caja personalCaja;
     private Forma_pago forma_pago_ID;
+    private Cliente cliente;
     
     public double calcularMonto(){
         if(descuento >0){
@@ -85,7 +88,42 @@ public class Venta {
         this.descuento = descuento;
     }
     
+    public void calcularMontoApagar(List<Detalle_Venta> itemsCarrito){
+        Iterator<Detalle_Venta> it = itemsCarrito.iterator();
+        
+        double monto = 0;
+        
+        while(it.hasNext()){
+            Detalle_Venta det = it.next();
+            monto += det.calcularPrecio();
+        }
+        
+        this.setSubtotal(monto);
+    }
     
+    public boolean comprobarValidesDeVenta(){
+        if(this.cliente == null)
+            return false;
+        if(this.subtotal == 0)
+            return false;
+        return this.personalCaja != null;
+    }
+
+    public Forma_pago getForma_pago_ID() {
+        return forma_pago_ID;
+    }
+
+    public void setForma_pago_ID(Forma_pago forma_pago_ID) {
+        this.forma_pago_ID = forma_pago_ID;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
     
     
 }
