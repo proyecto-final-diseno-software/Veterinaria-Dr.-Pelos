@@ -32,6 +32,7 @@ import view.tool.Tool;
 public class ContenidoTraslado extends Parent{
     private int titulo2;
     private Color ColorOscuro;
+    
     private Ctr_Personal_Caja ctrCaja;
     
     private List<Tool> toolUsados;
@@ -42,8 +43,14 @@ public class ContenidoTraslado extends Parent{
     
     private TableTool tableMascotas;
     
+    private List<Mascota> mascotasCliente;
+    
+    private BoxTextTool error;
+    
     public ContenidoTraslado(int reduccionx, String tipo, String cabeceraField, int titulo1, int titulo2, Color ColorOscuro, int anchoVentana){
         mascotasATrasportar = new ArrayList<>();
+        
+        this.error = new BoxTextTool("Hubo un error con el estado de esta mascota", Color.RED, titulo2, FontWeight.BOLD);
         
         this.titulo2 = titulo2;
         this.ColorOscuro = ColorOscuro;
@@ -99,14 +106,14 @@ public class ContenidoTraslado extends Parent{
         
         tableMascotas = new TableTool(ancho, datosMascotas, "No hay mascotas disponibles",titulo2);
         
-        List<Mascota> mascotasCliente = ctrCaja.selectMascotasCliente(cliente);
+        mascotasCliente = ctrCaja.selectMascotasCliente(cliente);
         
-        anadirMascotasTabla(mascotasCliente);
+        anadirMascotasTabla();
         
         paneIngresoDatos.getChildren().addAll(tableMascotas);
     }
     
-    private void anadirMascotasTabla(List<Mascota> mascotasCliente){
+    private void anadirMascotasTabla(){
         tableMascotas.limpiarContenido();
         
         ListIterator<Mascota> it = mascotasCliente.listIterator();
@@ -119,37 +126,43 @@ public class ContenidoTraslado extends Parent{
                 case "Translado a sucursal":
                     accionBoton = new BotonTool("Finalizar Traslado", titulo2 - 1, 200, 40, ColorOscuro);
                     accionBoton.setOnMousePressed(cambiarEstado -> {
-                        mas.setEstado("Sucursal");
-                        anadirMascotasTabla(mascotasCliente);
+                        cambiarEstado(mas, "Sucursal");
                     });
                     break;
                 case "Translado a domicilio":
                     accionBoton = new BotonTool("Finalizar Traslado", titulo2 - 1, 200, 40, ColorOscuro);
                     accionBoton.setOnMousePressed(cambiarEstado -> {
-                        mas.setEstado("Domicilio");
-                        anadirMascotasTabla(mascotasCliente);
+                        cambiarEstado(mas, "Domicilio");
                     });
                     break;
                 case "Sucursal":
                     accionBoton = new BotonTool("Transladar domicilio", titulo2 - 1, 200, 40, Color.BLUE);
                     accionBoton.setOnMousePressed(cambiarEstado -> {
-                        mas.setEstado("Translado a domicilio");
-                        anadirMascotasTabla(mascotasCliente);
+                        cambiarEstado(mas, "Translado a domicilio");
                     });
                     break;
                 case "Domicilio":
                     accionBoton = new BotonTool("Transladar sucursal", titulo2 - 1, 200, 40, Color.GREEN);
                     accionBoton.setOnMousePressed(cambiarEstado -> {
-                        mas.setEstado("Translado a sucursal");
-                        anadirMascotasTabla(mascotasCliente);
+                        cambiarEstado(mas, "Translado a sucursal");
                     });
                     break;
                 default:
                     accionBoton = new BotonTool("Error", titulo2 , 200, 40, Color.RED);
                     break;
             }
-            
             tableMascotas.anadirItem(mas.retornarAllData(), accionBoton);
         }
+    }
+    
+    private void cambiarEstado(Mascota mas, String nuevoEstado){
+        paneIngresoDatos.getChildren().remove(error);
+        
+        if(ctrCaja.setEstadoMascota(mas)){
+            mas.setEstado(nuevoEstado);
+            anadirMascotasTabla();
+        } else 
+            paneIngresoDatos.getChildren().add(error);
+        
     }
 }

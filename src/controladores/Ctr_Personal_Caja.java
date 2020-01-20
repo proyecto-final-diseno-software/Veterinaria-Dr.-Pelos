@@ -51,6 +51,11 @@ public class Ctr_Personal_Caja {
         } 
     }
     
+    //actualiza el estado de la mascota
+    public boolean setEstadoMascota(Mascota mas){
+        return false;
+    }
+    
     private boolean insertCotizacion(Connection con, Cotizacion c){
         try {
             PreparedStatement ps = con.prepareStatement("insert into venta(venta_ID,fecha,n_factura,sub_total,total,descuento,personal_cajas_ID, forma_pago_ID) values(?,?,?,?,?,?,?,?);");

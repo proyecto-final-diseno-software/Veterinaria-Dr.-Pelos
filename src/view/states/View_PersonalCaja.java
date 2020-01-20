@@ -30,6 +30,7 @@ import modelo.Cliente;
 import modelo.Detalle_Venta;
 import modelo.Detalle_VentaProducto;
 import modelo.Detalle_VentaServicio;
+import modelo.Venta;
 import view.tool.BotonTool;
 import view.tool.BoxTextTool;
 import view.tool.TextFieldTool;
@@ -40,6 +41,7 @@ import view.contenido.ContenidoBusqueda;
 import view.contenido.ContenidoEspecificarDetalle;
 import view.contenido.ContenidoPerfil;
 import view.contenido.ContenidoTraslado;
+import view.tool.TableVentaTool;
 
 /**
  *
@@ -262,6 +264,7 @@ public class View_PersonalCaja extends Ventana{
         
         private void cambiarContenidoVentas(int reduccionx, int reduccionY){
             List<Detalle_Venta> itemsCarrito = new ArrayList<>();
+            Venta nuevaVenta = new Venta();
             
             limpiarVentana();
             
@@ -283,7 +286,7 @@ public class View_PersonalCaja extends Ventana{
             generarsecciones(pane3, Pos.CENTER);
             generarsecciones(pane4, Pos.CENTER);
             
-            TableTool tablaPago = new TableTool(anchoColunma2, titulo3);
+            TableVentaTool tablaPago = new TableVentaTool(anchoColunma2, titulo3);
             tablaPago.actualizarMonto(calcularMontoApagar(itemsCarrito));
             
             List<String> lista = new ArrayList<>();
@@ -342,7 +345,7 @@ public class View_PersonalCaja extends Ventana{
             return monto;
         }
         
-        private void insertarItems(List<Detalle_Venta> itemsCarrito, TableTool table, TableTool tablaPago){
+        private void insertarItems(List<Detalle_Venta> itemsCarrito, TableTool table, TableVentaTool tablaPago){
             table.limpiarContenido();
             
             ListIterator<Detalle_Venta> it = itemsCarrito.listIterator();

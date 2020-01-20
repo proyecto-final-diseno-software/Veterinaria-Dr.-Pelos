@@ -6,9 +6,7 @@
 package view.tool;
 
 import java.util.List;
-import java.util.ListIterator;
 import javafx.geometry.Pos;
-import javafx.scene.layout.HBox;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
@@ -43,7 +41,7 @@ public class TableTool extends StackPane implements Tool{
        this.altura = 35;
        this.titulo3 = titulo3;
        
-       Fila cabecera = new Fila(lista , anchoColumna, altura, colorCabecera, Color.rgb(200, 200, 200),Color.BLACK);
+       FilaTool cabecera = new FilaTool(lista , anchoColumna, altura, colorCabecera, Color.rgb(200, 200, 200), Color.BLACK, titulo3);
        
        mensaje = new BoxTextTool(mensajeCentral, anchoColumna, 75, Color.WHITE, null, Color.rgb(234, 200, 65), 30, FontWeight.NORMAL, Pos.CENTER);
        
@@ -54,28 +52,17 @@ public class TableTool extends StackPane implements Tool{
        getChildren().add(panelCentral);
     }
     
-    public TableTool(int ancho, int titulo1){
-        panelCentral = new VBox();
-       
-        this.ancho = ancho;
-        this.anchoColumna = ancho / 2 - 15;
-        this.altura = 55;
-        this.titulo3 = titulo1;
-       
-        getChildren().add(panelCentral);
+    public void anadirItem(List<String> listData, BotonTool boton){
+        if(panelProductos.getChildren().contains(mensaje))
+            panelProductos.getChildren().clear();
+        
+        panelProductos.getChildren().add(new FilaTool(listData, boton, altura, anchoColumna, colorElementos, titulo3));
     }
     
-    public void actualizarMonto(long monto){
-        panelCentral.getChildren().clear();
-        
-        Fila fila1 = new Fila("Descuento a todos los\nproductos %:", "Establecer Descuento", anchoColumna, altura, Color.WHITE, Color.RED);
-        Fila fila2 = new Fila("Monto fijo de descuento:", "Establecer Descuento",anchoColumna, altura, Color.WHITE, Color.RED);
-        Fila fila3 = new Fila("Subtotal:", Long.toString(monto), anchoColumna, altura, Color.rgb(241, 255, 236), Color.BLACK );
-        Fila fila4 = new Fila("Total:", Long.toString(monto), anchoColumna, altura, Color.WHITE, Color.BLACK);
-       
-        panelCentral.getChildren().addAll(fila1, fila2, fila3, fila4);
+    public void limpiarContenido(){
+        panelProductos.getChildren().clear();
     }
-
+    
     @Override
     public boolean isEmplyTool() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -84,62 +71,5 @@ public class TableTool extends StackPane implements Tool{
     @Override
     public Object getValue() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    private class Fila extends StackPane{
-        private HBox pane;
-        
-        public Fila(List<String> elementos, int ancho,int altura, Color colorFondo,Color ColorBordes, Color colorLetras){
-            pane = new HBox();
-            
-            ListIterator<String> it = elementos.listIterator();
-            
-            while(it.hasNext()){
-                BoxTextTool nuevoCuadro = new BoxTextTool( it.next(), ancho, altura,  colorFondo, ColorBordes, colorLetras, titulo3, FontWeight.NORMAL, Pos.CENTER);
-                pane.getChildren().add(nuevoCuadro);
-            }
-            
-            getChildren().add(pane);
-        }
-        
-        public Fila(String dato, String elemento,int ancho, int altura, Color colorFondo, Color colorLetras){
-            pane = new HBox();
-            
-            BoxTextTool cuadroDato = new BoxTextTool(dato, ancho, altura,  colorFondo, null, Color.BLACK, titulo3, FontWeight.NORMAL, Pos.CENTER_LEFT);
-            BoxTextTool cuadroElemento = new BoxTextTool(elemento, ancho, altura,  colorFondo, null, colorLetras, titulo3, FontWeight.NORMAL, Pos.CENTER_RIGHT);
-            
-            pane.getChildren().addAll(cuadroDato, cuadroElemento);
-            
-            getChildren().add(pane);
-        }
-        
-        public Fila(List<String> elementos, BotonTool boton){
-            pane = new HBox();
-            
-            ListIterator<String> it = elementos.listIterator();
-            
-            while(it.hasNext()){
-                BoxTextTool nuevoCuadro = new BoxTextTool( it.next(), anchoColumna + 1, altura,  colorElementos, null, Color.BLACK, titulo3, FontWeight.NORMAL, Pos.CENTER);
-                pane.getChildren().add(nuevoCuadro);
-            }     
-            
-            pane.setAlignment(Pos.CENTER_LEFT);
-            
-            if(boton != null)
-                pane.getChildren().add(boton);
-            
-            getChildren().add(pane);
-        }
-    }
-    
-    public void anadirItem(List<String> listData, BotonTool boton){
-        if(panelProductos.getChildren().contains(mensaje))
-            panelProductos.getChildren().clear();
-        
-        panelProductos.getChildren().add(new Fila(listData, boton));
-    }
-    
-    public void limpiarContenido(){
-        panelProductos.getChildren().clear();
     }
 }

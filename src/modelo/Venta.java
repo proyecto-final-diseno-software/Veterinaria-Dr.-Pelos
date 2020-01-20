@@ -14,12 +14,12 @@ import java.time.LocalDate;
 public class Venta {
     private int id_venta;
     private LocalDate fecha;
+    private int numeroFactura;
+    private double subtotal;
     private double total;
     private double descuento;
-    private double subtotal;
-    private int numeroFactura;
     private Personal_Caja personalCaja;
-    
+    private Forma_pago forma_pago_ID;
     
     public double calcularMonto(){
         if(descuento >0){
@@ -52,9 +52,6 @@ public class Venta {
     public void setPersonalCaja(Personal_Caja personalCaja) {
         this.personalCaja = personalCaja;
     }
-
-    
-    
 
     public int getId_venta() {
         return id_venta;
