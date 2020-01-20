@@ -41,6 +41,7 @@ import view.contenido.ContenidoBusqueda;
 import view.contenido.ContenidoEspecificarDetalle;
 import view.contenido.ContenidoPerfil;
 import view.contenido.ContenidoTraslado;
+import view.contenido.ContenidoVentas;
 import view.tool.TableVentaTool;
 
 /**
@@ -50,7 +51,7 @@ import view.tool.TableVentaTool;
 public class View_PersonalCaja extends Ventana{
     private PrincipalContenedorCaja ventana;
     
-     private Ctr_Personal_Caja contolCaja;
+    private Ctr_Personal_Caja contolCaja;
 
     @Override
     void mostrar_ventana(Stage primaryStage) {
@@ -252,26 +253,20 @@ public class View_PersonalCaja extends Ventana{
             
             botonesPane.getChildren().addAll(cancelarCliente, guardarCliente);
             
-            int mitadVentanaActiva = (anchoVentana - reduccionx) / 2 - 25;
-            
-            ContenidoAnadirUsuario ventanaAnadirUsuario = new ContenidoAnadirUsuario(mitadVentanaActiva, titulo1, titulo2);
+            ContenidoAnadirUsuario ventanaAnadirUsuario = new ContenidoAnadirUsuario(reduccionx, 0, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior);
+            ventanaAnadirUsuario.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
+            ventanaAnadirUsuario.establecerPaneles(pane1, pane2, pane3, pane4, paneFondo);
+            ventanaAnadirUsuario.contenidoAdicional((anchoVentana - reduccionx) / 2 - 25);
             ventanaAnadirUsuario.crearContenidoCentral(toolUsados);
             ventanaAnadirUsuario.anadirSellecionInferior(botonesPane);
             ventanaAnadirUsuario.anadirSellecionInferior(mensajeError);
-            
-            pane1.getChildren().add(generarPaneCentral(ventanaAnadirUsuario));
         }
         
         private void cambiarContenidoVentas(int reduccionx, int reduccionY){
-            List<Detalle_Venta> itemsCarrito = new ArrayList<>();
-            Venta nuevaVenta = new Venta();
-            
             limpiarVentana();
             
             colunma1.getChildren().addAll(pane1, pane2);
             colunma2.getChildren().addAll(pane3, pane4);
-            
-            paneCentral.getChildren().addAll(colunma1, colunma2);
             
             int anchoColunma1 = 2 * (anchoVentana - reduccionx) / 3;
             int anchoColunma2 = (anchoVentana - reduccionx) / 3;
@@ -286,147 +281,41 @@ public class View_PersonalCaja extends Ventana{
             generarsecciones(pane3, Pos.CENTER);
             generarsecciones(pane4, Pos.CENTER);
             
-            TableVentaTool tablaPago = new TableVentaTool(anchoColunma2, titulo3);
-            tablaPago.actualizarMonto(calcularMontoApagar(itemsCarrito));
+            ContenidoVentas contenVentas = new ContenidoVentas(reduccionx, reduccionY, anchoVentana, altoVentana, anchoColunma1, anchoColunma2, anchoLateral, altoSuperior);
+            contenVentas.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
+            contenVentas.establecerPaneles(pane1, pane2, pane3, pane4, paneFondo);
+            contenVentas.crearContenidoCentral(new ArrayList<>());
             
-            List<String> lista = new ArrayList<>();
-            lista.add("Nombre"); lista.add("Precio"); lista.add("Cantidad"); lista.add("Total");
-            TableTool tablaRegistro = new TableTool(anchoColunma1 - 100, lista, "No hay articulos en el carrito", titulo3);
-            
-            HBox ssecionBuscador = new HBox();
-            
-            TextFieldTool textFieldBuscador = new TextFieldTool("Buscar Producto" ,titulo2, Pos.CENTER, 3 * anchoColunma1 / 5, 44);
-            BotonTool botonBuscar = new BotonTool("Buscar", titulo2, 130, 44, ColorOscuro);
-            botonBuscar.setOnMousePressed(buscarArticulo -> {
-                BotonTool cerrar = new BotonTool("X", titulo2, titulo2 * 2, titulo2 * 2, Color.RED);
-                
-                ContenidoBusqueda ventana_busqueda = new ContenidoBusqueda(anchoVentana - reduccionx - 10, altoVentana - reduccionY - 10, titulo2, cerrar, itemsCarrito);
-                
-                cerrar.setOnMousePressed(cerrar_ventana -> {
-                    getChildren().remove(ventana_busqueda);
-                    insertarItems(itemsCarrito, tablaRegistro, tablaPago);
-                    tablaPago.actualizarMonto(calcularMontoApagar(itemsCarrito));
-                });
-                
-                getChildren().add(ventana_busqueda);
-                
-                ventana_busqueda.setTranslateX(reduccionx - 20);
-                ventana_busqueda.setTranslateY(reduccionY - 20);
-            });
-            
-            HBox ssecionBuscadorCliente = new HBox();
-            
-            TextFieldTool textFieldBuscadorCliente = new TextFieldTool("Buscar Cliente" ,titulo2, Pos.CENTER, 3 * anchoColunma2 / 6, 40);
-            BotonTool botonBuscarCliente = new BotonTool("Buscar", titulo2 - 1, 90, 40, ColorOscuro);
-            botonBuscarCliente.setOnMousePressed(buscarCliente -> {
-                System.out.println("Buscando Cliente" + ((String) textFieldBuscadorCliente.getValue()));
-            });
-            
-            ssecionBuscador.getChildren().addAll(textFieldBuscador, botonBuscar);
-            
-            ssecionBuscadorCliente.getChildren().addAll(textFieldBuscadorCliente, botonBuscarCliente);
-            
-            pane1.getChildren().add(ssecionBuscador);
-            pane2.getChildren().add(tablaRegistro);
-            pane3.getChildren().add(ssecionBuscadorCliente);
-            pane4.getChildren().add(tablaPago);
+            paneCentral.getChildren().addAll(colunma1, colunma2);
         }
-        
-        private long calcularMontoApagar(List<Detalle_Venta> itemsCarrito){
-            Iterator<Detalle_Venta> it = itemsCarrito.iterator();
-            
-            long monto = 0;
-            
-            while(it.hasNext()){
-                Detalle_Venta det = it.next();
-                monto += det.calcularPrecio();
-            }
-            
-            return monto;
-        }
-        
-        private void insertarItems(List<Detalle_Venta> itemsCarrito, TableTool table, TableVentaTool tablaPago){
-            table.limpiarContenido();
-            
-            ListIterator<Detalle_Venta> it = itemsCarrito.listIterator();
-
-            while(it.hasNext()){
-                Detalle_Venta det = it.next();
-                
-                List<String> dataItem = new ArrayList<>();
-                
-                if(det instanceof Detalle_VentaProducto ){
-                    dataItem.add(((Detalle_VentaProducto) det).getProducto().getNombre());
-                    dataItem.add(Double.toString(((Detalle_VentaProducto) det).getProducto().getPrecioUnitario()));
-                    dataItem.add(Integer.toString(det.getCantidad()));
-                    dataItem.add(Double.toString(((Detalle_VentaProducto) det).calcularPrecio()));
-                } else if(det instanceof Detalle_VentaServicio){
-                    dataItem.add(((Detalle_VentaServicio) det).getServicio().getNombre());
-                    dataItem.add(Double.toString(((Detalle_VentaServicio) det).getServicio().getPrecio()));
-                    dataItem.add(Integer.toString(det.getCantidad()));
-                    dataItem.add(Double.toString(((Detalle_VentaServicio) det).calcularPrecio()));
-                }
-                
-                BotonTool especificarDetalles = new BotonTool("Editar", titulo2, 100, titulo2 + 10, ColorOscuro);
-                especificarDetalles.setOnMousePressed(cambiarDeatalle -> {
-                    BotonTool botonSacarDetalles = new BotonTool("Aceptar", titulo2 - 1, 90, 40, ColorOscuro);
-                    BotonTool botonEliminar = new BotonTool("Eliminar", titulo2 - 1, 90, 40, Color.RED);
-                    
-                    ContenidoEspecificarDetalle detalleArticulo = new ContenidoEspecificarDetalle(anchoVentana - (anchoLateral + 15) , altoVentana - (altoSuperior + 25),titulo1, titulo2, det);
-                    detalleArticulo.crearContenidoCentral(new ArrayList<>());
-                    detalleArticulo.anadirBotones(botonSacarDetalles, botonEliminar);
-                    
-                    botonSacarDetalles.setOnMousePressed(eliminarVnetanEmerrgente -> {
-                        paneFondo.getChildren().remove(detalleArticulo);
-                        detalleArticulo.setCantidad();
-                        insertarItems(itemsCarrito, table, tablaPago);
-                        tablaPago.actualizarMonto(calcularMontoApagar(itemsCarrito));
-                    });
-                    
-                    botonEliminar.setOnMousePressed(eleiminarDeCarrito -> {
-                        paneFondo.getChildren().remove(detalleArticulo);
-                        itemsCarrito.remove(det);
-                        insertarItems(itemsCarrito, table, tablaPago);
-                        tablaPago.actualizarMonto(calcularMontoApagar(itemsCarrito));
-                    });
-                    
-                    
-                    paneFondo.getChildren().add(detalleArticulo);
-                });
-                
-                table.anadirItem(dataItem, especificarDetalles);
-            }
-    }
         
         private void cambiarContenidoTraslado(int reduccionx, String tipo, String cabeceraField ){
             establecerFondoUnico(reduccionx, Pos.CENTER_LEFT);
             
-            ContenidoTraslado ventanaTraslado= new ContenidoTraslado(reduccionx, tipo, cabeceraField, titulo1, titulo2, ColorOscuro, anchoVentana);
-            
-            pane1.getChildren().add(generarPaneCentral(ventanaTraslado));
+            ContenidoTraslado ventanaTraslado= new ContenidoTraslado(reduccionx, 0, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior);
+            ventanaTraslado.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
+            ventanaTraslado.establecerDatosAdicionales(tipo, cabeceraField);
+            ventanaTraslado.establecerPaneles(pane1, null, null, null, null);
+            ventanaTraslado.crearContenidoCentral(null);
         }
         
         private void cambiarConsultantregas(int reduccionX, int reduccionY){
             establecerFondoUnico(reduccionX, Pos.TOP_LEFT);
             
             ContenidoBusqueda ventanaConsultaEntrega = new ContenidoBusqueda(anchoVentana - reduccionX - 40, altoVentana - reduccionY - 10, titulo1, titulo2);
-            
-            pane1.getChildren().add(generarPaneCentral(ventanaConsultaEntrega));
+            Pane pane = new Pane();
+            pane.getChildren().add(ventanaConsultaEntrega);
+            pane.setTranslateX(20);
+            pane1.getChildren().add(pane);
         }
         
         private void cambiarPefilCliente(int reduccionX, Cliente cliente){
             establecerFondoUnico(reduccionX, Pos.TOP_LEFT);
-            ContenidoPerfil ventanaPerfilCliente= new ContenidoPerfil(anchoVentana - reduccionX,titulo1, titulo2, cliente);
-            ventanaPerfilCliente.crearContenidoCentral(null);
-            pane1.getChildren().add(generarPaneCentral(ventanaPerfilCliente));
-        }
-        
-        private Pane generarPaneCentral(Parent parent){
-            Pane pane = new Pane();
-            pane.setTranslateX(20);
-            pane.getChildren().add(parent);
             
-            return pane;
+            ContenidoPerfil ventanaTraslado= new ContenidoPerfil(reduccionX, 0, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior, cliente);
+            ventanaTraslado.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
+            ventanaTraslado.establecerPaneles(pane1, null, null, null, null);
+            ventanaTraslado.crearContenidoCentral(null);
         }
         
         private void establecerFondoUnico(int reduccionx, Pos pos){
@@ -440,7 +329,6 @@ public class View_PersonalCaja extends Ventana{
         private void limpiarVentana(){
             colunma1.getChildren().clear();
             colunma2.getChildren().clear();
-            
             paneCentral.getChildren().clear();
         }
             

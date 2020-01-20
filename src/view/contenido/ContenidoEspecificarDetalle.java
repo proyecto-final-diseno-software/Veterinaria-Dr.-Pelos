@@ -28,12 +28,8 @@ import view.tool.Tool;
  *
  * @author ADMIN
  */
-public class ContenidoEspecificarDetalle extends Parent implements ContenidoCentral{
+public class ContenidoEspecificarDetalle extends Contenido implements ContenidoCentral{
     private final int anchoVentanaContenido;
-    private final int titulo1;
-    private final int titulo2;
-    private final int anchoVentana;
-    private final int altoVentana;
     
     private VBox paneIngresoDatos;
     private Pane paneCentral;
@@ -42,13 +38,10 @@ public class ContenidoEspecificarDetalle extends Parent implements ContenidoCent
     
     private TextFieldTool textFieldCantidad;
     
-    public ContenidoEspecificarDetalle(int anchoVentana, int altoVentana, int titulo1, int titulo2, Detalle_Venta det){
+    public ContenidoEspecificarDetalle(int reduccionx, int reduccionY, int anchoVentana, int altoVentana, int anchoColunma1, int anchoColunma2, int anchoLateral, int altoSuperior, Detalle_Venta det){
+        super(reduccionx, reduccionY, anchoVentana, altoVentana, anchoColunma1, anchoColunma2, anchoLateral, altoSuperior);
         this.anchoVentanaContenido = 300;
-        this.titulo1 = titulo1;
-        this.titulo2 = titulo2;
         this.det = det;
-        this.anchoVentana =anchoVentana;
-        this.altoVentana = altoVentana;
     }
     
     @Override
@@ -56,14 +49,12 @@ public class ContenidoEspecificarDetalle extends Parent implements ContenidoCent
         paneIngresoDatos = new VBox(20);
         paneIngresoDatos.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), new Insets(-20))));
         paneIngresoDatos.setAlignment(Pos.CENTER);
-        paneIngresoDatos.setTranslateX(anchoVentana/ 2 - anchoVentanaContenido / 2 );
-        paneIngresoDatos.setTranslateY(altoVentana / 2 - 200);
+        paneIngresoDatos.setTranslateX((anchoVentana - reduccionx + 20)/2 - 150);
+        paneIngresoDatos.setTranslateY((altoVentana - reduccionY + 20)/2 - 150);
         
         paneCentral = new Pane();
         
-        Rectangle bg = new Rectangle(anchoVentana, altoVentana);
-        bg.setTranslateX(-10);
-        bg.setTranslateY(-10);
+        Rectangle bg = new Rectangle(anchoVentana - reduccionx + 20, altoVentana - reduccionY + 20);
         bg.setFill(Color.WHITE);
         bg.setOpacity(0.5);
         
@@ -83,10 +74,9 @@ public class ContenidoEspecificarDetalle extends Parent implements ContenidoCent
         toolUsados.add(textFieldCantidad);
         
         paneIngresoDatos.getChildren().addAll(cabecera, primero,segundoPanel);
-        
         paneCentral.getChildren().addAll(bg, paneIngresoDatos);
         
-        getChildren().addAll(paneCentral);
+        this.paneFondo.getChildren().add(paneCentral);
     }
     
     public void anadirBotones(BotonTool botonAceptar,BotonTool botonEliminar){
@@ -98,5 +88,9 @@ public class ContenidoEspecificarDetalle extends Parent implements ContenidoCent
     public void setCantidad(){
         int nuevaCantidad = Integer.parseInt((String) textFieldCantidad.getValue());
         det.setCantidad(nuevaCantidad);
+    }
+    
+    public void removerPanel(){
+        this.paneFondo.getChildren().remove(paneCentral);
     }
 }

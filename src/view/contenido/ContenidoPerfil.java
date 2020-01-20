@@ -8,7 +8,6 @@ package view.contenido;
 import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
@@ -17,7 +16,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
 import modelo.Cliente;
-import view.tool.BotonTool;
 import view.tool.BoxTextTool;
 import view.tool.Tool;
 
@@ -25,11 +23,8 @@ import view.tool.Tool;
  *
  * @author ADMIN
  */
-public class ContenidoPerfil extends Parent implements ContenidoCentral{
-    private final int anchoVentanaConenido;
-    private final int titulo1;
-    private final int titulo2;
-    
+public class ContenidoPerfil extends Contenido implements ContenidoCentral{
+    private int anchoVentanaConenido;
     
     private VBox panelCentral;
     private HBox panelDatos;
@@ -38,22 +33,22 @@ public class ContenidoPerfil extends Parent implements ContenidoCentral{
     
     private Cliente cliente;
     
-    public ContenidoPerfil(int anchoVentanaConenido, int titulo1, int titulo2, Cliente cliente) {
-        this.anchoVentanaConenido = anchoVentanaConenido;
-        this.titulo1 = titulo1;
-        this.titulo2 = titulo2;
-        
+    public ContenidoPerfil(int reduccionx, int reduccionY, int anchoVentana, int altoVentana, int anchoColunma1, int anchoColunma2, int anchoLateral, int altoSuperior, Cliente cliente){
+        super(reduccionx, reduccionY, anchoVentana, altoVentana, anchoColunma1, anchoColunma2, anchoLateral, altoSuperior);
+        this.anchoVentanaConenido = anchoVentana - reduccionx;
         this.cliente = cliente;
     }
 
     @Override
     public void crearContenidoCentral(List<Tool> toolUsados) {
         panelCentral = new VBox(20);
+        panelCentral.setTranslateX(20);
         panelDatos = new HBox(10);
-        clunma1 = new VBox(15);
-        clunma2 = new VBox(15);
         panelDatos.setAlignment(Pos.CENTER_LEFT);
         panelDatos.setBackground(new Background(new BackgroundFill(Color.rgb(240, 240, 240), new CornerRadii(5), new Insets(-10))));
+        
+        clunma1 = new VBox(15);
+        clunma2 = new VBox(15);
         
         BoxTextTool cabeceraTexto = new BoxTextTool("Informacion cliente", Color.BLACK, titulo1, FontWeight.BOLD);
         
@@ -74,11 +69,11 @@ public class ContenidoPerfil extends Parent implements ContenidoCentral{
         
         panelCentral.getChildren().addAll(cabeceraTexto, panelDatos);
         
-        panelDatos.getChildren().addAll(clunma1, clunma2);
-        
         clunma1.getChildren().addAll(textoCedula, textoNombre, textoApellido, textoDireccion, textoTelefono);
         clunma2.getChildren().addAll(textoCedulaCliente, textoNombreCliente, textoApellidoCliente, textoDireccionCliente, textoTelefonoCliente);
         
-        getChildren().add(panelCentral);
+        panelDatos.getChildren().addAll(clunma1, clunma2);
+        
+        pane1.getChildren().add(panelCentral);
     }
 }

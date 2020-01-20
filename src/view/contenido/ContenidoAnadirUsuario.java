@@ -8,12 +8,12 @@ package view.contenido;
 import java.util.List;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
-import view.tool.BotonTool;
 import view.tool.BoxTextTool;
 import view.tool.TextFieldTool;
 import view.tool.Tool;
@@ -22,27 +22,32 @@ import view.tool.Tool;
  *
  * @author Gonzalez Eduardo
  */
-public class ContenidoAnadirUsuario extends Parent implements ContenidoCentral{
-    private final int anchoVentanaConenido;
-    private final int titulo1;
-    private final int titulo2;
+public class ContenidoAnadirUsuario extends Contenido implements ContenidoCentral{
+    private int anchoVentanaConenido;
     
     private VBox paneIngresoDatos;
     
-    public ContenidoAnadirUsuario(int anchoVentanaConenido, int titulo1, int titulo2){
+    public ContenidoAnadirUsuario(int reduccionx, int reduccionY, int anchoVentana, int altoVentana, int anchoColunma1, int anchoColunma2, int anchoLateral, int altoSuperior){
+        super(reduccionx, reduccionY, anchoVentana, altoVentana, anchoColunma1, anchoColunma2, anchoLateral, altoSuperior);
+        paneIngresoDatos = new VBox(20);
+    }
+    
+    public void contenidoAdicional(int anchoVentanaConenido){
         this.anchoVentanaConenido = anchoVentanaConenido;
-        this.titulo1 = titulo1;
-        this.titulo2 = titulo2;
     }
     
     public void anadirSellecionInferior(Pane pane){
         paneIngresoDatos.getChildren().add(pane);
     }
+    
+    @Override
+    public void establecerPaneles(FlowPane pane1, FlowPane pane2, FlowPane pane3, FlowPane pane4, Pane paneFondo){
+        this.pane1 = pane1;
+        paneIngresoDatos.setTranslateX(20);
+    }
 
     @Override
     public void crearContenidoCentral(List<Tool> toolUsados) {
-        paneIngresoDatos = new VBox(20);
-        
         HBox cabecera = new HBox(5);
         
         BoxTextTool cabeceraTexto = new BoxTextTool("Registro Cliente", Color.BLACK, titulo1, FontWeight.BOLD);
@@ -69,6 +74,6 @@ public class ContenidoAnadirUsuario extends Parent implements ContenidoCentral{
         
         paneIngresoDatos.getChildren().addAll(cabecera, primerPanel, segundoPanel, tercerPanel);
         
-        getChildren().add(paneIngresoDatos);
+        this.pane1.getChildren().add(paneIngresoDatos);
     }
 }

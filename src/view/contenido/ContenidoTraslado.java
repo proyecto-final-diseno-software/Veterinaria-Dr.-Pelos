@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
 import javafx.geometry.Pos;
-import javafx.scene.Parent;
+import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
@@ -29,38 +29,39 @@ import view.tool.Tool;
  *
  * @author Eduardo Gonzalez
  */
-public class ContenidoTraslado extends Parent{
-    private int titulo2;
-    private Color ColorOscuro;
-    
+public class ContenidoTraslado extends Contenido implements ContenidoCentral{
     private Ctr_Personal_Caja ctrCaja;
     
     private List<Tool> toolUsados;
+    private List<Mascota> mascotasCliente;
     
     private VBox paneIngresoDatos;
     
-    private List<Mascota> mascotasATrasportar;
-    
     private TableTool tableMascotas;
-    
-    private List<Mascota> mascotasCliente;
     
     private BoxTextTool error;
     
-    public ContenidoTraslado(int reduccionx, String tipo, String cabeceraField, int titulo1, int titulo2, Color ColorOscuro, int anchoVentana){
-        mascotasATrasportar = new ArrayList<>();
+    private String tipo;
+    private String cabeceraField;
+    
+    public ContenidoTraslado(int reduccionx, int reduccionY, int anchoVentana, int altoVentana, int anchoColunma1, int anchoColunma2, int anchoLateral, int altoSuperior){
+        super(reduccionx, reduccionY, anchoVentana, altoVentana, anchoColunma1, anchoColunma2, anchoLateral, altoSuperior);
         
         this.error = new BoxTextTool("Hubo un error con el estado de esta mascota", Color.RED, titulo2, FontWeight.BOLD);
-        
-        this.titulo2 = titulo2;
-        this.ColorOscuro = ColorOscuro;
-        
         this.ctrCaja = new Ctr_Personal_Caja();
         
         toolUsados = new ArrayList<>();
-        
         paneIngresoDatos = new VBox(20);
-        
+    }
+    
+    @Override
+    public void establecerPaneles(FlowPane pane1, FlowPane pane2, FlowPane pane3, FlowPane pane4, Pane paneFondo){
+        this.pane1 = pane1;
+        paneIngresoDatos.setTranslateX(20);
+    }
+    
+    @Override
+    public void crearContenidoCentral(List<Tool> toolUsados) {
         HBox cabecera = new HBox(5);
         BoxTextTool cabeceraTexto = new BoxTextTool(tipo, Color.BLACK, titulo1, FontWeight.BOLD);
         cabecera.getChildren().add(cabeceraTexto);
@@ -88,7 +89,12 @@ public class ContenidoTraslado extends Parent{
         
         paneIngresoDatos.getChildren().addAll(cabecera, primero, mensajeError);
         
-        getChildren().add(paneIngresoDatos);
+        pane1.getChildren().add(paneIngresoDatos);
+    }
+    
+    public void establecerDatosAdicionales(String tipo, String cabeceraField){
+        this.tipo = tipo;
+        this.cabeceraField = cabeceraField;
     }
     
     private void establecerTrasladoMascotas(int ancho, Cliente cliente){
@@ -97,6 +103,8 @@ public class ContenidoTraslado extends Parent{
         
         //toolUsados.add(escogerRuta);
         //toolUsados.add(escogerRepartidor);
+        
+        BoxTextTool cabeceraTexto = new BoxTextTool("Mascotas del usuario: " + cliente.getCedula(), Color.BLACK, titulo2, FontWeight.BOLD);
         
         List<String> datosMascotas = new ArrayList<>();
         datosMascotas.add("Codigo");datosMascotas.add("Nombre");
@@ -110,7 +118,7 @@ public class ContenidoTraslado extends Parent{
         
         anadirMascotasTabla();
         
-        paneIngresoDatos.getChildren().addAll(tableMascotas);
+        paneIngresoDatos.getChildren().addAll(cabeceraTexto, tableMascotas);
     }
     
     private void anadirMascotasTabla(){

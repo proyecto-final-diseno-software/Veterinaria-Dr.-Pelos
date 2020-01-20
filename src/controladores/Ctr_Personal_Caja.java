@@ -53,7 +53,7 @@ public class Ctr_Personal_Caja {
     
     //actualiza el estado de la mascota
     public boolean setEstadoMascota(Mascota mas){
-        return false;
+        return true;
     }
     
     private boolean insertCotizacion(Connection con, Cotizacion c){
