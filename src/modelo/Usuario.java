@@ -10,10 +10,12 @@ package modelo;
  * @author paula
  */
 public class Usuario extends Persona{
+    private String id_usuario;
     private String usuario;
     private String contrasena;
+    private Sucursal sucur;
     private boolean permiso_administrador;
-    private int id_usuario;
+    private Persona persona;
 
     public Usuario(String cedula, String nombre, String apellido) {
         super(cedula, nombre, apellido);
@@ -51,14 +53,12 @@ public class Usuario extends Persona{
         this.permiso_administrador = permiso_administrador;
     }
 
-    public int getId_usuario() {
+    public String getId_usuario() {
         return id_usuario;
     }
 
-    public void setId_usuario(int id_usuario) {
+    public void setId_usuario(String id_usuario) {
         this.id_usuario = id_usuario;
     }
-    
-    
     
 }

@@ -10,7 +10,10 @@ package modelo;
  * @author paula
  */
 public class Stock {
-    private int cantidad;
+    private int id_Stock;
+    private int stock;
+    private Producto producto;
+    private Sucursal sucur;
     
     public void actualizarStock(){
         

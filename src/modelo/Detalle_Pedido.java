@@ -10,6 +10,7 @@ package modelo;
  * @author paula
  */
 public class Detalle_Pedido {
+    private int id_detalleProducto;
     private int cantidad;
     private Producto p;
     

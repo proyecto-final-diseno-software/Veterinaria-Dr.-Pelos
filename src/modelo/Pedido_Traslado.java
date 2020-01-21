@@ -11,6 +11,7 @@ package modelo;
  */
 public class Pedido_Traslado extends Pedido{
     private int id_pedidoTraslado;
+    private Jefe_Bodega jefeBodega;
     
     
 }

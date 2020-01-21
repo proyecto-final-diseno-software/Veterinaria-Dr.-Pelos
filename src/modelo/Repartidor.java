@@ -9,8 +9,15 @@ package modelo;
  *
  * @author paula
  */
-public class Repartidor {
+public class Repartidor extends Persona{
     private String id_repetidor;
+    private String matricula_vehiculo;
+    private String telefono;
+    private Sucursal sucur;
+
+    public Repartidor(String cedula, String nombre, String apellido) {
+        super(cedula, nombre, apellido);
+    }
     
     public void asignarRuta(){
         

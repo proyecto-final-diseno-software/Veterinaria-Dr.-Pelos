@@ -14,10 +14,10 @@ import java.util.List;
  */
 public class Servicio {
     private int id_servicio;
+    private long precio_unitario;
     private String nombre;
     private String descripcion;
     private ArrayList<String> colaboraciones;
-    private long precio_unitario;
 
     public Servicio(int id_servicio, String nombre, String descripcion, long precio_unitario) {
         this.id_servicio = id_servicio;

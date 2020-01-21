@@ -10,9 +10,11 @@ package modelo;
  * @author paula
  */
 public class Pedido {
+    private int pedido_ID;
     protected String descripcion;
-    protected Object remitente;
-    protected Object destinatario;
+    protected Sucursal remitente;
+    protected Cliente destinatario;
+    protected Ruta ruta;
 
     public String getDescripcion() {
         return descripcion;
@@ -26,7 +28,7 @@ public class Pedido {
         return remitente;
     }
 
-    public void setRemitente(Object remitente) {
+    public void setRemitente(Sucursal remitente) {
         this.remitente = remitente;
     }
 
@@ -34,11 +36,9 @@ public class Pedido {
         return destinatario;
     }
 
-    public void setDestinatario(Object destinatario) {
+    public void setDestinatario(Cliente destinatario) {
         this.destinatario = destinatario;
     }
-    
-    
     
     public Pedido agregarPedido(){
         return null;

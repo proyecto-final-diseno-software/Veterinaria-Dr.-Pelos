@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.ListIterator;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
@@ -35,7 +36,7 @@ import view.tool.Tool;
 public class ContenidoVentas extends Contenido implements ContenidoCentral{
     private Venta nuevaVenta;
     private Ctr_Personal_Caja ctr;
-    Personal_Caja personal;
+    private Personal_Caja personal;
     
     public ContenidoVentas(int reduccionx, int reduccionY, int anchoVentana, int altoVentana, int anchoColunma1, int anchoColunma2, int anchoLateral, int altoSuperior, Personal_Caja personal){
         super(reduccionx, reduccionY, anchoVentana, altoVentana, anchoColunma1, anchoColunma2, anchoLateral, altoSuperior);
@@ -85,6 +86,7 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
         paneCliente.setAlignment(Pos.CENTER);
         
         VBox dataCliente = new VBox(5);
+        Pane paneError = new Pane();
         
         HBox ssecionBuscadorCliente = new HBox();
         
@@ -105,12 +107,14 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
         
         BotonTool botonConfirmarVenta = new BotonTool("Confirmar venta", titulo2 - 1, 200, 40, Color.GREEN);
         botonConfirmarVenta.setOnMousePressed(validarVenta -> {
+            paneError.getChildren().clear();
             if(nuevaVenta.comprobarValidesDeVenta()){
-                System.out.println("lolis");
-                if(ctr.insertVenta(nuevaVenta)){
+                if(ctr.insertVenta(nuevaVenta))
                     guardarDetallesVenta(itemsCarrito);
-                }
-            }
+                else
+                    paneError.getChildren().add(new BoxTextTool("\nError al registrar venta", Color.RED, titulo2, FontWeight.NORMAL));
+            } else
+                paneError.getChildren().add(new BoxTextTool("\nFalta informacion", Color.RED, titulo2, FontWeight.NORMAL));
         });
             
         ssecionBuscadorCliente.getChildren().addAll(textFieldBuscadorCliente, botonBuscarCliente);
@@ -120,7 +124,7 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
         pane1.getChildren().add(secionBuscador);
         pane2.getChildren().add(tablaRegistro);
         pane3.getChildren().add(paneCliente);
-        pane4.getChildren().addAll(tablaPago, botonConfirmarVenta);
+        pane4.getChildren().addAll(tablaPago, botonConfirmarVenta, paneError);
     }
     
     private void guardarDetallesVenta(List<Detalle_Venta> itemsCarrito){

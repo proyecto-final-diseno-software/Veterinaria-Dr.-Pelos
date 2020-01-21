@@ -6,7 +6,6 @@
 package modelo;
 
 import java.time.LocalDate;
-import java.util.LinkedList;
 
 /**
  *
@@ -18,22 +17,18 @@ public class Cotizacion {
     private double valor = 0;
     private Cliente cliente;
     private Personal_Caja personal_caja;
-    private LinkedList<Object> detalles;
 
     public Cotizacion() {
         this.fecha = LocalDate.now();
-        detalles = new LinkedList<>();
         
     }
     
     public void agregarProducto(Detalle_VentaProducto detallep){
-        detalles.add(detallep);
         valor += detallep.calcularPrecio();
         
     }
     
     public void agregarServicio(VentaServicio detalleS){
-        detalles.add(detalleS);
         valor += detalleS.precioServicio();
     }
     
@@ -57,14 +52,6 @@ public class Cotizacion {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
-    }
-
-    public LinkedList<Object> getDetalles() {
-        return detalles;
-    }
-
-    public void setDetalles(LinkedList<Object> detalles) {
-        this.detalles = detalles;
     }
     
     public int getIdCotizacion() {
