@@ -19,11 +19,12 @@ public class Mascota{
     private String estado;
     private Cliente cliente;
 
-    public Mascota(int mascota_id, String nombre, String raza, String estado) {
+    public Mascota(int mascota_id, String nombre, String raza, String estado, Cliente cliente) {
         this.mascota_id = mascota_id;
         this.nombre = nombre;
         this.raza = raza;
         this.estado = estado;
+        this.cliente = cliente;
     }
 
     public int getMascota_id() {

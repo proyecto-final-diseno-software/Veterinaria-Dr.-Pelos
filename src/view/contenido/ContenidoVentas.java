@@ -94,7 +94,7 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
         BotonTool botonBuscarCliente = new BotonTool("Buscar", titulo2 - 1, 90, 40, ColorOscuro);
         botonBuscarCliente.setOnMousePressed(buscarCliente -> {
             if(!textFieldBuscadorCliente.isEmplyTool()){
-                List<Cliente> clientes = ctr.retornarCliente((String) textFieldBuscadorCliente.getValue());
+                List<Cliente> clientes = ctr.selectCliente((String) textFieldBuscadorCliente.getValue());
                 if(!clientes.isEmpty()){
                     dataCliente.getChildren().clear();
                     nuevaVenta.setCliente(clientes.get(0));

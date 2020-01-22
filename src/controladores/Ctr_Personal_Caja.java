@@ -117,6 +117,7 @@ public class Ctr_Personal_Caja {
         } 
     }
     
+    //En este metodo guarde los detaller de denta dependiendo si es un detalle de venta de producto o un detalle de venta de servicios para solucionar la relacion de muchos a muchos
     public boolean guardarDetalleVenta(Detalle_Venta ventas){
         return true;
     }
@@ -168,6 +169,7 @@ public class Ctr_Personal_Caja {
         }
     }
     
+    //Devuelve una lista con todos los productos que cumplan con las los uno o los campos que esten si es null ignora ese campo
     public List<Producto> filtarProductos(List<Tool> toolsUsado){
         //Estos ya son los campos a filtara ya estan extraidos de la interfaz
         String nombreProducto = (String) toolsUsado.get(0).getValue();
@@ -182,12 +184,14 @@ public class Ctr_Personal_Caja {
         return lista;
     }
     
-    public List<Cliente> retornarCliente(String cedula){
+    //retorna una lista con solo un cliente que cumpla con la cedula que se esta mandando
+    public List<Cliente> selectCliente(String cedula){
         List<Cliente> lista = new ArrayList<>();
         lista.add(new Cliente("0928072487", "Eduardo", "Gonzalez", "Mi casa", "090999841"));
         return lista;
     }
     
+    //devuelve todos los productos que tiene considencia con los parametros enviados
     public List<Servicio> filtarServicio(List<Tool> toolsUsado){
         //Estos ya son los campos a filtara ya estan extraidos de la interfaz
         String nombreServicio = (String) toolsUsado.get(0).getValue();
@@ -201,19 +205,15 @@ public class Ctr_Personal_Caja {
         return lista;
     }
     
-    public Cliente selectRetornarCliente(String cedula){
-        return new Cliente("0928172487", "Eduardo", "Gonzalez", "Su casa", "0909");
-    }
-    
+    //retorna todas las mascota a las cuales pertenece el cleinte
     public List<Mascota> selectMascotasCliente(Cliente cli){
         List<Mascota> listMascota = new ArrayList<>();
         
-        listMascota.add(new Mascota(20, "Coffe", "Mestozo", "Sucursal"));
-        listMascota.add(new Mascota(21, "Filomeno", "Mestizo", "Domicilio"));
-        listMascota.add(new Mascota(22, "Cuy", "Mestizo", "Translado a domicilio"));
-        listMascota.add(new Mascota(22, "Gato", "Mestizo", "Translado a sucursal"));
+        listMascota.add(new Mascota(20, "Coffe", "Mestozo", "Sucursal", cli));
+        listMascota.add(new Mascota(21, "Filomeno", "Mestizo", "Domicilio",cli));
+        listMascota.add(new Mascota(22, "Cuy", "Mestizo", "Translado a domicilio",cli));
+        listMascota.add(new Mascota(22, "Gato", "Mestizo", "Translado a sucursal",cli));
         
         return listMascota;
     }
-    
 }

@@ -77,7 +77,7 @@ public class ContenidoTraslado extends Contenido implements ContenidoCentral{
         botonBuscar.setOnMousePressed(buscar -> {
             paneError.getChildren().clear();
             if(!textFieldCliente.isEmplyTool()){
-                Cliente cli = ctrCaja.selectRetornarCliente((String) textFieldCliente.getValue());
+                Cliente cli = ctrCaja.selectCliente((String) textFieldCliente.getValue()).get(0);
                 if(cli != null){
                     establecerTrasladoMascotas(anchoVentana - reduccionx - 35, cli);
                 } else 
