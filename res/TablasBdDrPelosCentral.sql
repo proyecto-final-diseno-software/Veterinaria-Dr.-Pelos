@@ -1,6 +1,6 @@
 drop database if exists DrPelosCentral ;
 create database DrPelosCentral ;
-use DrDrPelosCentral ;
+use DrPelosCentral ;
 
 -- ENTIDADES
  
