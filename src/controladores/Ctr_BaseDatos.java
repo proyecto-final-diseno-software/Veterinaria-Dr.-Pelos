@@ -16,9 +16,9 @@ import java.sql.SQLException;
 public class Ctr_BaseDatos implements BaseDatos {
     private static Connection con;
     private static final String driver = "com.mysql.jdbc.Driver";
-    private static final String user = "root";
-    private static final String pass = "";        
-    private static final String url = "jdbc:mysql://localhost:3306/drpelos";
+    private static final String user = "adminDrPelos";
+    private static final String pass = "admin";        
+    private static final String url = "jdbc:mysql://localhost:3306/drpeloscentral";
 
     public Ctr_BaseDatos() {
         con = null;
