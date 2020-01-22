@@ -27,6 +27,7 @@ import view.tool.Tool;
  */
 public class Ctr_Personal_Caja {
     private Connection con;
+    
     private Ctr_BaseDatos ctr_BaseDatos;
     public void realizarCotizacion(){
         
@@ -139,12 +140,15 @@ public class Ctr_Personal_Caja {
     
     private boolean insertPersona(Cliente c){
         try {
+            
+            ctr_BaseDatos= new Ctr_BaseDatos();
             con = ctr_BaseDatos.getConnection();
             PreparedStatement ps = con.prepareStatement("insert into persona(cedula,nombre,apellido) values(?,?,?);");
             ps.setString(1, c.getCedula());
             ps.setString(2, c.getNombre());
             ps.setString(3, c.getApellido());
             ps.executeUpdate();
+            System.out.println("Cierto");
             ps.close();
             return true;
             
@@ -157,6 +161,7 @@ public class Ctr_Personal_Caja {
     
     private boolean insertCliente(Cliente c){
         try {
+             ctr_BaseDatos= new Ctr_BaseDatos();
             con = ctr_BaseDatos.getConnection();
             PreparedStatement ps = con.prepareStatement("insert into cliente(cedula,direccion,telefono) values(?,?,?);");
             ps.setString(1, c.getCedula());
