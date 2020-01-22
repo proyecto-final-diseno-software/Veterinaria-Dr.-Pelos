@@ -1,9 +1,6 @@
-drop database if exists DrPelos;
-create database DrPelos;
-use DrPelos;
-drop database if exists DrPelos;
-create database DrPelos;
-use DrPelos;
+drop database if exists DrPelosCentral ;
+create database DrPelosCentral ;
+use DrDrPelosCentral ;
 
 -- ENTIDADES
  
@@ -244,11 +241,17 @@ CREATE TABLE DetalleVentaServicio(
     insert into servicio values(default,5.0,"Traslado raza pequeña","Traslado dentro de Guayaquil");
     
 -- views
+-- view producto
 drop view if exists V_Productos;
 CREATE VIEW V_Productos
 AS SELECT  p.nombre, p.precio_unitario, p.descripcion, c.nombre_c
 FROM Producto as p
 join Categoria as c on c.categoria_ID=p.categoria_ID;
+-- view servicios
+drop view if exists V_Servicios;
+CREATE VIEW V_Servicios
+AS SELECT  s.nombre, s.precio_unitario, s.descripcion
+FROM Servicio as s;
 
     # Creacion de usuario
 
