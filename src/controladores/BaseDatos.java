@@ -5,10 +5,13 @@
  */
 package controladores;
 
+import java.sql.Connection;
+
 /**
  *
  * @author paula
  */
 public interface BaseDatos {
-    
+    public abstract Connection getConnection();
+    public abstract void disconnect();
 }

@@ -27,7 +27,7 @@ import view.tool.Tool;
  */
 public class Ctr_Personal_Caja {
     private Connection con;
-    
+    private Ctr_BaseDatos ctr_BaseDatos;
     public void realizarCotizacion(){
         
     }
@@ -125,25 +125,26 @@ public class Ctr_Personal_Caja {
     }
     
     public boolean addClienteDataBase(Cliente cliente){
-//        if(insertPersona(con, cliente)){
-//            return insertCliente(con, cliente);
-//        }
-//        else{
-//            return false;
-//        }
+          
+          if(insertPersona(cliente)){
+             return insertCliente( cliente);
+        }
+         else{
+            return false;
+        }
 
-//        
-        return true;
+       
+      
     }
     
     private boolean insertPersona(Cliente c){
         try {
+            con = ctr_BaseDatos.getConnection();
             PreparedStatement ps = con.prepareStatement("insert into persona(cedula,nombre,apellido) values(?,?,?);");
             ps.setString(1, c.getCedula());
             ps.setString(2, c.getNombre());
             ps.setString(3, c.getApellido());
             ps.executeUpdate();
-            //Connection con1 = DBTools.getConnection();
             ps.close();
             return true;
             
@@ -156,13 +157,14 @@ public class Ctr_Personal_Caja {
     
     private boolean insertCliente(Cliente c){
         try {
+            con = ctr_BaseDatos.getConnection();
             PreparedStatement ps = con.prepareStatement("insert into cliente(cedula,direccion,telefono) values(?,?,?);");
             ps.setString(1, c.getCedula());
             ps.setString(2, c.getDireccion());
             ps.setString(3, c.getNum_telefonico());
             ps.executeUpdate();
             ps.close();
-            //Connection con1 = DBTools.getConnection();
+             
             return true;
             
         } catch (Exception ex) {
