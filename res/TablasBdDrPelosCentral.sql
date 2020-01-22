@@ -1,6 +1,9 @@
-drop database if exists DrPelosCentral;
-create database DrPelosCentral;
-use DrPelosCentral;
+drop database if exists DrPelos;
+create database DrPelos;
+use DrPelos;
+drop database if exists DrPelos;
+create database DrPelos;
+use DrPelos;
 
 -- ENTIDADES
  
@@ -68,15 +71,12 @@ CREATE TABLE Mascota(
     DROP TABLE IF EXISTS Categoria;
   CREATE TABLE Categoria(
 	categoria_ID int NOT NULL AUTO_INCREMENT,
+    nombre_c varchar(50) NOT NULL,
     descripcion varchar(70) NULL DEFAULT "SIN DESCRIPCION",
     PRIMARY KEY(categoria_ID)
     );
     
-    insert into categoria(categoria_ID,descripcion) values(1,"Alimentos");
-    insert into categoria(categoria_ID,descripcion) values(2,"Higiene");
-    insert into categoria(categoria_ID,descripcion) values(3,"Accesorios");
-    insert into categoria(categoria_ID,descripcion) values(4,"Juguetes");
-    insert into categoria(categoria_ID,descripcion) values(5,"Medicinas");
+
     
 DROP TABLE IF EXISTS Producto;
   CREATE TABLE Producto(
@@ -89,20 +89,6 @@ DROP TABLE IF EXISTS Producto;
     CONSTRAINT _categoria FOREIGN KEY (categoria_ID) REFERENCES Categoria (categoria_ID)
     );
     
-    insert into producto(producto_ID,nombre,precio_unitario,descripcion,categoria_ID) values(1,"Croqueta Perro",13.0,"Croquetas sabor pollo 2kg",1);
-    insert into producto(producto_ID,nombre,precio_unitario,descripcion,categoria_ID) values(2,"Croqueta Perro",5.9,"Croquetas sabor carne y vegetales 1kg",1);
-    insert into producto(producto_ID,nombre,precio_unitario,descripcion,categoria_ID) values(3,"Croqueta Gato",10.7,"Croquetas sabor carne 1kg",1);
-    insert into producto(producto_ID,nombre,precio_unitario,descripcion,categoria_ID) values(4,"Shampoo Perro",10.64,"Shampoo antiséptico 380ml",2);
-    insert into producto(producto_ID,nombre,precio_unitario,descripcion,categoria_ID) values(5,"Shampoo",15.99,"Shampoo antialérgico para Mascotas 250ml",2);
-    insert into producto(producto_ID,nombre,precio_unitario,descripcion,categoria_ID) values(6,"Cepillo Masajeador",2.89,"Cepillo de caucho rojo",2);
-    insert into producto(producto_ID,nombre,precio_unitario,descripcion,categoria_ID) values(7,"Plato redondo",4.84,"Plato antideslizante naranja",3);
-    insert into producto(producto_ID,nombre,precio_unitario,descripcion,categoria_ID) values(8,"Bebedero",12.0,"Bebedero para mascotas",3);
-    insert into producto(producto_ID,nombre,precio_unitario,descripcion,categoria_ID) values(9,"Cama",29.23,"Cama tipo sillon",3);
-    insert into producto(producto_ID,nombre,precio_unitario,descripcion,categoria_ID) values(10,"Juguete volador",29.58,"Juguete volador para perro",4);
-    insert into producto(producto_ID,nombre,precio_unitario,descripcion,categoria_ID) values(11,"Ratón de cuerda",8.99,"Ratón de cuerda para gato",4);
-    insert into producto(producto_ID,nombre,precio_unitario,descripcion,categoria_ID) values(12,"Desparasitante",5.89,"Antiparasitario de espectro total",5);
-	insert into producto(producto_ID,nombre,precio_unitario,descripcion,categoria_ID) values(13,"Liquido emulcionante",2.30,"Pulguicida y garrapaticida",5);
-
     
         DROP TABLE IF EXISTS Stock;
   CREATE TABLE Stock(
@@ -124,12 +110,6 @@ DROP TABLE IF EXISTS Producto;
     PRIMARY KEY(Servicio_ID)
     );
 
-    insert into servicio(servicio_ID,precio_unitario,nombre,descripcion) values(1,17.0,"Peluquería","Raza pequeño");
-	insert into servicio(servicio_ID,precio_unitario,nombre,descripcion) values(2,22.0,"Peluquería","Raza mediana");
-    insert into servicio(servicio_ID,precio_unitario,nombre,descripcion) values(3,25.0,"Peluquería","Raza grande");
-    insert into servicio(servicio_ID,precio_unitario,nombre,descripcion) values(4,230.0,"Adiestramiento","Adiestramiento básico");
-    insert into servicio(servicio_ID,precio_unitario,nombre,descripcion) values(5,5.0,"Traslado raza pequeña","Traslado dentro de Guayaquil");
-    
   -- cotizacion 
 DROP TABLE IF EXISTS Cotizacion;
   CREATE TABLE Cotizacion(
@@ -234,6 +214,34 @@ CREATE TABLE DetalleVentaServicio(
     CONSTRAINT _Servicio_ID FOREIGN KEY (servicio_ID) REFERENCES Servicio(servicio_ID),
      CONSTRAINT _2cotizacion_ID FOREIGN KEY (cotizacion_ID) REFERENCES Cotizacion(cotizacion_ID)
     );
+ -- inserts
+ -- categoria
+    insert into categoria values(default,"Alimentos","aplica a todos los productos alimentarios");
+    insert into categoria values(default,"Higiene","aplica a todos los productos especializados en higiene animal");
+    insert into categoria values(default,"Accesorios","aplica a todos los accesorios utiles para mascotas");
+    insert into categoria values(default,"Juguetes","aplica a todos los productos de entretenimiento para mascotas");
+    insert into categoria values(default,"Medicinas","aplica a todos los productos especializados en medicina animal");
+ -- productos 
+    insert into producto  values(default,"Croqueta Perro",13.0,"Croquetas sabor pollo 2kg",1);
+    insert into producto values(default,"Croqueta Perro",5.9,"Croquetas sabor carne y vegetales 1kg",1);
+    insert into producto values(default,"Croqueta Gato",10.7,"Croquetas sabor carne 1kg",1);
+    insert into producto values(default,"Shampoo Perro",10.64,"Shampoo antiséptico 380ml",2);
+    insert into producto values(default,"Shampoo",15.99,"Shampoo antialérgico para Mascotas 250ml",2);
+    insert into producto values(default,"Cepillo Masajeador",2.89,"Cepillo de caucho rojo",2);
+    insert into producto values(default,"Plato redondo",4.84,"Plato antideslizante naranja",3);
+    insert into producto values(default,"Bebedero",12.0,"Bebedero para mascotas",3);
+    insert into producto values(default,"Cama",29.23,"Cama tipo sillon",3);
+    insert into producto values(default,"Juguete volador",29.58,"Juguete volador para perro",4);
+    insert into producto values(default,"Ratón de cuerda",8.99,"Ratón de cuerda para gato",4);
+    insert into producto values(default,"Desparasitante",5.89,"Antiparasitario de espectro total",5);
+	insert into producto values(default,"Liquido emulcionante",2.30,"Pulguicida y garrapaticida",5);
+-- insert servicios
+
+    insert into servicio  values(default,17.0,"Peluquería","Raza pequeño");
+	insert into servicio  values(default,22.0,"Peluquería","Raza mediana");
+    insert into servicio values(default,25.0,"Peluquería","Raza grande");
+    insert into servicio values(default,230.0,"Adiestramiento","Adiestramiento básico");
+    insert into servicio values(default,5.0,"Traslado raza pequeña","Traslado dentro de Guayaquil");
     # Creacion de usuario
 
 drop user if exists 'adminDrPelos'@'localhost';
