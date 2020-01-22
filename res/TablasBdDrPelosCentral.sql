@@ -242,6 +242,14 @@ CREATE TABLE DetalleVentaServicio(
     insert into servicio values(default,25.0,"Peluquería","Raza grande");
     insert into servicio values(default,230.0,"Adiestramiento","Adiestramiento básico");
     insert into servicio values(default,5.0,"Traslado raza pequeña","Traslado dentro de Guayaquil");
+    
+-- views
+drop view if exists V_Productos;
+CREATE VIEW V_Productos
+AS SELECT  p.nombre, p.precio_unitario, p.descripcion, c.nombre_c
+FROM Producto as p
+join Categoria as c on c.categoria_ID=p.categoria_ID;
+
     # Creacion de usuario
 
 drop user if exists 'adminDrPelos'@'localhost';
