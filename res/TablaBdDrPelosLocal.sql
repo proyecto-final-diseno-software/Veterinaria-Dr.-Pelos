@@ -210,7 +210,7 @@ CREATE TABLE DetalleVentaServicio(
 
 drop user if exists 'adminDrPelos'@'localhost';
 create user 'adminDrPelos'@'localhost' identified by 'admin';
-grant select,insert,delete,update on drpeloscentral.* to 'adminDrPelos'@'localhost';
+grant select,insert,delete,update on drpeloslocal.* to 'adminDrPelos'@'localhost';
 flush privileges;
 
     select * from cliente;
