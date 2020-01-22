@@ -13,7 +13,7 @@ import modelo.Servicio;
  * Clase en construccion
  * @author paula
  */
-public class Ctr_Administrador {
+public class Ctr_Administrador implements Control_Session{
     
     public void crearProducto(Producto p){
     }
@@ -33,4 +33,9 @@ public class Ctr_Administrador {
     public void descartarServicio(Servicio s){
     }
     
+    //Metodo que me retorna la seccion valida de un empleado de caja
+    @Override
+    public UserType verificarSesion(String user, String pass) {
+        return null;
+    }
 }

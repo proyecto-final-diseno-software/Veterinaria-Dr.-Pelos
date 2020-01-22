@@ -7,8 +7,6 @@ package controladores;
 
 /**
  *
- * @author paula
+ * @author ADMIN
  */
-public interface Control_Session {
-    UserType verificarSesion(String user, String pass);
-}
+public enum UserType{PERSONAL_CAJA, ADMINISTRADOR, DIRECTIVO, JEFE_BODEGA, INVALIDO}

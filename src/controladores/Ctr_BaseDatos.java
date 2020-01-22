@@ -28,11 +28,7 @@ public class Ctr_BaseDatos implements BaseDatos {
         con = null;
         try{
             Class.forName(DRIVER);
-            
             this.con = DriverManager.getConnection("jdbc:" + DBMS + "://" + HOST + ":" + PORT + "/" + DATABASE + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=US/Eastern&useSSL=false&allowPublicKeyRetrieval=true&useSSL=false", USER, PASSWORD);
-            
-            if(con!=null)
-                System.out.println("READY!");
             
         }catch(ClassNotFoundException | SQLException e){
             System.out.println("ERROR"+ e);

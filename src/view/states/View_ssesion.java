@@ -5,6 +5,7 @@
  */
 package view.states;
 
+import controladores.Verification;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
@@ -24,9 +25,12 @@ import view.tool.TextFieldTool;
  */
 public class View_ssesion extends Ventana{
     private PrincipalContenedor ventana;
+    private Verification verificacion;
     
     @Override
     public void mostrar_ventana(Stage primaryStage){
+        verificacion = new Verification();
+        
         this.root = new Pane();
         this.root.setPrefSize(anchoVentana, altoVentana);
         
@@ -75,18 +79,39 @@ public class View_ssesion extends Ventana{
             
             //CuadroColaMensaje cuadroPruebaInferior = new CuadroColaMensaje("Veterinaria Dr.Pelos.", 1140, 50, Pos.CENTER_LEFT, Color.rgb(88, 180, 228), Color.WHITE);
             
-            BotonTool buttonLogin = new BotonTool("Login", 25, anchoVentana / 4, 45, ColorOscuro);
-            
-            buttonLogin.setOnMousePressed(cambioVentana -> {
-                View_PersonalCaja newContent = new View_PersonalCaja();
-                newContent.crear_ventana(null, anchoVentana, altoVentana);
-                newContent.cambiar_ventana(root);
-            });
-            
-            
             TextFieldTool entradoUser = new TextFieldTool("Ingrese su usuario" ,20 , Pos.CENTER, anchoVentana / 4, 50);
             
             TextFieldTool entradoPassword = new TextFieldTool("Ingrese su contraseña", 20 , Pos.CENTER, anchoVentana / 4, 50);
+            
+            BotonTool buttonLogin = new BotonTool("Login", 25, anchoVentana / 4, 45, ColorOscuro);
+            
+            buttonLogin.setOnMousePressed(cambioVentana -> {
+                if(!entradoUser.isEmplyTool() && !entradoPassword.isEmplyTool()){
+                    switch(verificacion.verificacionDatosSession((String) entradoUser.getValue(),(String) entradoPassword.getValue())){
+                        case PERSONAL_CAJA:
+                            View_PersonalCaja newContent = new View_PersonalCaja();
+                            newContent.crear_ventana(null, anchoVentana, altoVentana);
+                            newContent.cambiar_ventana(root);
+                            break;
+                            
+                        case ADMINISTRADOR:
+                            
+                            break;
+                            
+                        case DIRECTIVO:
+                            
+                            break;
+                            
+                        case JEFE_BODEGA:
+                            
+                            break;
+                        
+                        case INVALIDO:
+                            
+                            break;
+                    }
+                }
+            });
             
             contenedor.getChildren().addAll(logo, entradoUser, entradoPassword, buttonLogin);
             

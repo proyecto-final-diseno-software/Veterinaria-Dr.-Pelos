@@ -25,7 +25,7 @@ import view.tool.Tool;
  *
  * @author paula
  */
-public class Ctr_Personal_Caja {
+public class Ctr_Personal_Caja implements Control_Session{
     private Connection con;
     
     private Ctr_BaseDatos ctr_BaseDatos;
@@ -215,5 +215,11 @@ public class Ctr_Personal_Caja {
         listMascota.add(new Mascota(22, "Gato", "Mestizo", "Translado a sucursal",cli));
         
         return listMascota;
+    }
+
+    //Metodo que me retorna la seccion valida de un empleado de caja retorn su enum correspondiente
+    @Override
+    public UserType verificarSesion(String user, String pass) {
+        return UserType.PERSONAL_CAJA;
     }
 }
