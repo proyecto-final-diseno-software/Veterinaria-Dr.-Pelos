@@ -29,6 +29,12 @@ public class Ctr_Personal_Caja {
     private Connection con;
     
     private Ctr_BaseDatos ctr_BaseDatos;
+
+    public Ctr_Personal_Caja() {
+        ctr_BaseDatos= new Ctr_BaseDatos();
+        con = ctr_BaseDatos.getConnection();
+    }
+    
     public void realizarCotizacion(){
         
     }
@@ -126,58 +132,41 @@ public class Ctr_Personal_Caja {
     }
     
     public boolean addClienteDataBase(Cliente cliente){
-          
-          if(insertPersona(cliente)){
-             return insertCliente( cliente);
+        if(insertPersona(cliente)){
+            return insertCliente( cliente);
         }
-         else{
-            return false;
-        }
-
-       
-      
+        return false;
     }
     
     private boolean insertPersona(Cliente c){
         try {
-            
-            ctr_BaseDatos= new Ctr_BaseDatos();
-            con = ctr_BaseDatos.getConnection();
             PreparedStatement ps = con.prepareStatement("insert into persona(cedula,nombre,apellido) values(?,?,?);");
             ps.setString(1, c.getCedula());
             ps.setString(2, c.getNombre());
             ps.setString(3, c.getApellido());
             ps.executeUpdate();
-            System.out.println("Cierto");
             ps.close();
             return true;
-            
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
-        } 
-        
+        }
     }
     
     private boolean insertCliente(Cliente c){
         try {
-             ctr_BaseDatos= new Ctr_BaseDatos();
-            con = ctr_BaseDatos.getConnection();
             PreparedStatement ps = con.prepareStatement("insert into cliente(cedula,direccion,telefono) values(?,?,?);");
             ps.setString(1, c.getCedula());
             ps.setString(2, c.getDireccion());
             ps.setString(3, c.getNum_telefonico());
             ps.executeUpdate();
             ps.close();
-             
             return true;
-            
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
         }
     }
-    
     
     public List<Producto> filtarProductos(List<Tool> toolsUsado){
         //Estos ya son los campos a filtara ya estan extraidos de la interfaz

@@ -17,8 +17,8 @@ public class Ctr_BaseDatos implements BaseDatos {
     private static Connection con;
     private static final String driver = "com.mysql.jdbc.Driver";
     private static final String user = "root";
-    private static final String pass = "saem2003";        
-    private static final String url = "jdbc:mysql://localhost:3306/DrPelos";
+    private static final String pass = "";        
+    private static final String url = "jdbc:mysql://localhost:3306/drpelos";
 
     public Ctr_BaseDatos() {
         con = null;
