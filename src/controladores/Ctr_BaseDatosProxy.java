@@ -21,7 +21,7 @@ public class Ctr_BaseDatosProxy implements BaseDatos{
     private static final String DBMS     = "mysql";
     private static final String HOST     = "127.0.0.1";
     private static final String PORT     = "3306";
-    private static final String DATABASE = "DrPelosCentral";
+    private static final String DATABASE = "DrPelosLocal";
     private static final String USER     = "adminDrPelosLocal";
     private static final String PASSWORD = "adminLocal";
 
