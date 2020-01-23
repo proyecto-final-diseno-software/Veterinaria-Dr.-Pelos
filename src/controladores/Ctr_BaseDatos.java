@@ -16,7 +16,7 @@ import java.sql.SQLException;
 public class Ctr_BaseDatos implements BaseDatos {
     private static Connection con;
     
-    private static final String DRIVER = "com.mysql.jdbc.Driver";
+    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DBMS     = "mysql";
     private static final String HOST     = "127.0.0.1";
     private static final String PORT     = "3306";
