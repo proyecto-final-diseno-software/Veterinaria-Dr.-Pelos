@@ -182,12 +182,26 @@ public class Ctr_Personal_Caja implements Control_Session{
     //Devuelve una lista con todos los productos que cumplan con las los uno o los campos que esten si es null ignora ese campo
     public List<Producto> filtarProductos(List<Tool> toolsUsado){
         //Estos ya son los campos a filtara ya estan extraidos de la interfaz
-        String nombreProducto = (String) toolsUsado.get(0).getValue();
-        String categoriaProducto = (String) toolsUsado.get(1).getValue().toString();
-        String descripcionProducto = (String) toolsUsado.get(2).getValue();
+        
+        String nombreProducto = "";
+        String categoriaProducto = "";
+        String descripcionProducto = "";
+        
+        String stbuscar = "select * from V_Productos where";
+        
+        if(!toolsUsado.get(0).isEmplyTool()){
+            nombreProducto = (String) toolsUsado.get(0).getValue();
+            stbuscar = "nombre like" + "'" + nombreProducto;
+        }
+        if(!toolsUsado.get(1).isEmplyTool()){
+            categoriaProducto = (String) toolsUsado.get(1).getValue().toString();
+        }
+        if(!toolsUsado.get(2).isEmplyTool()){
+            descripcionProducto = (String) toolsUsado.get(2).getValue();
+        }
         
         List<Producto> lista = new ArrayList<>();
-            String stbuscar = "select * from V_Productos where nombre like" + "'" + nombreProducto + "'and nombre_c like '"+categoriaProducto+"';";
+            stbuscar = "select * from V_Productos where nombre like" + "'" + nombreProducto + "' and nombre_c like '"+categoriaProducto+"';";
             
             try (Statement st = con.createStatement()) {
                 try(ResultSet rs = st.executeQuery(stbuscar)){

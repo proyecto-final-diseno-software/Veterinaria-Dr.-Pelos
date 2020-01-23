@@ -87,7 +87,6 @@ public class ContenidoBusqueda extends Parent{
             listaTipo.add("Servicio");
         listaTipo.add("Producto");
         ComBoxTool<String> comboTipo = new ComBoxTool(anchoField, "Tipo:" , listaTipo, titulo2);
-        toolsUsado.add(comboTipo);
         
         BotonTool BotonBuscarProducto = new BotonTool("Buscar", titulo2, 100, titulo2 * 2 + 3, Color.GAINSBORO);
         BotonBuscarProducto.setTranslateY(16);
@@ -108,7 +107,7 @@ public class ContenidoBusqueda extends Parent{
         camposServicios.add("");
         
         BotonBuscarProducto.setOnMousePressed(buscarProducto -> {
-            if(comprobarCampos(toolsUsado)){
+            if(comprobarCampos(toolsUsado) && !comboTipo.isEmplyTool()){
                 if(((String) comboTipo.getValue()).equals("Producto"))
                     insertarProductosBusqueda(ancho, camposProductos, itemsCarrito);
                 else
@@ -255,10 +254,10 @@ public class ContenidoBusqueda extends Parent{
         ListIterator<Tool> it = toolUsados.listIterator();
         
         while(it.hasNext()){
-            if(it.next().isEmplyTool())
-                return false;
+            if(!it.next().isEmplyTool())
+                return true;
         }
         
-        return true;
+        return false;
     }
 }
