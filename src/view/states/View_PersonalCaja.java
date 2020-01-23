@@ -26,6 +26,7 @@ import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
 import modelo.Cliente;
 import modelo.Personal_Caja;
+import modelo.Sucursal;
 import view.tool.BotonTool;
 import view.tool.BoxTextTool;
 import view.tool.Tool;
@@ -42,28 +43,29 @@ import view.contenido.ContenidoVentas;
 public class View_PersonalCaja extends Ventana{
     private PrincipalContenedorCaja ventana;
     
+    private Sucursal sucursal;
+    private Personal_Caja personalCaja;
+    
     private Ctr_Personal_Caja contolCaja;
 
-    @Override
-    void mostrar_ventana(Stage primaryStage) {
-    
+    public View_PersonalCaja(String user) {
+        this.contolCaja = new Ctr_Personal_Caja();
+        this.personalCaja = contolCaja.selectPersonalCaja(user);
+        this.sucursal = personalCaja.getSucursal();
     }
 
     @Override
-    void close() {
-        
-    }
+    void mostrar_ventana(Stage primaryStage) {}
+
+    @Override
+    void close() {}
 
     @Override
     void cambiar_ventana(Pane root) {
         this.root = root;
         this.root.getChildren().clear();
-        
         this.ventana = new PrincipalContenedorCaja();
-        
         this.root.getChildren().add(ventana);
-        
-        this.contolCaja = new Ctr_Personal_Caja();
     }
     
     private class PrincipalContenedorCaja extends Parent{
@@ -180,33 +182,35 @@ public class View_PersonalCaja extends Ventana{
             
             VBox paneTraslado = new VBox();
             
-            BotonTool botonTraslado = new BotonTool("Traslado", titulo2, anchoLateral, altoBotones, true);
-            
-            BotonTool botonTrasladoMascota = new BotonTool(" - Mascotas", titulo2 - 5, anchoLateral, altoBotones - 20, false);
-            botonTrasladoMascota.setOnMousePressed(trasladoMascotas -> {
-                comportamientoMenuLateral(botonTrasladoMascota);
-                cambiarContenidoTraslado("Traslado de mascotas", "Buscar Cliente");
-            });
-            botonesLateral.add(botonTrasladoMascota);
-            
-            BotonTool botonTransladoMercaderia = new BotonTool(" - Consultas entregas", titulo2 - 5, anchoLateral, altoBotones - 20, false);
-            botonTransladoMercaderia.setOnMousePressed(trasladoMercaderia -> {
-                comportamientoMenuLateral(botonTransladoMercaderia);
-                cambiarConsultantregas();
-            });
-            botonesLateral.add(botonTransladoMercaderia);
-            
-            botonTraslado.setOnMousePressed(seccionClientes -> {
-                comportamientoMenuLateral(botonTraslado);
-                if(paneTraslado.getChildren().contains(botonTransladoMercaderia))
-                    paneTraslado.getChildren().removeAll(botonTransladoMercaderia, botonTrasladoMascota);
-                else
-                    paneTraslado.getChildren().addAll(botonTransladoMercaderia, botonTrasladoMascota);
-            });
-            
-            paneTraslado.getChildren().add(botonTraslado);
-            
-            botonesLateral.add(botonTraslado);
+            if(sucursal.isOfreceServicios()){
+                BotonTool botonTraslado = new BotonTool("Traslado", titulo2, anchoLateral, altoBotones, true);
+
+                BotonTool botonTrasladoMascota = new BotonTool(" - Mascotas", titulo2 - 5, anchoLateral, altoBotones - 20, false);
+                botonTrasladoMascota.setOnMousePressed(trasladoMascotas -> {
+                    comportamientoMenuLateral(botonTrasladoMascota);
+                    cambiarContenidoTraslado("Traslado de mascotas", "Buscar Cliente");
+                });
+                botonesLateral.add(botonTrasladoMascota);
+
+                BotonTool botonTransladoMercaderia = new BotonTool(" - Consultas entregas", titulo2 - 5, anchoLateral, altoBotones - 20, false);
+                botonTransladoMercaderia.setOnMousePressed(trasladoMercaderia -> {
+                    comportamientoMenuLateral(botonTransladoMercaderia);
+                    cambiarConsultantregas();
+                });
+                botonesLateral.add(botonTransladoMercaderia);
+
+                botonTraslado.setOnMousePressed(seccionClientes -> {
+                    comportamientoMenuLateral(botonTraslado);
+                    if(paneTraslado.getChildren().contains(botonTransladoMercaderia))
+                        paneTraslado.getChildren().removeAll(botonTransladoMercaderia, botonTrasladoMascota);
+                    else
+                        paneTraslado.getChildren().addAll(botonTransladoMercaderia, botonTrasladoMascota);
+                });
+
+                paneTraslado.getChildren().add(botonTraslado);
+
+                botonesLateral.add(botonTraslado);
+            }
             
             BotonTool botonFacturacion = new BotonTool("Facturacion", titulo2, anchoLateral, altoBotones, false);
             botonFacturacion.setOnMousePressed(seccionClientes -> {
@@ -278,7 +282,7 @@ public class View_PersonalCaja extends Ventana{
             generarsecciones(pane3, Pos.CENTER);
             generarsecciones(pane4, Pos.CENTER);
             
-            ContenidoVentas contenVentas = new ContenidoVentas(reduccionX, reduccionY, anchoVentana, altoVentana, anchoColunma1, anchoColunma2, anchoLateral, altoSuperior,new Personal_Caja("02", "Eduardo", "Gonzalez"));
+            ContenidoVentas contenVentas = new ContenidoVentas(reduccionX, reduccionY, anchoVentana, altoVentana, anchoColunma1, anchoColunma2, anchoLateral, altoSuperior, personalCaja);
             contenVentas.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
             contenVentas.establecerPaneles(pane1, pane2, pane3, pane4, paneFondo);
             contenVentas.crearContenidoCentral(new ArrayList<>());

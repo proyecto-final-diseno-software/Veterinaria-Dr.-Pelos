@@ -15,12 +15,12 @@ CREATE TABLE Persona(
 
 DROP TABLE IF EXISTS Sucursal;
 CREATE TABLE Sucursal(
-	sucursal_ID int NOT NULL ,
-	nombre int NOT NULL,
-	direccion varchar(120) NOT NULL,
+    sucursal_ID int NOT NULL ,
+    nombre int NOT NULL,
+    direccion varchar(120) NOT NULL,
     hasServices boolean NOT NULL,
-	PRIMARY KEY(sucursal_ID)
-  );
+    PRIMARY KEY(sucursal_ID)
+    );
   
 DROP TABLE IF EXISTS Usuario;
 CREATE TABLE Usuario(

@@ -12,11 +12,12 @@ package modelo;
 public class Personal_Caja extends Persona {
     private int id_persona_caja;
     private String area;
+    private Sucursal sucursal;
 
-    public Personal_Caja(String cedula, String nombre, String apellido) {
+    public Personal_Caja(String cedula, String nombre, String apellido, Sucursal sucursal) {
         super(cedula, nombre, apellido);
+        this.sucursal = sucursal;
     }
-
 
     public int getId_persona_caja() {
         return id_persona_caja;
@@ -33,9 +34,8 @@ public class Personal_Caja extends Persona {
     public void setArea(String area) {
         this.area = area;
     }
-    
-    
-    
-    
-    
+
+    public Sucursal getSucursal() {
+        return sucursal;
+    }
 }

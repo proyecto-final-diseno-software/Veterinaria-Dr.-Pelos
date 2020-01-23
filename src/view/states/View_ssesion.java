@@ -89,7 +89,7 @@ public class View_ssesion extends Ventana{
                 if(!entradoUser.isEmplyTool() && !entradoPassword.isEmplyTool()){
                     switch(verificacion.verificacionDatosSession((String) entradoUser.getValue(),(String) entradoPassword.getValue())){
                         case PERSONAL_CAJA:
-                            View_PersonalCaja newContent = new View_PersonalCaja();
+                            View_PersonalCaja newContent = new View_PersonalCaja((String) entradoUser.getValue());
                             newContent.crear_ventana(null, anchoVentana, altoVentana);
                             newContent.cambiar_ventana(root);
                             break;

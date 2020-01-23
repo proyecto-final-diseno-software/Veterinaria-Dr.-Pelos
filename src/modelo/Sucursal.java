@@ -13,6 +13,14 @@ public class Sucursal {
     private int id_sucursal;
     private String nombre;
     private String direccion;
+    private boolean ofreceServicios;
+
+    public Sucursal(int id_sucursal, String nombre, String direccion, boolean ofreceServicios) {
+        this.id_sucursal = id_sucursal;
+        this.nombre = nombre;
+        this.direccion = direccion;
+        this.ofreceServicios = ofreceServicios;
+    }
 
     public String getNombre() {
         return nombre;
@@ -37,4 +45,10 @@ public class Sucursal {
     public void setId_sucursal(int id_sucursal) {
         this.id_sucursal = id_sucursal;
     }
+
+    public boolean isOfreceServicios() {
+        return ofreceServicios;
+    }
+    
+    
 }

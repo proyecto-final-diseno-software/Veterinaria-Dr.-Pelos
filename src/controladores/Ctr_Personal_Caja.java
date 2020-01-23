@@ -16,8 +16,10 @@ import modelo.Cliente;
 import modelo.Cotizacion;
 import modelo.Detalle_Venta;
 import modelo.Mascota;
+import modelo.Personal_Caja;
 import modelo.Producto;
 import modelo.Servicio;
+import modelo.Sucursal;
 import modelo.Venta;
 import view.tool.Tool;
 
@@ -27,7 +29,6 @@ import view.tool.Tool;
  */
 public class Ctr_Personal_Caja implements Control_Session{
     private Connection con;
-    
     private Ctr_BaseDatos ctr_BaseDatos;
 
     public Ctr_Personal_Caja() {
@@ -37,6 +38,11 @@ public class Ctr_Personal_Caja implements Control_Session{
     
     public void realizarCotizacion(){
         
+    }
+    
+    //Devielde el personal de caja con un numero usuario de la tabla usuarios recivido
+    public Personal_Caja selectPersonalCaja(String ususario){
+        return new Personal_Caja("1234567890", "Filomeno", "Gonzalez", new Sucursal(1, "Mi casa", "Cerca de mi casa", true));
     }
     
     private boolean insertMascota(Mascota m){
