@@ -179,7 +179,7 @@ public class Ctr_Personal_Caja implements Control_Session{
     public List<Producto> filtarProductos(List<Tool> toolsUsado){
         //Estos ya son los campos a filtara ya estan extraidos de la interfaz
         String nombreProducto = (String) toolsUsado.get(0).getValue();
-        String categoriaProducto = (String) toolsUsado.get(0).getValue();
+        String categoriaProducto = (String) toolsUsado.get(1).getValue().toString();
         String descripcionProducto = (String) toolsUsado.get(2).getValue();
         
         List<Producto> lista = new ArrayList<>();
@@ -221,6 +221,15 @@ public class Ctr_Personal_Caja implements Control_Session{
         listMascota.add(new Mascota(22, "Gato", "Mestizo", "Translado a sucursal",cli));
         
         return listMascota;
+    }
+    
+    public List<Categoria> selectAllCategorias(){
+        List<Categoria> list = new ArrayList<>();
+        
+       list.add(new Categoria("Aliemtnos", "Cosas ricas"));
+       list.add(new Categoria("Medicamentos", "Cosas del hpspital"));
+       
+       return list;
     }
 
     //Metodo que me retorna la seccion valida de un empleado de caja retorn su enum correspondiente

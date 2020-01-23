@@ -67,7 +67,7 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
         botonBuscar.setOnMousePressed(buscarArticulo -> {
             BotonTool cerrar = new BotonTool("X", titulo2, titulo2 * 2, titulo2 * 2, Color.RED);
             
-            ContenidoBusqueda ventana_busqueda = new ContenidoBusqueda(anchoVentana - reduccionx - 10, altoVentana - reduccionY - 10, titulo2, cerrar, itemsCarrito);
+            ContenidoBusqueda ventana_busqueda = new ContenidoBusqueda(anchoVentana - reduccionx - 10, altoVentana - reduccionY - 10, titulo2, cerrar, itemsCarrito, personal.getSucursal().isOfreceServicios());
             
             cerrar.setOnMousePressed(cerrar_ventana -> {
                 paneFondo.getChildren().remove(ventana_busqueda);

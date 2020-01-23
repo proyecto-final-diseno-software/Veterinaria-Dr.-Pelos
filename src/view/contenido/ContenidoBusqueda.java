@@ -20,6 +20,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
+import modelo.Categoria;
 import modelo.Detalle_Venta;
 import modelo.Detalle_VentaProducto;
 import modelo.Detalle_VentaServicio;
@@ -50,7 +51,7 @@ public class ContenidoBusqueda extends Parent{
     
     private List<Tool> toolsUsado;
     
-    public ContenidoBusqueda(int ancho, int alto, int titulo2, BotonTool cerrar, List<Detalle_Venta> itemsCarrito){
+    public ContenidoBusqueda(int ancho, int alto, int titulo2, BotonTool cerrar, List<Detalle_Venta> itemsCarrito, boolean accesoServicios){
         this.titulo2 = titulo2;
         
         ctrCaja = new Ctr_Personal_Caja();
@@ -72,9 +73,7 @@ public class ContenidoBusqueda extends Parent{
         TextFieldTool busquedaNombre = new TextFieldTool("Buscar por nombre", "Nombre:", titulo2, Pos.CENTER_LEFT, anchoField, titulo2);
         toolsUsado.add(busquedaNombre);
         
-        List<String> listaCategorias = new ArrayList<>();
-        listaCategorias.add("Opcion 1");
-        ComBoxTool<String> comboCategorias = new ComBoxTool(anchoField, "Categoria:" , listaCategorias, titulo2);
+        ComBoxTool<String> comboCategorias = new ComBoxTool(anchoField, "Categoria:" , ctrCaja.selectAllCategorias(), titulo2);
         toolsUsado.add(comboCategorias);
         
         this.cerrar = cerrar;
@@ -85,7 +84,8 @@ public class ContenidoBusqueda extends Parent{
         toolsUsado.add(busquedaDescripcion);
         
         List<String> listaTipo = new ArrayList<>();
-        listaTipo.add("Servicio");
+        if(accesoServicios)
+            listaTipo.add("Servicio");
         listaTipo.add("Producto");
         ComBoxTool<String> comboTipo = new ComBoxTool(anchoField, "Tipo:" , listaTipo, titulo2);
         toolsUsado.add(comboTipo);
