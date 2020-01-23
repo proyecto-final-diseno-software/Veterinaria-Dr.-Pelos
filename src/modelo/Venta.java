@@ -51,10 +51,10 @@ public class Venta {
             return false;
         if(this.subtotal == 0)
             return false;
+        if(fecha == null)
+            return false;
         return this.personalCaja != null;
     }
-    
-    
     
     public static void generarFactura(Venta v){
         String ruta = "res/facturas/factura" +v.numeroFactura+".txt";

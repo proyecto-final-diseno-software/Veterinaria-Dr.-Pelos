@@ -6,6 +6,7 @@
 package view.contenido;
 
 import controladores.Ctr_Personal_Caja;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -90,7 +91,7 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
         
         HBox ssecionBuscadorCliente = new HBox();
         
-        TextFieldTool textFieldBuscadorCliente = new TextFieldTool("Buscar Cliente" ,titulo2, Pos.CENTER, 3 * anchoColunma2 / 6, 40);
+        TextFieldTool textFieldBuscadorCliente = new TextFieldTool("Buscar Cliente", "Busqueda por cedula:" ,titulo2, Pos.CENTER, 3 * anchoColunma2 / 6, 40);
         BotonTool botonBuscarCliente = new BotonTool("Buscar", titulo2 - 1, 90, 40, ColorOscuro);
         botonBuscarCliente.setOnMousePressed(buscarCliente -> {
             if(!textFieldBuscadorCliente.isEmplyTool()){
@@ -98,16 +99,19 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
                 if(!clientes.isEmpty()){
                     dataCliente.getChildren().clear();
                     nuevaVenta.setCliente(clientes.get(0));
-                    BoxTextTool dataNombreCliente = new BoxTextTool("Nombre: " + clientes.get(0).getNombre(), Color.BLACK, titulo2, FontWeight.NORMAL);
-                    BoxTextTool dataCedulaCliente = new BoxTextTool("Cedula: " + clientes.get(0).getCedula(), Color.BLACK, titulo2, FontWeight.NORMAL);
+                    BoxTextTool dataNombreCliente = new BoxTextTool("Nombre: " + clientes.get(0).getNombre() + clientes.get(0).getApellido(), Color.BLACK, titulo3, FontWeight.NORMAL);
+                    BoxTextTool dataCedulaCliente = new BoxTextTool("Cedula: " + clientes.get(0).getCedula(), Color.BLACK, titulo3, FontWeight.NORMAL);
+                    dataCliente.setAlignment(Pos.CENTER_LEFT);
                     dataCliente.getChildren().addAll(dataNombreCliente, dataCedulaCliente);
                 }
             }
         });
+        botonBuscarCliente.setTranslateY(15);
         
         BotonTool botonConfirmarVenta = new BotonTool("Confirmar venta", titulo2 - 1, 200, 40, Color.GREEN);
         botonConfirmarVenta.setOnMousePressed(validarVenta -> {
             paneError.getChildren().clear();
+            nuevaVenta.setFecha(LocalDate.now());
             if(nuevaVenta.comprobarValidesDeVenta()){
                 if(ctr.insertVenta(nuevaVenta))
                     guardarDetallesVenta(itemsCarrito);

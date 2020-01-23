@@ -8,6 +8,7 @@ package controladores;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -106,7 +107,6 @@ public class Ctr_Personal_Caja implements Control_Session{
             
             ps.setInt(3, v.getNumeroFactura());
             
-            
             ps.setFloat(4, (float)v.getSubtotal());
             ps.setFloat(5, (float)v.getTotal() );
             ps.setFloat(6, (float)v.getDescuento());
@@ -184,13 +184,62 @@ public class Ctr_Personal_Caja implements Control_Session{
         
         List<Producto> lista = new ArrayList<>();
         
-        lista.add(new Producto("1", 12, "Papas", "Papas Ricas", new Categoria("Alimento", "Aliemntos")));
-        lista.add(new Producto("2", 30, "Tortolines", "cHIFLES", new Categoria("Alimento", "Aliemntos")));
+        //lista.add(new Producto("1", 12, "Papas", "Papas Ricas", new Categoria("Alimento", "Aliemntos")));
+        //lista.add(new Producto("2", 30, "Tortolines", "cHIFLES", new Categoria("Alimento", "Aliemntos")));
+        
+        /*
+        
+        
+        ResultSet rs = null;                       
+        PreparedStatement st = null;
+        try {
+            st = con.prepareStatement("select * from V_Productos where nombre like\" + \"'\" + nombreProducto");
+            //st = con.prepareStatement("Select * from Producto where nombre = ?");
+            st.setString(1, nombreProducto);
+            rs = st.executeQuery();
+            while(rs.next()){
+                Producto registro = new Producto(Integer.toString(rs.getInt("producto_ID")),
+                        rs.getDouble("precio_unitario"), rs.getString("nombre"),
+                        rs.getString("descripcion"),
+                        retornarCategoria(rs.getInt("categoria_ID")));
+                lista.add(registro);
+            }
+            rs.close();
+            st.close();
+        } catch(Exception e){
+            System.out.println("Algo esta mal"+e);
+        } 
+        */
         
         return lista;
     }
     
-    //retorna una lista con solo un cliente que cumpla con la cedula que se esta mandando
+    /*
+    
+    
+    private Categoria retornarCategoria(int categoria_ID){
+        ResultSet rs = null;                       
+        PreparedStatement st = null;
+        Categoria registro = null;
+        try {            
+            st = con.prepareStatement("Select * from Categoria where categoria_ID=?");
+            st.setInt(1, categoria_ID);
+            rs = st.executeQuery();
+            while(rs.next()){
+                registro = new Categoria(rs.getString("nombre_c"), rs.getString("descripcion"));
+                
+            }
+            rs.close();
+            st.close();
+        } catch(Exception e){
+            System.out.println("Algo esta mal"+e);
+        }   
+        
+        return registro;
+    }
+    */
+
+    //retorna una lista con solo un cliente que cumpla con la cedula que se esta mandando en caso de no hacer reotrna una lista vacia
     public List<Cliente> selectCliente(String cedula){
         List<Cliente> lista = new ArrayList<>();
         lista.add(new Cliente("0928072487", "Eduardo", "Gonzalez", "Mi casa", "090999841"));
