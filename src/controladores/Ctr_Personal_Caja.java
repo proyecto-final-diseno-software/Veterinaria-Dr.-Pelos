@@ -8,9 +8,14 @@ package controladores;
 import java.sql.Connection;
 import java.sql.Date;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.Categoria;
 import modelo.Cliente;
 import modelo.Cotizacion;
@@ -183,10 +188,28 @@ public class Ctr_Personal_Caja implements Control_Session{
         String descripcionProducto = (String) toolsUsado.get(2).getValue();
         
         List<Producto> lista = new ArrayList<>();
-        
-        lista.add(new Producto("1", 12, "Papas", "Papas Ricas", new Categoria("Alimento", "Aliemntos")));
-        lista.add(new Producto("2", 30, "Tortolines", "cHIFLES", new Categoria("Alimento", "Aliemntos")));
-        
+            lista.add(new Producto("1", 12, "Papas", "Papas Ricas", new Categoria("Alimento", "Aliemntos")));
+            lista.add(new Producto("2", 30, "Tortolines", "cHIFLES", new Categoria("Alimento", "Aliemntos")));
+            /*String stbuscar = "select * from V_Productos where nombre like" + "'" + nombreProducto + "'and nombre_c like '"+categoriaProducto+"';";
+            
+            try (Statement st = con.createStatement()) {
+                try(ResultSet rs = st.executeQuery(stbuscar)){
+                    while (rs.next()) {
+                        String idProducto = rs.getString("producto_ID");
+                        String nombre = rs.getString("nombre");
+                        String precio = rs.getString("precio_unitario");
+                        String descri = rs.getString("descripcion");
+                        String categoria = rs.getString("nombre_c");
+                        Producto p = new Producto(idProducto,Double.parseDouble(precio),nombre,descri,new Categoria(categoria,""));
+                        lista.add(p);
+                    }
+                }
+                catch (SQLException ex) {
+                    throw new SQLException("La base de datos se desconectó inesperadamente.");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
+            }*/
         return lista;
     }
     
@@ -226,7 +249,7 @@ public class Ctr_Personal_Caja implements Control_Session{
     public List<Categoria> selectAllCategorias(){
         List<Categoria> list = new ArrayList<>();
         
-       list.add(new Categoria("Aliemtnos", "Cosas ricas"));
+       list.add(new Categoria("Alimentos", "Cosas ricas"));
        list.add(new Categoria("Medicamentos", "Cosas del hpspital"));
        
        return list;
