@@ -20,6 +20,7 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
+import modelo.Categoria;
 import modelo.Detalle_Venta;
 import modelo.Detalle_VentaProducto;
 import modelo.Detalle_VentaServicio;
@@ -72,7 +73,10 @@ public class ContenidoBusqueda extends Parent{
         TextFieldTool busquedaNombre = new TextFieldTool("Buscar por nombre", "Nombre:", titulo2, Pos.CENTER_LEFT, anchoField, titulo2);
         toolsUsado.add(busquedaNombre);
         
-        ComBoxTool<String> comboCategorias = new ComBoxTool(anchoField, "Categoria:" , ctrCaja.selectAllCategorias(), titulo2);
+        List<Categoria> listCategorias = new ArrayList<>();
+        listCategorias.add(new Categoria("Ninguna", "nada"));
+        listCategorias.addAll(ctrCaja.selectAllCategorias());
+        ComBoxTool<String> comboCategorias = new ComBoxTool(anchoField, "Categoria:" , listCategorias, titulo2);
         toolsUsado.add(comboCategorias);
         
         this.cerrar = cerrar;
@@ -87,6 +91,9 @@ public class ContenidoBusqueda extends Parent{
             listaTipo.add("Servicio");
         listaTipo.add("Producto");
         ComBoxTool<String> comboTipo = new ComBoxTool(anchoField, "Tipo:" , listaTipo, titulo2);
+        comboTipo.getCombo().setOnAction(comprobar -> {
+            quitarCategoria(comboTipo, comboCategorias);
+        });
         
         BotonTool BotonBuscarProducto = new BotonTool("Buscar", titulo2, 100, titulo2 * 2 + 3, Color.GAINSBORO);
         BotonBuscarProducto.setTranslateY(16);
@@ -110,8 +117,10 @@ public class ContenidoBusqueda extends Parent{
             if(comprobarCampos(toolsUsado) && !comboTipo.isEmplyTool()){
                 if(((String) comboTipo.getValue()).equals("Producto"))
                     insertarProductosBusqueda(ancho, camposProductos, itemsCarrito);
-                else
+                else 
                     insertarServiciosBusqueda(ancho, camposServicios, itemsCarrito);
+                    
+                
             }
         });
         
@@ -231,23 +240,34 @@ public class ContenidoBusqueda extends Parent{
                 
         tablaProductos = new TableTool(ancho, camposServicios, "No hay productos con esta descripcion",titulo2);
         
-        List<Servicio> listaProductos = ctrCaja.filtarServicio(toolsUsado);
+        if(!toolsUsado.get(0).isEmplyTool() || !toolsUsado.get(2).isEmplyTool()){
         
-        ListIterator<Servicio> it = listaProductos.listIterator();
-        
-        while(it.hasNext()){
-            Servicio ser = it.next();
-            
-            BotonTool botonAnadirCarrito = new BotonTool("Añadir", titulo2, 100, titulo2 + 5, Color.GREEN);
-            botonAnadirCarrito.setOnMousePressed(anadirCarrito -> {
-                Detalle_Venta detalle = new Detalle_VentaServicio(1, ser);
-                itemsCarrito.add(detalle);
-            });
-            
-            tablaProductos.anadirItem(ser.retornarAllData(), botonAnadirCarrito);
+            List<Servicio> listaProductos = ctrCaja.filtarServicio(toolsUsado);
+
+            ListIterator<Servicio> it = listaProductos.listIterator();
+
+            while(it.hasNext()){
+                Servicio ser = it.next();
+
+                BotonTool botonAnadirCarrito = new BotonTool("Añadir", titulo2, 100, titulo2 + 5, Color.GREEN);
+                botonAnadirCarrito.setOnMousePressed(anadirCarrito -> {
+                    Detalle_Venta detalle = new Detalle_VentaServicio(1, ser);
+                    itemsCarrito.add(detalle);
+                });
+
+                tablaProductos.anadirItem(ser.retornarAllData(), botonAnadirCarrito);
+
+            }
         }
         
         paneTabla.getChildren().add(tablaProductos);
+    }
+    
+    private void quitarCategoria(ComBoxTool<String> combo,ComBoxTool<String> combo2){
+        if(((String) combo.getValue()).equals("Producto"))
+            combo2.setVisible(true);
+        else
+            combo2.setVisible(false);
     }
     
     private boolean comprobarCampos(List<Tool> toolUsados){

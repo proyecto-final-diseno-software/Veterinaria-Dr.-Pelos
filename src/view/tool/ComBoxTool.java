@@ -49,4 +49,8 @@ public class ComBoxTool<E> extends StackPane implements Tool{
     public boolean isEmplyTool() {
         return combo.getValue() == null;
     }
+
+    public ComboBox getCombo() {
+        return combo;
+    }   
 }

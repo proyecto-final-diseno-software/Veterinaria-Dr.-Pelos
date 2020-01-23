@@ -179,48 +179,52 @@ public class Ctr_Personal_Caja implements Control_Session{
         }
     }
     
-    //Devuelve una lista con todos los productos que cumplan con las los uno o los campos que esten si es null ignora ese campo
     public List<Producto> filtarProductos(List<Tool> toolsUsado){
-        //Estos ya son los campos a filtara ya estan extraidos de la interfaz
+        List<Producto> lista = new ArrayList<>();
         
         String nombreProducto = "";
         String categoriaProducto = "";
         String descripcionProducto = "";
         
         String stbuscar = "select * from V_Productos where";
+        String separado = "";
         
         if(!toolsUsado.get(0).isEmplyTool()){
             nombreProducto = (String) toolsUsado.get(0).getValue();
-            stbuscar = "nombre like" + "'" + nombreProducto;
+            stbuscar += " nombre like" + "'%" + nombreProducto + "%'";
+            separado = " and ";
         }
+        
         if(!toolsUsado.get(1).isEmplyTool()){
-            categoriaProducto = (String) toolsUsado.get(1).getValue().toString();
+            if(!(toolsUsado.get(1).getValue().toString().equals("Ninguna")))
+                categoriaProducto = (String) toolsUsado.get(1).getValue().toString();
+            stbuscar += separado + " nombre_c like '%"+categoriaProducto+"%'";
+            separado = " and ";
         }
         if(!toolsUsado.get(2).isEmplyTool()){
             descripcionProducto = (String) toolsUsado.get(2).getValue();
+            stbuscar += separado + " descripcion like" + "'%" + descripcionProducto + "%'";
         }
         
-        List<Producto> lista = new ArrayList<>();
-            stbuscar = "select * from V_Productos where nombre like" + "'" + nombreProducto + "' and nombre_c like '"+categoriaProducto+"';";
-            
-            try (Statement st = con.createStatement()) {
-                try(ResultSet rs = st.executeQuery(stbuscar)){
-                    while (rs.next()) {
-                        String idProducto = rs.getString("producto_ID");
-                        String nombre = rs.getString("nombre");
-                        String precio = rs.getString("precio_unitario");
-                        String descri = rs.getString("descripcion");
-                        String categoria = rs.getString("nombre_c");
-                        Producto p = new Producto(idProducto,Double.parseDouble(precio),nombre,descri,new Categoria(categoria,""));
-                        lista.add(p);
-                    }
-                }
-                catch (SQLException ex) {
-                    throw new SQLException("La base de datos se desconectó inesperadamente.");
+        stbuscar += ";";
+        
+        try (Statement st = con.createStatement()) {
+            try(ResultSet rs = st.executeQuery(stbuscar)){
+                while (rs.next()) {
+                    String idProducto = rs.getString("producto_ID");
+                    String nombre = rs.getString("nombre");
+                    String precio = rs.getString("precio_unitario");
+                    String descri = rs.getString("descripcion");
+                    String categoria = rs.getString("nombre_c");
+                    Producto p = new Producto(idProducto,Double.parseDouble(precio),nombre,descri,new Categoria(categoria,""));
+                    lista.add(p);
                 }
             } catch (SQLException ex) {
-                Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
+                throw new SQLException("La base de datos se desconectó inesperadamente.");
             }
+        } catch (SQLException ex) {
+            Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         return lista;
     }
@@ -234,31 +238,44 @@ public class Ctr_Personal_Caja implements Control_Session{
     
     //devuelve todos los productos que tiene considencia con los parametros enviados
     public List<Servicio> filtarServicio(List<Tool> toolsUsado){
-        //Estos ya son los campos a filtara ya estan extraidos de la interfaz
-        String nombreServicio = (String) toolsUsado.get(0).getValue();
-        String descripcionServicio = (String) toolsUsado.get(2).getValue();
-        
         List<Servicio> lista = new ArrayList<>();
         
-        String stbuscar = "select * from V_Servicios where nombre like" + "'" + nombreServicio + "';";
-            
-            try (Statement st = con.createStatement()) {
-                try(ResultSet rs = st.executeQuery(stbuscar)){
-                    while (rs.next()) {
-                        String idservicio = rs.getString("servicio_ID");
-                        String nombre = rs.getString("nombre");
-                        String precio = rs.getString("precio_unitario");
-                        String descri = rs.getString("descripcion");
-                        Servicio s = new Servicio(Integer.parseInt(idservicio),nombre,descri,Double.parseDouble(precio));
-                        lista.add(s);
-                    }
+        String nombreServicio = "";
+        String descripcionServicio = "";
+        
+        String stbuscar = "select * from V_Servicios where";
+        String separado = "";
+        
+        if(!toolsUsado.get(0).isEmplyTool()){
+            nombreServicio = (String) toolsUsado.get(0).getValue();
+            stbuscar += " nombre like" + "'%" + nombreServicio + "%'";
+            separado = " and ";
+        }
+        
+        if(!toolsUsado.get(2).isEmplyTool()){
+            descripcionServicio = (String) toolsUsado.get(2).getValue();
+            stbuscar += separado + " descripcion like" + "'%" + descripcionServicio + "%'";
+        }
+        
+        stbuscar += ";";
+        
+        try (Statement st = con.createStatement()) {
+            try(ResultSet rs = st.executeQuery(stbuscar)){
+                while (rs.next()) {
+                    String idservicio = rs.getString("servicio_ID");
+                    String nombre = rs.getString("nombre");
+                    String precio = rs.getString("precio_unitario");
+                    String descri = rs.getString("descripcion");
+                    Servicio s = new Servicio(Integer.parseInt(idservicio),nombre,descri,Double.parseDouble(precio));
+                    lista.add(s);
                 }
-                catch (SQLException ex) {
-                    throw new SQLException("La base de datos se desconectó inesperadamente.");
-                }
-            } catch (SQLException ex) {
-                Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
             }
+            catch (SQLException ex) {
+                throw new SQLException("La base de datos se desconectó inesperadamente.");
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         return lista;
     }
