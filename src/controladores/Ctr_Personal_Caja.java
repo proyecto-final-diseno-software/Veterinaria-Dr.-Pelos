@@ -34,11 +34,9 @@ import view.tool.Tool;
  */
 public class Ctr_Personal_Caja implements Control_Session{
     private Connection con;
-    private Ctr_BaseDatos ctr_BaseDatos;
 
     public Ctr_Personal_Caja() {
-        ctr_BaseDatos= new Ctr_BaseDatos();
-        con = ctr_BaseDatos.getConnection();
+        con = Ctr_BaseDatosProxy.obtenerConnection();
     }
     
     public void realizarCotizacion(){
@@ -280,7 +278,7 @@ public class Ctr_Personal_Caja implements Control_Session{
         return lista;
     }
     
-    //retorna todas las mascota a las cuales pertenece el cleinte
+    //Este metodo tiene que retornar todas las mascota que tengan como cable foranea al cliente enviado
     public List<Mascota> selectMascotasCliente(Cliente cli){
         List<Mascota> listMascota = new ArrayList<>();
         

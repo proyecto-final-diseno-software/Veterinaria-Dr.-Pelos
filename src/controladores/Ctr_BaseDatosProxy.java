@@ -6,44 +6,27 @@
 package controladores;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
 
 /**
  *
  * @author scarlet Espinoza
  */
 public class Ctr_BaseDatosProxy implements BaseDatos{
-    Ctr_BaseDatos realBaseDatos;
-     private static Connection con;
-    
-    private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
-    private static final String DBMS     = "mysql";
-    private static final String HOST     = "127.0.0.1";
-    private static final String PORT     = "3306";
-    private static final String DATABASE = "DrPelosLocal";
-    private static final String USER     = "adminDrPelosLocal";
-    private static final String PASSWORD = "adminLocal";
+    private static final Ctr_BaseDatos realBaseDatos = new Ctr_BaseDatos();
+    private static final Connection conectionBaseCentral = realBaseDatos.getConnection();
 
-    public Ctr_BaseDatosProxy() {
-        con = null;
-        try{
-            Class.forName(DRIVER);
-            this.con = DriverManager.getConnection("jdbc:" + DBMS + "://" + HOST + ":" + PORT + "/" + DATABASE + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=US/Eastern&useSSL=false&allowPublicKeyRetrieval=true&useSSL=false", USER, PASSWORD);
-            
-        }catch(ClassNotFoundException | SQLException e){
-            System.out.println("ERROR"+ e);
-        }
-    }
+    private Ctr_BaseDatosProxy() {}
     
     @Override
     public Connection getConnection() {
-        return con;
+        return conectionBaseCentral;
+    }
+    
+    public static Connection obtenerConnection(){
+        return conectionBaseCentral;
     }
 
     @Override
-    public void disconnect() {
-        con = null;
-    }
+    public void disconnect() {}
     
 }
