@@ -70,7 +70,8 @@ public class Venta {
         } 
     }
     private static String facturaEncabezado(Venta v){
-        String s = "\t\t*VETERINARIA DR. PELOS*\t\t\n Nro. Factura: "+v.numeroFactura+
+        String s = "\t*VETERINARIA DR. PELOS*\t\t\nNro. Factura: "+v.numeroFactura+
+                String.format("\nFecha de emision: %tF \n",v.getFecha() )+
                 "\tRUC:0987654321 \n\tGUAYAQUIL-ECUADOR\n"+
                 "Cliente   : "+v.cliente.getNombre()+" "+ v.cliente.getApellido()+
                 "\nCED/RUC  : "+ v.cliente.getCedula()+
