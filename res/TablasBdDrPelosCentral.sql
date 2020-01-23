@@ -241,12 +241,13 @@ CREATE TABLE DetalleVentaServicio(
     insert into servicio values(default,5.0,"Traslado raza pequeña","Traslado dentro de Guayaquil");
     
 -- views
--- view producto
+-- views
 drop view if exists V_Productos;
 CREATE VIEW V_Productos
-AS SELECT  p.nombre, p.precio_unitario, p.descripcion, c.nombre_c
+AS SELECT  p.producto_ID,p.nombre, p.precio_unitario, p.descripcion, c.nombre_c
 FROM Producto as p
 join Categoria as c on c.categoria_ID=p.categoria_ID;
+
 -- view servicios
 drop view if exists V_Servicios;
 CREATE VIEW V_Servicios

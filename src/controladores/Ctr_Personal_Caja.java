@@ -188,9 +188,7 @@ public class Ctr_Personal_Caja implements Control_Session{
         String descripcionProducto = (String) toolsUsado.get(2).getValue();
         
         List<Producto> lista = new ArrayList<>();
-            lista.add(new Producto("1", 12, "Papas", "Papas Ricas", new Categoria("Alimento", "Aliemntos")));
-            lista.add(new Producto("2", 30, "Tortolines", "cHIFLES", new Categoria("Alimento", "Aliemntos")));
-            /*String stbuscar = "select * from V_Productos where nombre like" + "'" + nombreProducto + "'and nombre_c like '"+categoriaProducto+"';";
+            String stbuscar = "select * from V_Productos where nombre like" + "'" + nombreProducto + "'and nombre_c like '"+categoriaProducto+"';";
             
             try (Statement st = con.createStatement()) {
                 try(ResultSet rs = st.executeQuery(stbuscar)){
@@ -209,7 +207,7 @@ public class Ctr_Personal_Caja implements Control_Session{
                 }
             } catch (SQLException ex) {
                 Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
-            }*/
+            }
         return lista;
     }
     
