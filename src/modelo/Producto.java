@@ -69,7 +69,6 @@ public class Producto {
         lista.add(id_producto);
         lista.add(nombre);
         lista.add(Double.toString(precioUnitario));
-        lista.add(descripcion);
         lista.add(categoria.getNombre());
         
         return lista;

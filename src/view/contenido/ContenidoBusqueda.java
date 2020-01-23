@@ -20,7 +20,6 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
-import modelo.Categoria;
 import modelo.Detalle_Venta;
 import modelo.Detalle_VentaProducto;
 import modelo.Detalle_VentaServicio;
@@ -99,7 +98,6 @@ public class ContenidoBusqueda extends Parent{
         camposProductos.add("Codigo");
         camposProductos.add("Nombre");
         camposProductos.add("Precio Unitario");
-        camposProductos.add("Descripcion");
         camposProductos.add("Categoria");
         camposProductos.add("");
         
@@ -107,7 +105,6 @@ public class ContenidoBusqueda extends Parent{
         camposServicios.add("Codigo");
         camposServicios.add("Nombre");
         camposServicios.add("Costo");
-        camposServicios.add("Descripcion");
         camposServicios.add("");
         
         BotonBuscarProducto.setOnMousePressed(buscarProducto -> {

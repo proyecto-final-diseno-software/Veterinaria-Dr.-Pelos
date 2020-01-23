@@ -91,7 +91,6 @@ public class Servicio {
         lista.add(Integer.toString(id_servicio));
         lista.add(nombre);
         lista.add(Long.toString(precio_unitario));
-        lista.add(descripcion);
         
         return lista;
     }
