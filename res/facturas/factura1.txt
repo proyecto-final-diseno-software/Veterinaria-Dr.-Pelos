@@ -1,0 +1,13 @@
+		*VETERINARIA DR. PELOS*		
+ Nro. Factura: 1	RUC:0987654321 
+	GUAYAQUIL-ECUADOR
+Cliente   : nombre apellido
+CED/RUC  : 0123456
+Telefono : 1920392
+-----------------------------------------------
+|Producto          ||Cantidad||Pre.Total|
+-----------------------------------------------
+prod1                2          4.8       
+prod2                1          1.6       
+	 Subtotal : 6.4       	 Descuento: 0.0       
+	 Total    : 6.4       
