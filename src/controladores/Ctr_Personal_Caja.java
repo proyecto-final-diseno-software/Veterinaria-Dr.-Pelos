@@ -226,8 +226,25 @@ public class Ctr_Personal_Caja implements Control_Session{
         
         List<Servicio> lista = new ArrayList<>();
         
-        lista.add(new Servicio(1, "Corte de pelo", "Cortamos pelo", 20));
-        lista.add(new Servicio(1, "Baño", "Lo bañamos", 40));
+        String stbuscar = "select * from V_Servicios where nombre like" + "'" + nombreServicio + "';";
+            
+            try (Statement st = con.createStatement()) {
+                try(ResultSet rs = st.executeQuery(stbuscar)){
+                    while (rs.next()) {
+                        String idservicio = rs.getString("servicio_ID");
+                        String nombre = rs.getString("nombre");
+                        String precio = rs.getString("precio_unitario");
+                        String descri = rs.getString("descripcion");
+                        Servicio s = new Servicio(Integer.parseInt(idservicio),nombre,descri,Double.parseDouble(precio));
+                        lista.add(s);
+                    }
+                }
+                catch (SQLException ex) {
+                    throw new SQLException("La base de datos se desconectó inesperadamente.");
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
+            }
         
         return lista;
     }

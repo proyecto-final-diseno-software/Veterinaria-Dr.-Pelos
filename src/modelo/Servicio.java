@@ -14,12 +14,12 @@ import java.util.List;
  */
 public class Servicio {
     private int id_servicio;
-    private long precio_unitario;
+    private Double precio_unitario;
     private String nombre;
     private String descripcion;
     private ArrayList<String> colaboraciones;
 
-    public Servicio(int id_servicio, String nombre, String descripcion, long precio_unitario) {
+    public Servicio(int id_servicio, String nombre, String descripcion, Double precio_unitario) {
         this.id_servicio = id_servicio;
         this.nombre = nombre;
         this.descripcion = descripcion;
@@ -27,7 +27,7 @@ public class Servicio {
         this.precio_unitario = precio_unitario;
     }
     
-    public boolean cambiarPrecio(long precio){
+    public boolean cambiarPrecio(Double precio){
         if(precio>0){
             this.precio_unitario = precio;
             return true;
@@ -77,11 +77,11 @@ public class Servicio {
         this.colaboraciones = colaboraciones;
     }
 
-    public long getPrecio() {
+    public Double getPrecio() {
         return precio_unitario;
     }
 
-    public void setPrecio(long precio) {
+    public void setPrecio(Double precio) {
         this.precio_unitario = precio;
     }
 
@@ -90,7 +90,7 @@ public class Servicio {
         
         lista.add(Integer.toString(id_servicio));
         lista.add(nombre);
-        lista.add(Long.toString(precio_unitario));
+        lista.add(Double.toString(precio_unitario));
         
         return lista;
     }
