@@ -10,5 +10,5 @@ package controladores;
  * @author paula
  */
 public interface Control_Session {
-    UserType verificarSesion(String user, String pass);
+    UserType verificarSesion(String cedula);
 }

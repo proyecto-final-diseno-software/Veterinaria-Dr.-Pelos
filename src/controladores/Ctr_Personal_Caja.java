@@ -21,7 +21,6 @@ import modelo.Cliente;
 import modelo.Cotizacion;
 import modelo.Detalle_Venta;
 import modelo.Mascota;
-import modelo.Persona;
 import modelo.Personal_Caja;
 import modelo.Producto;
 import modelo.Servicio;
@@ -357,7 +356,7 @@ public class Ctr_Personal_Caja implements Control_Session{
 
     //Metodo que me retorna la seccion valida de un empleado de caja retorn su enum correspondiente
     @Override
-    public UserType verificarSesion(String user, String pass) {
+    public UserType verificarSesion(String cedula) {
         return UserType.PERSONAL_CAJA;
     }
 }

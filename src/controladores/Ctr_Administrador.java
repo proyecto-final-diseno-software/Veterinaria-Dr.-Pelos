@@ -35,7 +35,7 @@ public class Ctr_Administrador implements Control_Session{
     
     //Metodo que me retorna la seccion valida de un empleado de caja
     @Override
-    public UserType verificarSesion(String user, String pass) {
+    public UserType verificarSesion(String cedula) {
         return null;
     }
 }

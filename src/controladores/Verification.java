@@ -5,6 +5,7 @@
  */
 package controladores;
 
+import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -14,30 +15,41 @@ import java.util.List;
  * @author paula
  */
 public class Verification {
+    private Connection con;
+    private Ctr_BaseDatosProxy controlDataBase;
+
+    public Verification() {
+        this.controlDataBase = new Ctr_BaseDatosProxy();
+        this.con = controlDataBase.getConnection();
+    }
     
     public UserType verificacionDatosSession(String user, String pass){
-        List<Control_Session> metodos = new ArrayList<>();
+        UserType tipoUsuario = UserType.INVALIDO;
         
-        metodos.add(new Ctr_Administrador());
-        metodos.add(new Ctr_Directivos());
-        metodos.add(new Ctr_Jefe_Bodega());
-        metodos.add(new Ctr_Personal_Caja());
+        String cedula = controlDataBase.isUser(user, pass);
         
-        Iterator<Control_Session> it = metodos.iterator();
-        
-        UserType tipoUsuario = null;
-        Control_Session control_session;
-        
-        while(it.hasNext()){
-            control_session = it.next();
-            
-            tipoUsuario = control_session.verificarSesion(user, pass);
-            
-            if(tipoUsuario != null)
-                return tipoUsuario;
+        if(cedula != null){
+            List<Control_Session> metodos = new ArrayList<>();
+
+            metodos.add(new Ctr_Administrador());
+            metodos.add(new Ctr_Directivos());
+            metodos.add(new Ctr_Jefe_Bodega());
+            metodos.add(new Ctr_Personal_Caja());
+
+            Iterator<Control_Session> it = metodos.iterator();
+            Control_Session control_session;
+
+            while(it.hasNext()){
+                control_session = it.next();
+
+                tipoUsuario = control_session.verificarSesion(cedula);
+
+                if(tipoUsuario != null)
+                    return tipoUsuario;
+            }
         }
         
-        return UserType.INVALIDO;
+        return tipoUsuario;
     }
     
 }

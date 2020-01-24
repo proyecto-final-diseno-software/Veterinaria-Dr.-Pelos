@@ -29,4 +29,14 @@ public class Ctr_BaseDatosProxy implements BaseDatos{
     @Override
     public void disconnect() {}
     
+    //Cecibe los datos y retorna la cedula a la que pertene el usuario
+    public String isUser(String user, String pass){
+        
+        //conectionBaseCentral usa eso para la busqueda
+        
+        String cedula = "Cedula";
+        
+        return cedula;
+    }
+    
 }
