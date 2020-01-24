@@ -203,7 +203,7 @@ CREATE TABLE Forma_Pago(
   PRIMARY KEY(forma_pago_ID)
   );
   
--- insert into Forma_Pago values(123, 17.0,"Dinero en efectio");
+insert into Forma_Pago values(123, 17.0,"Dinero en efectio");
     
 DROP TABLE IF EXISTS Pago_Efectivo;
 CREATE TABLE Pago_Efectivo(
