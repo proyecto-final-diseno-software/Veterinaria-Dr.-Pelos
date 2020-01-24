@@ -10,7 +10,6 @@ package modelo;
  * @author paula
  */
 public class Personal_Caja extends Persona {
-    private int id_persona_caja;
     private String area;
     private Sucursal sucursal;
 
@@ -19,13 +18,6 @@ public class Personal_Caja extends Persona {
         this.sucursal = sucursal;
     }
 
-    public int getId_persona_caja() {
-        return id_persona_caja;
-    }
-
-    public void setId_persona_caja(int id_persona_caja) {
-        this.id_persona_caja = id_persona_caja;
-    }
 
     public String getArea() {
         return area;
@@ -38,4 +30,10 @@ public class Personal_Caja extends Persona {
     public Sucursal getSucursal() {
         return sucursal;
     }
+
+    public String getCedula() {
+        return cedula;
+    }
+    
+    
 }

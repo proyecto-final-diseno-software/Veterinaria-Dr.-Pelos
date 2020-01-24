@@ -12,7 +12,6 @@ import java.util.LinkedList;
  * @author paula
  */
 public class Directivos extends Persona{
-    private int id_directivos;
 
     public Directivos(String cedula, String nombre, String apellido) {
         super(nombre, apellido, cedula);

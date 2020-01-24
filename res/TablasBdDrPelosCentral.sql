@@ -141,7 +141,7 @@ CREATE TABLE Stock(
 DROP TABLE IF EXISTS Cotizacion;
   CREATE TABLE Cotizacion(
 	cotizacion_ID int NOT NULL AUTO_INCREMENT,
-    decha DATE,
+    fecha DATE,
     valor float DEFAULT 0.00,
     cliente_ID varchar(6) NOT NULL,
     personal_caja_ID varchar(10) NOT NULL,

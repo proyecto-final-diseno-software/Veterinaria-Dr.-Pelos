@@ -10,7 +10,6 @@ package modelo;
  * @author paula
  */
 public class Jefe_Bodega extends Persona {
-    private int id_jefeBodega;
 
     public Jefe_Bodega(String cedula, String nombre, String apellido) {
         super(nombre, apellido, cedula);
@@ -22,13 +21,6 @@ public class Jefe_Bodega extends Persona {
     }
     
     
-    public int getId_jefeBodega() {
-        return id_jefeBodega;
-    }
-
-    public void setId_jefeBodega(int id_jefeBodega) {
-        this.id_jefeBodega = id_jefeBodega;
-    }
     
     
     

@@ -78,16 +78,14 @@ public class Ctr_Personal_Caja implements Control_Session{
     
     private boolean insertCotizacion(Cotizacion c){
         try {
-            PreparedStatement ps = con.prepareStatement("insert into venta(venta_ID,fecha,n_factura,sub_total,total,descuento,personal_cajas_ID, forma_pago_ID) values(?,?,?,?,?,?,?,?);");
+            PreparedStatement ps = con.prepareStatement("insert into Cotizacion(cotizacion_ID,fecha,valor,cliente_ID,personal_cajas_ID) values(?,?,?,?,?);");
             ps.setInt(1, c.getIdCotizacion());
-            
             LocalDate fecha = c.getFecha();
             Date fechasql = Date.valueOf(fecha);
             ps.setDate(2, fechasql);
-            
             ps.setFloat(3, (float)c.getValor());
             ps.setString(4, c.getCliente().getCedula());
-            //ps.setString(5, c.getPersonal_caja().getId_persona_caja());
+            ps.setString(5, c.getPersonal_caja().getCedula());
             
             ps.executeUpdate();
             //Connection con1 = Ctr_BaseDatos.getConnection();
@@ -114,7 +112,7 @@ public class Ctr_Personal_Caja implements Control_Session{
             ps.setFloat(4, (float)v.getSubtotal());
             ps.setFloat(5, (float)v.getTotal() );
             ps.setFloat(6, (float)v.getDescuento());
-            ps.setInt(7, v.getPersonalCaja().getId_persona_caja());
+            ps.setString(7, v.getPersonalCaja().getCedula());
             
             ps.executeUpdate();
             //Connection con1 = Ctr_BaseDatos.getConnection();
