@@ -20,6 +20,8 @@ import modelo.Categoria;
 import modelo.Cliente;
 import modelo.Cotizacion;
 import modelo.Detalle_Venta;
+import modelo.Detalle_VentaProducto;
+import modelo.Detalle_VentaServicio;
 import modelo.Efectivo;
 import modelo.Forma_pago;
 import modelo.Mascota;
@@ -81,6 +83,8 @@ public class Ctr_Personal_Caja implements Control_Session{
     private boolean insertCotizacion(Cotizacion c){
         try {
             PreparedStatement ps = con.prepareStatement("insert into Cotizacion(cotizacion_ID,fecha,valor,cliente_ID,personal_cajas_ID) values(?,?,?,?,?);");
+            c.setIdCotizacion(maxCotizacion()+1);
+            
             ps.setInt(1, c.getIdCotizacion());
             LocalDate fecha = c.getFecha();
             Date fechasql = Date.valueOf(fecha);
@@ -90,7 +94,6 @@ public class Ctr_Personal_Caja implements Control_Session{
             ps.setString(5, c.getPersonal_caja().getCedula());
             
             ps.executeUpdate();
-            //Connection con1 = Ctr_BaseDatos.getConnection();
             ps.close();
             return true;
             
@@ -100,8 +103,39 @@ public class Ctr_Personal_Caja implements Control_Session{
         } 
     }
     
+    private int maxCotizacion(){
+        int max = 0;
+        Statement stmt;
+        try {
+            stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("select max(cotizacion_ID) from cotizacion");
+            if(rs.next())
+                max = rs.getInt(1);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return max;
+    }
+    
+    private int maxVenta(){
+        int max = 0;
+        Statement stmt;
+        try {
+            stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("select max(venta_ID) from Venta");
+            if(rs.next())
+                max = rs.getInt(1);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return max;
+    }
+    
     public boolean insertVenta(Venta v){
         try {
+            v.setId_venta(maxVenta()+1);
             PreparedStatement ps = con.prepareStatement("insert into venta(fecha, n_factura, sub_total, total, descuento, personal_cajas_ID, forma_pago_ID, id_cliente) values(?,?,?,?,?,?,?,?);");
             
             LocalDate fecha = v.getFecha();
@@ -126,9 +160,57 @@ public class Ctr_Personal_Caja implements Control_Session{
         } 
     }
     
+    public int idProducto(Producto p){
+       int id = 0;
+       try {
+            Statement stmt = con.createStatement();
+            String q = "select producto_ID from producto where nombre =\"" + p.getNombre()+
+                    "\" and precio_unitario="+p.getPrecioUnitario()+";";
+            System.out.println(q);
+            ResultSet rs = stmt.executeQuery(q);
+            if(rs.next())
+                id = rs.getInt(1);
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
+        } 
+       return id;
+    }
+    
     //En este metodo guarde los detaller de denta dependiendo si es un detalle de venta de producto o un detalle de venta de servicios para solucionar la relacion de muchos a muchos
     public boolean guardarDetalleVenta(Detalle_Venta ventas){
-        return true;
+        try {
+            if(ventas instanceof Detalle_VentaProducto){
+                Detalle_VentaProducto d_producto = (Detalle_VentaProducto)ventas;
+//                PreparedStatement ps = con.prepareStatement("insert into DetalleVentaProducto(detalle_venta_ID, cantidad,"
+//                        + "venta_ID,producto_ID,cotizacion_ID) values(default,?,?,?,?);");
+//                ps.setInt(1, d_producto.getCantidad());
+//                ps.setInt(2, d_producto.getVenta().getId_venta());
+//                Producto p = d_producto.getProducto();
+//                ps.setInt(3,idProducto(p));
+//                ps.setInt(4, d_producto.);
+//                ps.executeUpdate();
+//                ps.close();      
+//                return true;
+                
+            }
+            else{
+                Detalle_VentaServicio d_venta = (Detalle_VentaServicio)ventas;
+//                PreparedStatement ps = con.prepareStatement("insert into DetalleVentaServicio(cedula,nombre,apellido) values(?,?,?);");
+//                ps.setString(1, c.getCedula());
+//                ps.setString(2, c.getNombre());
+//                ps.setString(3, c.getApellido());
+//                ps.executeUpdate();
+//                ps.close();
+//                return true;
+            }
+        
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    return true;
+        
     }
     
     public Forma_pago retornaMetodoPago(){
@@ -215,12 +297,12 @@ public class Ctr_Personal_Caja implements Control_Session{
         try (Statement st = con.createStatement()) {
             try(ResultSet rs = st.executeQuery(stbuscar)){
                 while (rs.next()) {
-                    String idProducto = rs.getString("producto_ID");
+                    int idProducto = rs.getInt("producto_ID");
                     String nombre = rs.getString("nombre");
                     String precio = rs.getString("precio_unitario");
                     String descri = rs.getString("descripcion");
                     String categoria = rs.getString("nombre_c");
-                    Producto p = new Producto(idProducto,Double.parseDouble(precio),nombre,descri,new Categoria(categoria,""));
+                    Producto p = new Producto(idProducto,nombre,Double.parseDouble(precio),descri,new Categoria(categoria,""));
                     lista.add(p);
                 }
             } catch (SQLException ex) {

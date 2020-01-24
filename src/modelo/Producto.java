@@ -13,18 +13,21 @@ import java.util.List;
  * @author paula
  */
 public class Producto {
-    private String id_producto;
+    private int id_producto;
     private String nombre;
     private double precioUnitario;
     private String descripcion;
     private Categoria categoria;
 
-    public Producto(String id_producto, double precioUnitario, String nombre, String descripcion, Categoria categoria) {
+    public Producto(int id_producto, String nombre, double precioUnitario, String descripcion, Categoria categoria) {
         this.id_producto = id_producto;
-        this.precioUnitario = precioUnitario;
         this.nombre = nombre;
+        this.precioUnitario = precioUnitario;
         this.descripcion = descripcion;
         this.categoria = categoria;
+    }
+
+    public Producto() {
     }
     
     public boolean cambiarPrecio(){
@@ -55,18 +58,26 @@ public class Producto {
         this.precioUnitario = precioUnitario;
     }
 
-    public String getId_producto() {
+    public int getId_producto() {
         return id_producto;
     }
 
-    public void setId_producto(String id_producto) {
+    public void setId_producto(int id_producto) {
         this.id_producto = id_producto;
     }
-    
+
+    public Categoria getCategoria() {
+        return categoria;
+    }
+
+    public void setCategoria(Categoria categoria) {
+        this.categoria = categoria;
+    }
+
     public List<String> retornarAllData(){
         List<String> lista = new ArrayList<>();
         
-        lista.add(id_producto);
+        lista.add(id_producto+"");
         lista.add(nombre);
         lista.add(Double.toString(precioUnitario));
         lista.add(categoria.getNombre());
