@@ -49,6 +49,10 @@ public class BoxTextTool extends StackPane implements Tool{
             
         getChildren().add(text);
     }
+    
+    public void setText(String newText){
+        this.text.setText(newText);
+    }
 
     @Override
     public boolean isEmplyTool() {
@@ -57,6 +61,11 @@ public class BoxTextTool extends StackPane implements Tool{
 
     @Override
     public Object getValue() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void limpiarTool() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

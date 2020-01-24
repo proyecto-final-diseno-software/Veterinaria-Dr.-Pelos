@@ -34,9 +34,11 @@ import view.tool.Tool;
  */
 public class Ctr_Personal_Caja implements Control_Session{
     private Connection con;
+    private Ctr_BaseDatosProxy controlDataBase;
 
     public Ctr_Personal_Caja() {
-        con = Ctr_BaseDatosProxy.obtenerConnection();
+        this.controlDataBase = new Ctr_BaseDatosProxy();
+        this.con = controlDataBase.getConnection();
     }
     
     public void realizarCotizacion(){

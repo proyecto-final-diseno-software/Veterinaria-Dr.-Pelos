@@ -53,4 +53,9 @@ public class ComBoxTool<E> extends StackPane implements Tool{
     public ComboBox getCombo() {
         return combo;
     }   
+
+    @Override
+    public void limpiarTool() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

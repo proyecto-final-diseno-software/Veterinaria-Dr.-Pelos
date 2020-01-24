@@ -7,6 +7,7 @@ package view.states;
 
 import controladores.Ctr_Personal_Caja;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -27,11 +28,13 @@ import javafx.stage.Stage;
 import modelo.Cliente;
 import modelo.Personal_Caja;
 import modelo.Sucursal;
+import view.contenido.Contenido;
 import view.tool.BotonTool;
 import view.tool.BoxTextTool;
 import view.tool.Tool;
 import view.contenido.ContenidoAnadirUsuario;
 import view.contenido.ContenidoBusqueda;
+import view.contenido.ContenidoConsultaEntregas;
 import view.contenido.ContenidoPerfil;
 import view.contenido.ContenidoTraslado;
 import view.contenido.ContenidoVentas;
@@ -44,6 +47,7 @@ public class View_PersonalCaja extends Ventana{
     private PrincipalContenedorCaja ventana;
     
     private Sucursal sucursal;
+    
     private Personal_Caja personalCaja;
     
     private Ctr_Personal_Caja contolCaja;
@@ -81,7 +85,15 @@ public class View_PersonalCaja extends Ventana{
         private int altoSuperior;
         
         private int reduccionX;
-         private int reduccionY;
+        private int reduccionY;
+        
+        private List<Contenido> contenidos;
+        
+        private ContenidoAnadirUsuario ventanaAnadirUsuario;
+        private ContenidoPerfil ventanaPerfil;
+        private ContenidoVentas contenVentas;
+        private ContenidoTraslado ventanaTraslado;
+        private ContenidoConsultaEntregas ventanaConsultaEntrega;
         
         public PrincipalContenedorCaja(){
             pane1 = new FlowPane();
@@ -128,12 +140,14 @@ public class View_PersonalCaja extends Ventana{
             
             BotonTool botonCrearClientes = new BotonTool(" - Añadir cliente", titulo2 - 5, anchoLateral, altoBotones - 20, false);
             botonCrearClientes.setOnMousePressed(seccionClientes -> {
+                ocultarContenidos();
+                ventanaAnadirUsuario.setVisible(true);
                 comportamientoMenuLateral(botonCrearClientes);
-                cambiarContenidoAnadirUser();
             });
             
             BotonTool botonConsultarClientes = new BotonTool(" - Consultar cliente", titulo2 - 5, anchoLateral, altoBotones - 20, false);
             botonConsultarClientes.setOnMousePressed(seccionClientes -> {
+                ocultarContenidos();
                 comportamientoMenuLateral(botonConsultarClientes);
             });
             botonClientes.setOnMousePressed(seccionClientes -> {
@@ -153,6 +167,7 @@ public class View_PersonalCaja extends Ventana{
             
             BotonTool botonInventario = new BotonTool("Inventario", titulo2, anchoLateral, altoBotones, false);
             botonInventario.setOnMousePressed(seccionClientes -> {
+                ocultarContenidos();
                 comportamientoMenuLateral(botonInventario);
             });
             
@@ -160,6 +175,7 @@ public class View_PersonalCaja extends Ventana{
             
             BotonTool botonProveedores = new BotonTool("Proveedores", titulo2, anchoLateral, altoBotones, false);
             botonProveedores.setOnMousePressed(seccionClientes -> {
+                ocultarContenidos();
                 comportamientoMenuLateral(botonProveedores);
             });
             
@@ -167,6 +183,7 @@ public class View_PersonalCaja extends Ventana{
             
             BotonTool botonReportes = new BotonTool("Reportes", titulo2, anchoLateral, altoBotones, false);
             botonReportes.setOnMousePressed(seccionClientes -> {
+                ocultarContenidos();
                 comportamientoMenuLateral(botonReportes);
             });
             
@@ -184,11 +201,10 @@ public class View_PersonalCaja extends Ventana{
             
             if(sucursal.isOfreceServicios()){
                 BotonTool botonTraslado = new BotonTool("Traslado", titulo2, anchoLateral, altoBotones, true);
-
                 BotonTool botonTrasladoMascota = new BotonTool(" - Mascotas", titulo2 - 5, anchoLateral, altoBotones - 20, false);
                 botonTrasladoMascota.setOnMousePressed(trasladoMascotas -> {
                     comportamientoMenuLateral(botonTrasladoMascota);
-                    cambiarContenidoTraslado("Traslado de mascotas", "Buscar Cliente");
+                    cambiarContenidoTraslado();
                 });
                 botonesLateral.add(botonTrasladoMascota);
 
@@ -200,6 +216,7 @@ public class View_PersonalCaja extends Ventana{
                 botonesLateral.add(botonTransladoMercaderia);
 
                 botonTraslado.setOnMousePressed(seccionClientes -> {
+                    ocultarContenidos();
                     comportamientoMenuLateral(botonTraslado);
                     if(paneTraslado.getChildren().contains(botonTransladoMercaderia))
                         paneTraslado.getChildren().removeAll(botonTransladoMercaderia, botonTrasladoMascota);
@@ -214,6 +231,7 @@ public class View_PersonalCaja extends Ventana{
             
             BotonTool botonFacturacion = new BotonTool("Facturacion", titulo2, anchoLateral, altoBotones, false);
             botonFacturacion.setOnMousePressed(seccionClientes -> {
+                ocultarContenidos();
                 comportamientoMenuLateral(botonFacturacion);
             });
             
@@ -227,116 +245,124 @@ public class View_PersonalCaja extends Ventana{
             paneFondo.getChildren().add(paneCentral);
             
             getChildren().addAll(barraLateral, barraSuperior , menuLateral, paneFondo);
+            
+            this.contenidos = new ArrayList<>();
+            
+            establecerContenidoAnadirUser();
+            establecerPefilCliente();
+            establecerContenidoVentas();
+            establecerContenidoTraslado("Traslado de mascotas", "Buscar Cliente");
+            establecerConsultantregas();
         }
         
-        private void cambiarContenidoAnadirUser(){
-            establecerFondoUnico(Pos.CENTER_LEFT);
+        private void establecerContenidoAnadirUser(){
+            ventanaAnadirUsuario = new ContenidoAnadirUsuario(reduccionX, 0, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior);
             
             List<Tool> toolUsados = new ArrayList<>();
             
-            Pane mensajeError = new Pane();
-            
+            Pane mensajeError = new Pane();            
             HBox botonesPane = new HBox(5);
+            
             BotonTool guardarCliente = new BotonTool("Guardar Cliente", titulo2, 200, titulo2 * 2, ColorOscuro);
             guardarCliente.setOnMousePressed(guardarNuevoCliente -> {
                 mensajeError.getChildren().clear();
                 if(comprobarCampos(toolUsados)){
                     Cliente nuevoCliente = contolCaja.createCliente(toolUsados);
-                    if(contolCaja.addClienteDataBase(nuevoCliente))
+                    if(contolCaja.addClienteDataBase(nuevoCliente)){
+                        ventanaAnadirUsuario.limpiarVentana();
                         cambiarPefilCliente(nuevoCliente);
-                    else
+                    } else
                         mensajeError.getChildren().add(new BoxTextTool("Hubo un error al crear el usuario\nintento mas tarde.", Color.RED, titulo3, FontWeight.BOLD));
                 } else
                     mensajeError.getChildren().add(new BoxTextTool("Por favor ingrese los datos faltantes.", Color.RED, titulo3, FontWeight.BOLD));
             });
             BotonTool cancelarCliente = new BotonTool("Cancelar", titulo2, 200, titulo2 * 2, colorClaro);
-            cancelarCliente.setOnMousePressed(cancelarNuevoCliente -> limpiarVentana());
+            cancelarCliente.setOnMousePressed(cancelarNuevoCliente -> ventanaAnadirUsuario.limpiarVentana());
             
             botonesPane.getChildren().addAll(cancelarCliente, guardarCliente);
             
-            ContenidoAnadirUsuario ventanaAnadirUsuario = new ContenidoAnadirUsuario(reduccionX, 0, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior);
             ventanaAnadirUsuario.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
-            ventanaAnadirUsuario.establecerPaneles(pane1, pane2, pane3, pane4, paneFondo);
             ventanaAnadirUsuario.contenidoAdicional((anchoVentana - reduccionX) / 2 - 25);
             ventanaAnadirUsuario.crearContenidoCentral(toolUsados);
             ventanaAnadirUsuario.anadirSellecionInferior(botonesPane);
             ventanaAnadirUsuario.anadirSellecionInferior(mensajeError);
+            
+            paneFondo.getChildren().add(ventanaAnadirUsuario);
+            
+            ventanaAnadirUsuario.setVisible(false);
+            
+            this.contenidos.add(ventanaAnadirUsuario);
         }
         
-        private void cambiarContenidoVentas(){
-            limpiarVentana();
-            
-            colunma1.getChildren().addAll(pane1, pane2);
-            colunma2.getChildren().addAll(pane3, pane4);
-            
-            int anchoColunma1 = 2 * (anchoVentana - reduccionX) / 3;
-            int anchoColunma2 = (anchoVentana - reduccionX) / 3;
-            
-            pane1.setPrefWrapLength(anchoColunma1);
-            pane2.setPrefWrapLength(anchoColunma1);
-            pane3.setPrefWrapLength(anchoColunma2);
-            pane4.setPrefWrapLength(anchoColunma2);
-            
-            generarsecciones(pane1, Pos.CENTER);
-            generarsecciones(pane2, Pos.CENTER);
-            generarsecciones(pane3, Pos.CENTER);
-            generarsecciones(pane4, Pos.CENTER);
-            
-            ContenidoVentas contenVentas = new ContenidoVentas(reduccionX, reduccionY, anchoVentana, altoVentana, anchoColunma1, anchoColunma2, anchoLateral, altoSuperior, personalCaja);
+        private void establecerContenidoVentas(){
+            contenVentas = new ContenidoVentas(reduccionX, reduccionY, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior, personalCaja);
             contenVentas.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
             contenVentas.establecerPaneles(pane1, pane2, pane3, pane4, paneFondo);
             contenVentas.crearContenidoCentral(new ArrayList<>());
             
-            paneCentral.getChildren().addAll(colunma1, colunma2);
+            paneFondo.getChildren().add(contenVentas);
+            contenVentas.setVisible(false);
+            this.contenidos.add(contenVentas);
         }
         
-        private void cambiarContenidoTraslado(String tipo, String cabeceraField ){
-            establecerFondoUnico(Pos.CENTER_LEFT);
+        private void cambiarContenidoVentas(){   
+            ocultarContenidos();
+            contenVentas.setVisible(true);
+        }
+        
+        private void establecerContenidoTraslado(String tipo, String cabeceraField){
             
-            ContenidoTraslado ventanaTraslado= new ContenidoTraslado(reduccionX, 0, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior);
+            ventanaTraslado = new ContenidoTraslado(reduccionX, 0, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior);
             ventanaTraslado.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
             ventanaTraslado.establecerDatosAdicionales(tipo, cabeceraField);
-            ventanaTraslado.establecerPaneles(pane1, null, null, null, null);
             ventanaTraslado.crearContenidoCentral(null);
+            
+            paneFondo.getChildren().add(ventanaTraslado);
+            ventanaTraslado.setVisible(false);
+            this.contenidos.add(ventanaTraslado);
+        }
+        
+        private void cambiarContenidoTraslado(){
+            ocultarContenidos();
+            ventanaTraslado.setVisible(true);
+        }
+        
+        private void establecerConsultantregas(){
+            ventanaConsultaEntrega = new ContenidoConsultaEntregas(reduccionX, reduccionY, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior);
+            ventanaConsultaEntrega.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
+            ventanaConsultaEntrega.crearContenidoCentral(new ArrayList<>());
+           
+            paneFondo.getChildren().add(ventanaConsultaEntrega);
+            ventanaConsultaEntrega.setVisible(false);
+            this.contenidos.add(ventanaConsultaEntrega);
         }
         
         private void cambiarConsultantregas(){
-            establecerFondoUnico(Pos.TOP_LEFT);
-            
-            ContenidoBusqueda ventanaConsultaEntrega = new ContenidoBusqueda(anchoVentana - reduccionX - 40, altoVentana - reduccionY - 10, titulo1, titulo2);
-            Pane pane = new Pane();
-            pane.getChildren().add(ventanaConsultaEntrega);
-            pane.setTranslateX(20);
-            pane1.getChildren().add(pane);
+            ocultarContenidos();
+            ventanaConsultaEntrega.setVisible(true);
         }
         
         private void cambiarPefilCliente(Cliente cliente){
-            establecerFondoUnico(Pos.TOP_LEFT);
-            
-            ContenidoPerfil ventanaTraslado= new ContenidoPerfil(reduccionX, 0, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior, cliente);
-            ventanaTraslado.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
-            ventanaTraslado.establecerPaneles(pane1, null, null, null, null);
-            ventanaTraslado.crearContenidoCentral(null);
+            ocultarContenidos();
+            ventanaPerfil.setInformacionUser(cliente);
+            ventanaPerfil.setVisible(true);
         }
         
-        private void establecerFondoUnico(Pos pos){
-            limpiarVentana();
-            colunma1.getChildren().add(pane1);
-            paneCentral.getChildren().addAll(colunma1);
-            pane1.setPrefWrapLength(anchoVentana - reduccionX);
-            generarsecciones(pane1, pos);
+        private void establecerPefilCliente(){
+            ventanaPerfil = new ContenidoPerfil(reduccionX, 0, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior);
+            ventanaPerfil.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
+            ventanaPerfil.crearContenidoCentral(null);
+            
+            paneFondo.getChildren().add(ventanaPerfil);
+            ventanaPerfil.setVisible(false);
+            this.contenidos.add(ventanaPerfil);
         }
         
-        private void limpiarVentana(){
-            colunma1.getChildren().clear();
-            colunma2.getChildren().clear();
-            paneCentral.getChildren().clear();
-        }
-            
-        private void generarsecciones(FlowPane pane, Pos pos){
-            pane.setAlignment(pos);
-            pane.getChildren().clear();
-            pane.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), new Insets(-10, 0, -20, 0))));
+        private void ocultarContenidos(){
+            Iterator<Contenido> it = this.contenidos.iterator();
+            while(it.hasNext()){
+               it.next().setVisible(false);
+            }
         }
     }
 }

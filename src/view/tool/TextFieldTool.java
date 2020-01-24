@@ -79,4 +79,9 @@ public class TextFieldTool extends StackPane implements Tool{
     public void setText(String value){
         ingresoTexto.setText(value);
     }
+
+    @Override
+    public void limpiarTool() {
+        this.ingresoTexto.clear();
+    }
 }

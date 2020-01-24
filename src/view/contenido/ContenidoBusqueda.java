@@ -19,7 +19,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
-import javafx.scene.text.FontWeight;
 import modelo.Categoria;
 import modelo.Detalle_Venta;
 import modelo.Detalle_VentaProducto;
@@ -27,7 +26,6 @@ import modelo.Detalle_VentaServicio;
 import modelo.Producto;
 import modelo.Servicio;
 import view.tool.BotonTool;
-import view.tool.BoxTextTool;
 import view.tool.ComBoxTool;
 import view.tool.TableTool;
 import view.tool.TextFieldTool;
@@ -119,8 +117,6 @@ public class ContenidoBusqueda extends Parent{
                     insertarProductosBusqueda(ancho, camposProductos, itemsCarrito);
                 else 
                     insertarServiciosBusqueda(ancho, camposServicios, itemsCarrito);
-                    
-                
             }
         });
         
@@ -128,69 +124,6 @@ public class ContenidoBusqueda extends Parent{
         paneTabla.getChildren().add(tablaProductos);
         
         filas.getChildren().addAll(cabecera, paneTabla);
-        
-        getChildren().add(filas);
-    }
-    
-    public ContenidoBusqueda(int ancho, int alto, int titulo1, int titulo2){
-        List<Tool> toolsUsado = new ArrayList<>();
-        
-        filas = new VBox(20);
-        filas.setAlignment(Pos.TOP_LEFT);
-        
-        paneTabla = new Pane();
-        
-        int anchoField = ancho / 4;
-        
-        HBox Tutuo = new HBox(5);
-        BoxTextTool cabeceraTexto = new BoxTextTool("Busqueda de envios", Color.BLACK, titulo1, FontWeight.BOLD);
-        Tutuo.getChildren().add(cabeceraTexto);
-        
-        HBox cabecera = new HBox(5);
-        
-        TextFieldTool busquedaID = new TextFieldTool("Buscar por id", "ID:", titulo2, Pos.CENTER_LEFT, anchoField, titulo2);
-        toolsUsado.add(busquedaID);
-        
-        TextFieldTool busquedaCliente = new TextFieldTool("Buscar por Cliente", "Cliente:", titulo2, Pos.CENTER_LEFT, anchoField, titulo2);
-        toolsUsado.add(busquedaCliente);
-        
-        List<String> listaTipo = new ArrayList<>();
-        listaTipo.add("Mercaderia");
-        listaTipo.add("Mascota");
-        ComBoxTool<String> comboTipo = new ComBoxTool(anchoField, "Tipo:" , listaTipo, titulo2);
-        toolsUsado.add(comboTipo);
-        
-        BotonTool BotonBuscarProducto = new BotonTool("Buscar", titulo2, 100, titulo2 * 2 + 3, Color.GAINSBORO);
-        BotonBuscarProducto.setTranslateY(16);
-        
-        cabecera.getChildren().addAll(busquedaID, busquedaCliente, comboTipo, BotonBuscarProducto);
-        
-        List<String> camposMercaderia = new ArrayList<>();
-        camposMercaderia.add("Codigo");
-        camposMercaderia.add("Fecha");
-        camposMercaderia.add("Monto Total");
-        camposMercaderia.add("Descuento");
-        
-        camposMercaderia.add("");
-        
-        List<String> camposMascotas = new ArrayList<>();
-        camposMascotas.add("Codigo");
-        camposMascotas.add("Nombre");
-        camposMascotas.add("Raza");
-        camposMascotas.add("");
-        
-        BotonBuscarProducto.setOnMousePressed(buscarProducto -> {
-            
-                if(((String) comboTipo.getValue()).equals("Mercaderia"))
-                    filtarMercaderia(ancho, camposMercaderia);
-                else
-                    filtarMascota(ancho, camposMascotas);
-        });
-        
-        tablaProductos = new TableTool(ancho, camposMercaderia, "No hay articulos con esta descripcion", titulo2);
-        paneTabla.getChildren().add(tablaProductos);
-        
-        filas.getChildren().addAll(Tutuo, cabecera, paneTabla);
         
         getChildren().add(filas);
     }

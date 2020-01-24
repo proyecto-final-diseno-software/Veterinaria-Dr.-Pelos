@@ -15,14 +15,14 @@ public class Ctr_BaseDatosProxy implements BaseDatos{
     private static final Ctr_BaseDatos realBaseDatos = new Ctr_BaseDatos();
     private static final Connection conectionBaseCentral = realBaseDatos.getConnection();
 
-    private Ctr_BaseDatosProxy() {}
+    public Ctr_BaseDatosProxy() {}
     
     @Override
     public Connection getConnection() {
         return conectionBaseCentral;
     }
     
-    public static Connection obtenerConnection(){
+    public Connection obtenerConnection(){
         return conectionBaseCentral;
     }
 

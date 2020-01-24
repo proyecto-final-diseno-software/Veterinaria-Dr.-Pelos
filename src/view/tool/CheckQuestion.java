@@ -109,4 +109,9 @@ public class CheckQuestion  extends StackPane implements Tool{
             return "No";
         return "No aplica";
     }
+
+    @Override
+    public void limpiarTool() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

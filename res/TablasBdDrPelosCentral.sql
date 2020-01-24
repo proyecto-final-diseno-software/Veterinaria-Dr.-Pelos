@@ -48,31 +48,32 @@ CREATE TABLE Repartidor(
 DROP TABLE IF EXISTS Personal_Caja;
 CREATE TABLE PersonalCaja(
   cedula varchar(10) NOT NULL,
+	area varchar(30) NOT NULL,
   sucursal_ID int NOT NULL,
   PRIMARY KEY(cedula),
-  CONSTRAINT _1sucursal_ID FOREIGN KEY (sucursal_ID) REFERENCES Sucursal (sucursal_ID),
-  CONSTRAINT _1cedula FOREIGN KEY (cedula) REFERENCES Persona (cedula) 
+  CONSTRAINT _2sucursal_ID FOREIGN KEY (sucursal_ID) REFERENCES Sucursal (sucursal_ID),
+  CONSTRAINT _2cedula FOREIGN KEY (cedula) REFERENCES Persona (cedula) 
 );
   
 DROP TABLE IF EXISTS JefeBodega;
 CREATE TABLE JefeBodega(
   cedula varchar(10) NOT NULL,
   PRIMARY KEY(cedula),
-  CONSTRAINT _1cedula FOREIGN KEY (cedula) REFERENCES Persona (cedula) 
+  CONSTRAINT _cedula_defe_Bodega FOREIGN KEY (cedula) REFERENCES Persona (cedula) 
 );
 
 DROP TABLE IF EXISTS Directivos;
 CREATE TABLE Directivos(
   cedula varchar(10) NOT NULL,
   PRIMARY KEY(cedula),
-  CONSTRAINT _1cedula FOREIGN KEY (cedula) REFERENCES Persona (cedula) 
+  CONSTRAINT _1cedula_directivos FOREIGN KEY (cedula) REFERENCES Persona (cedula) 
 );
 
 DROP TABLE IF EXISTS Administrador;
 CREATE TABLE Admistrador(
   cedula varchar(10) NOT NULL,
   PRIMARY KEY(cedula),
-  CONSTRAINT _1cedula FOREIGN KEY (cedula) REFERENCES Persona (cedula) 
+  CONSTRAINT _1cedula_administrador FOREIGN KEY (cedula) REFERENCES Persona (cedula) 
 );
   
 DROP TABLE IF EXISTS Cliente;
@@ -81,7 +82,7 @@ CREATE TABLE Cliente(
   direccion varchar(120) NULL DEFAULT "CONSUMIDOR FINAL",
   telefono varchar(10) NULL DEFAULT "9999999999",
   UNIQUE KEY cedula_unique (cedula),
-  CONSTRAINT _2cedula FOREIGN KEY (cedula) REFERENCES Persona (cedula) 
+  CONSTRAINT _cedula_cliente FOREIGN KEY (cedula) REFERENCES Persona (cedula) 
   );
   
 DROP TABLE IF EXISTS Mascota;
@@ -94,6 +95,7 @@ CREATE TABLE Mascota(
 	PRIMARY KEY(mascota_ID),
 	CONSTRAINT dueno FOREIGN KEY (dueno_ID) REFERENCES Persona (cedula) ON DELETE NO ACTION
   );
+  
   -- Mercaderia
     DROP TABLE IF EXISTS Categoria;
   CREATE TABLE Categoria(
@@ -102,8 +104,6 @@ CREATE TABLE Mascota(
     descripcion varchar(70) NULL DEFAULT "SIN DESCRIPCION",
     PRIMARY KEY(categoria_ID)
     );
-    
-
     
 DROP TABLE IF EXISTS Producto;
   CREATE TABLE Producto(
@@ -117,8 +117,8 @@ DROP TABLE IF EXISTS Producto;
     );
     
     
-        DROP TABLE IF EXISTS Stock;
-  CREATE TABLE Stock(
+DROP TABLE IF EXISTS Stock;
+CREATE TABLE Stock(
 	stock_ID int NOT NULL AUTO_INCREMENT,
     producto_ID int NOT NULL,
     stock int DEFAULT 0,
@@ -170,7 +170,7 @@ CREATE TABLE Ruta(
     CONSTRAINT _ruta_ID FOREIGN KEY (ruta_ID) REFERENCES Ruta(ruta_ID)
     );
     
-    DROP TABLE IF EXISTS Pedido_traslado;
+DROP TABLE IF EXISTS Pedido_traslado;
   CREATE TABLE Pedido_traslado(
   pedido_traslado_ID int NOT NULL AUTO_INCREMENT,
   jefeBodega_ID varchar(10) NOT NULL,

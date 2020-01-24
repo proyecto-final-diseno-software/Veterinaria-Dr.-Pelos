@@ -30,9 +30,6 @@ import view.tool.Tool;
 public class ContenidoEspecificarDetalle extends Contenido implements ContenidoCentral{
     private final int anchoVentanaContenido;
     
-    private VBox paneIngresoDatos;
-    private Pane paneCentral;
-    
     private Detalle_Venta det;
     
     private TextFieldTool textFieldCantidad;
@@ -41,21 +38,22 @@ public class ContenidoEspecificarDetalle extends Contenido implements ContenidoC
         super(reduccionx, reduccionY, anchoVentana, altoVentana, anchoColunma1, anchoColunma2, anchoLateral, altoSuperior);
         this.anchoVentanaContenido = 300;
         this.det = det;
+        
+        this.paneFondo = new Pane();
+        this.colunma1 = new VBox(20);
     }
     
     @Override
     public void crearContenidoCentral(List<Tool> toolUsados) {
-        paneIngresoDatos = new VBox(20);
-        paneIngresoDatos.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), new Insets(-20))));
-        paneIngresoDatos.setAlignment(Pos.CENTER);
-        paneIngresoDatos.setTranslateX((anchoVentana - reduccionx + 20)/2 - 150);
-        paneIngresoDatos.setTranslateY((altoVentana - reduccionY + 20)/2 - 150);
+        colunma1.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), new Insets(-20))));
+        colunma1.setAlignment(Pos.CENTER);
+        colunma1.setTranslateX((anchoVentana - reduccionX + 20)/2 - 150);
+        colunma1.setTranslateY((altoVentana - reduccionY + 20)/2 - 150);
         
-        paneCentral = new Pane();
-        
-        Rectangle bg = new Rectangle(anchoVentana - reduccionx + 20, altoVentana - reduccionY + 20);
+        Rectangle bg = new Rectangle(anchoVentana - reduccionX + 20, altoVentana - reduccionY + 20);
         bg.setFill(Color.WHITE);
         bg.setOpacity(0.5);
+        bg.setTranslateY(-10);
         
         HBox cabecera = new HBox(5);
         
@@ -72,24 +70,20 @@ public class ContenidoEspecificarDetalle extends Contenido implements ContenidoC
         segundoPanel.getChildren().add(textFieldCantidad);
         toolUsados.add(textFieldCantidad);
         
-        paneIngresoDatos.getChildren().addAll(cabecera, primero,segundoPanel);
-        paneCentral.getChildren().addAll(bg, paneIngresoDatos);
+        colunma1.getChildren().addAll(cabecera, primero, segundoPanel);
+        paneFondo.getChildren().addAll(bg, colunma1);
         
-        this.paneFondo.getChildren().add(paneCentral);
+        getChildren().add(paneFondo);
     }
     
     public void anadirBotones(BotonTool botonAceptar,BotonTool botonEliminar){
         HBox panebotones = new HBox(5);
         panebotones.getChildren().addAll(botonAceptar, botonEliminar);
-        paneIngresoDatos.getChildren().add(panebotones);
+        colunma1.getChildren().add(panebotones);
     }
     
     public void setCantidad(){
         int nuevaCantidad = Integer.parseInt((String) textFieldCantidad.getValue());
         det.setCantidad(nuevaCantidad);
-    }
-    
-    public void removerPanel(){
-        this.paneFondo.getChildren().remove(paneCentral);
     }
 }

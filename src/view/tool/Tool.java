@@ -13,4 +13,5 @@ public interface Tool {
     
     boolean isEmplyTool();
     Object getValue();
+    void limpiarTool();
 }
