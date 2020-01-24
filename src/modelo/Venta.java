@@ -39,6 +39,7 @@ public class Venta {
         
         while(it.hasNext()){
             Detalle_Venta det = it.next();
+            det.setVenta(this);
             monto += det.calcularPrecio();
         }
         

@@ -33,6 +33,7 @@ public class Cotizacion {
     }
     
     public void agregarDetalle(Detalle_Venta detalle){
+        detalle.setCotizacion(this);
         valor += detalle.calcularPrecio();
         detalles.add(detalle);
     }

@@ -12,9 +12,29 @@ package modelo;
 public abstract class Detalle_Venta {
     protected int cantidad;
     protected int id_detalle_ventaProducto;
+    protected Venta venta;
+    protected Cotizacion cotizacion;
 
     public Detalle_Venta(int cantidad) {
+        this.venta = null;
+        this.cotizacion = null;
         this.cantidad = cantidad;
+    }
+
+    public Venta getVenta() {
+        return venta;
+    }
+
+    public void setVenta(Venta venta) {
+        this.venta = venta;
+    }
+
+    public Cotizacion getCotizacion() {
+        return cotizacion;
+    }
+
+    public void setCotizacion(Cotizacion cotizacion) {
+        this.cotizacion = cotizacion;
     }
     
     public abstract double calcularPrecio();

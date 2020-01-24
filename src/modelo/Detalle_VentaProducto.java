@@ -11,19 +11,10 @@ package modelo;
  */
 public class Detalle_VentaProducto extends Detalle_Venta{
     private final Producto producto;
-    private Venta venta;
 
     public Detalle_VentaProducto(int cantidad, Producto producto) {
         super(cantidad);
         this.producto = producto;
-    }
-
-    public Venta getVenta() {
-        return venta;
-    }
-
-    public void setVenta(Venta venta) {
-        this.venta = venta;
     }
     
     @Override
