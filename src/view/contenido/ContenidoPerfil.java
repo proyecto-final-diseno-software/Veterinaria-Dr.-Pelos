@@ -91,4 +91,9 @@ public class ContenidoPerfil extends Contenido implements ContenidoCentral{
         
         this.pane1.getChildren().add(paneDatosCliente);
     }
+
+    @Override
+    public void establecerPaneles() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

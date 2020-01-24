@@ -9,14 +9,10 @@ import controladores.Ctr_Personal_Caja;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.Background;
-import javafx.scene.layout.BackgroundFill;
-import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.FlowPane;
@@ -33,7 +29,6 @@ import view.tool.BotonTool;
 import view.tool.BoxTextTool;
 import view.tool.Tool;
 import view.contenido.ContenidoAnadirUsuario;
-import view.contenido.ContenidoBusqueda;
 import view.contenido.ContenidoConsultaEntregas;
 import view.contenido.ContenidoPerfil;
 import view.contenido.ContenidoTraslado;
@@ -73,14 +68,6 @@ public class View_PersonalCaja extends Ventana{
     }
     
     private class PrincipalContenedorCaja extends Parent{
-        private VBox colunma1;
-        private VBox colunma2;
-        
-        private FlowPane pane1;
-        private FlowPane pane2;
-        private FlowPane pane3;
-        private FlowPane pane4;
-        
         private int anchoLateral;
         private int altoSuperior;
         
@@ -96,19 +83,11 @@ public class View_PersonalCaja extends Ventana{
         private ContenidoConsultaEntregas ventanaConsultaEntrega;
         
         public PrincipalContenedorCaja(){
-            pane1 = new FlowPane();
-            pane2 = new FlowPane();
-            pane3 = new FlowPane();
-            pane4 = new FlowPane();
-            
             menuLateral = new VBox();
             menuLateral.setAlignment(Pos.CENTER_LEFT);
             
             paneCentral = new HBox(20);
             paneFondo = new Pane();
-            
-            colunma1 = new VBox(35);
-            colunma2 = new VBox(35);
             
             titulo1 = 30;
             titulo2 = 20;
@@ -297,7 +276,7 @@ public class View_PersonalCaja extends Ventana{
         private void establecerContenidoVentas(){
             contenVentas = new ContenidoVentas(reduccionX, reduccionY, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior, personalCaja);
             contenVentas.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
-            contenVentas.establecerPaneles(pane1, pane2, pane3, pane4, paneFondo);
+            contenVentas.establecerPaneles();
             contenVentas.crearContenidoCentral(new ArrayList<>());
             
             paneFondo.getChildren().add(contenVentas);

@@ -86,4 +86,9 @@ public class ContenidoEspecificarDetalle extends Contenido implements ContenidoC
         int nuevaCantidad = Integer.parseInt((String) textFieldCantidad.getValue());
         det.setCantidad(nuevaCantidad);
     }
+
+    @Override
+    public void establecerPaneles() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

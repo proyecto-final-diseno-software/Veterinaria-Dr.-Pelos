@@ -70,13 +70,7 @@ public abstract class Contenido extends Parent{
         this.colorClaro = colorClaro;
     }
     
-    public void establecerPaneles(FlowPane pane1, FlowPane pane2, FlowPane pane3, FlowPane pane4, Pane paneFondo){
-        this.pane1 = pane1;
-        this.pane2 = pane2;
-        this.pane3 = pane3;
-        this.pane4 = pane4;
-        this.paneFondo = paneFondo;
-    }
+    public abstract void establecerPaneles();
     
     protected void establecerFondoUnico(Pos pos){
         this.colunma1.getChildren().add(pane1);

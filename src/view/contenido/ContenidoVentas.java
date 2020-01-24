@@ -60,7 +60,7 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
     }
     
     @Override
-    public void establecerPaneles(FlowPane pane1, FlowPane pane2, FlowPane pane3, FlowPane pane4, Pane paneFondo){
+    public void establecerPaneles(){
         colunma1.getChildren().addAll(this.pane1, this.pane2);
         colunma2.getChildren().addAll(this.pane3, this.pane4);
         

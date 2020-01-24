@@ -175,4 +175,9 @@ public class ContenidoTraslado extends Contenido implements ContenidoCentral{
         } else 
             colunma1.getChildren().add(error);
     }
+
+    @Override
+    public void establecerPaneles() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }
