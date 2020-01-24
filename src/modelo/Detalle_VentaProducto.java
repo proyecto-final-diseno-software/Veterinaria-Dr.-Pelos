@@ -17,6 +17,14 @@ public class Detalle_VentaProducto extends Detalle_Venta{
         super(cantidad);
         this.producto = producto;
     }
+
+    public Venta getVenta() {
+        return venta;
+    }
+
+    public void setVenta(Venta venta) {
+        this.venta = venta;
+    }
     
     @Override
     public double calcularPrecio(){

@@ -17,13 +17,11 @@ public class Servicio {
     private Double precio_unitario;
     private String nombre;
     private String descripcion;
-    private ArrayList<String> colaboraciones;
 
     public Servicio(int id_servicio, String nombre, String descripcion, Double precio_unitario) {
         this.id_servicio = id_servicio;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.colaboraciones = new ArrayList<>();
         this.precio_unitario = precio_unitario;
     }
     
@@ -33,16 +31,6 @@ public class Servicio {
             return true;
         }
         return false;
-    }
-    
-    public boolean agregarColaboraciones(String colaboracion){
-        if(colaboracion == null || colaboraciones.contains(colaboracion)) return false;
-        return colaboraciones.add(colaboracion);
-    }
-    
-    public boolean eliminarColaboraciones(String colaboracion){
-        if(colaboracion == null || !colaboraciones.contains(colaboracion)) return false;
-        return colaboraciones.remove(colaboracion);
     }
 
     public int getId_servicio() {
@@ -67,14 +55,6 @@ public class Servicio {
 
     public void setDescripcion(String descripcion) {
         this.descripcion = descripcion;
-    }
-
-    public ArrayList<String> getColaboraciones() {
-        return colaboraciones;
-    }
-
-    public void setColaboraciones(ArrayList<String> colaboraciones) {
-        this.colaboraciones = colaboraciones;
     }
 
     public Double getPrecio() {
