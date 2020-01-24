@@ -15,8 +15,8 @@ CREATE TABLE Persona(
 
 DROP TABLE IF EXISTS Sucursal;
 CREATE TABLE Sucursal(
-    sucursal_ID int NOT NULL ,
-    nombre int NOT NULL,
+    sucursal_ID int NOT NULL AUTO_INCREMENT,
+    nombre varchar(20) NOT NULL,
     direccion varchar(120) NOT NULL,
     hasServices boolean NOT NULL,
     PRIMARY KEY(sucursal_ID)
@@ -46,34 +46,38 @@ CREATE TABLE Repartidor(
   );
   
 DROP TABLE IF EXISTS Personal_Caja;
-CREATE TABLE PersonalCaja(
+CREATE TABLE Personal_Caja(
   cedula varchar(10) NOT NULL,
 	area varchar(30) NOT NULL,
-  sucursal_ID int NOT NULL,
+	sucursal_ID int NOT NULL,
   PRIMARY KEY(cedula),
   CONSTRAINT _2sucursal_ID FOREIGN KEY (sucursal_ID) REFERENCES Sucursal (sucursal_ID),
-  CONSTRAINT _2cedula FOREIGN KEY (cedula) REFERENCES Persona (cedula) 
+  CONSTRAINT _2cedula FOREIGN KEY (cedula) REFERENCES Persona (cedula),
+  CONSTRAINT _2cedula_user_ FOREIGN KEY (cedula) REFERENCES Usuario (usuario_ID)
 );
   
-DROP TABLE IF EXISTS JefeBodega;
-CREATE TABLE JefeBodega(
+DROP TABLE IF EXISTS Jefe_Bodega;
+CREATE TABLE Jefe_Bodega(
   cedula varchar(10) NOT NULL,
   PRIMARY KEY(cedula),
-  CONSTRAINT _cedula_defe_Bodega FOREIGN KEY (cedula) REFERENCES Persona (cedula) 
+  CONSTRAINT _cedula_jefe_Bodega FOREIGN KEY (cedula) REFERENCES Persona (cedula),
+  CONSTRAINT _cedula_user_jefe_Bodega FOREIGN KEY (cedula) REFERENCES Usuario (usuario_ID)
 );
 
 DROP TABLE IF EXISTS Directivos;
 CREATE TABLE Directivos(
   cedula varchar(10) NOT NULL,
   PRIMARY KEY(cedula),
-  CONSTRAINT _1cedula_directivos FOREIGN KEY (cedula) REFERENCES Persona (cedula) 
+  CONSTRAINT _1cedula_directivos FOREIGN KEY (cedula) REFERENCES Persona (cedula),
+  CONSTRAINT _10cedula_user_ FOREIGN KEY (cedula) REFERENCES Usuario (usuario_ID) 
 );
 
 DROP TABLE IF EXISTS Administrador;
-CREATE TABLE Admistrador(
+CREATE TABLE Administrador(
   cedula varchar(10) NOT NULL,
   PRIMARY KEY(cedula),
-  CONSTRAINT _1cedula_administrador FOREIGN KEY (cedula) REFERENCES Persona (cedula) 
+  CONSTRAINT _1cedula_administrador FOREIGN KEY (cedula) REFERENCES Persona (cedula),
+  CONSTRAINT _20cedula FOREIGN KEY (cedula) REFERENCES Usuario (usuario_ID)
 );
   
 DROP TABLE IF EXISTS Cliente;
@@ -87,7 +91,7 @@ CREATE TABLE Cliente(
   
 DROP TABLE IF EXISTS Mascota;
 CREATE TABLE Mascota(
-	mascota_ID int NOT NULL ,
+	mascota_ID int NOT NULL AUTO_INCREMENT,
 	nombre varchar(20) NOT NULL,
 	raza varchar(80) NOT NULL,
 	estado varchar(120) NOT NULL,
@@ -270,6 +274,49 @@ CREATE TABLE DetalleVentaServicio(
     insert into servicio values(default,230.0,"Adiestramiento","Adiestramiento básico");
     insert into servicio values(default,5.0,"Traslado raza pequeña","Traslado dentro de Guayaquil");
     
+-- insert sucursales
+	insert into sucursal values(default,"Centro 1", "José Mascote 400 y Padre Solano",true);
+    insert into sucursal values(default,"Centro 2", "Rumichaca Nº 2502 entre Febres Cordero y Cuenca",true);
+    insert into sucursal values(default,"Norte", "Alborada XI Etapa Mz 45 Villa 5",false);
+
+-- insert trabajadores
+	insert into Persona values("0975368545","Maria","Romero");
+    insert into Persona values("0945343504","Jorge","Martinez");
+    insert into Persona values("0935843645","Hector","Ruiz");
+    insert into Persona values("0924940396","Fernanda","Ramirez");
+    insert into Persona values("0996903483","Jose","Alvarez");
+    insert into Persona values("0934920534","Andrea","Medina");
+	insert into Persona values("0964784725","Carlos","Morales");
+    insert into Persona values("0934829524","Alejandro","Molina");
+	insert into Persona values("0953482343","Lucas","Dominguez");
+	insert into Persona values("0947875245","Julio","Castillo");
+    
+    insert into Usuario values("0975368545","mromero","caja",1,false);
+    insert into Usuario values("0945343504","jmartinez","caja",2,false);
+    insert into Usuario values("0935843645","hruiz","caja",3,false);
+    insert into Usuario values("0924940396","framirez","caja",2,false);
+	insert into Usuario values("0996903483","jalvarez","jefebodega",1,false);	
+    insert into Usuario values("0934920534","amedina","admin",1,true);
+	insert into Usuario values("0964784725","cmorales","directivo",1,false);
+	insert into Usuario values("0934829524","amolina","repartidor",1,false);
+	insert into Usuario values("0953482343","ldominguez","repartidor",2,false);
+	insert into Usuario values("0947875245","jcastillo","repartidor",3,false);
+
+    insert into Administrador values("0934920534");
+
+	insert into Jefe_Bodega values("0996903483");
+    
+    insert into Directivos values("0964784725");
+
+    insert into Personal_Caja values("0975368545","Cobranza", 1);
+    insert into Personal_Caja values("0945343504","Cobranza", 2);
+    insert into Personal_Caja values("0924940396","Atencion Cliente", 2);
+	insert into Personal_Caja values("0935843645","Cobranza", 3);
+    
+    insert into repartidor values("0934829524", "GEE-385","0977530446",1);
+	insert into repartidor values("0953482343", "GJL-195","0834955124",2);
+    insert into repartidor values("0947875245", "PEQ-439","0985655654",3);
+
 -- views
 -- views producto
 drop view if exists V_Productos;
