@@ -13,6 +13,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -25,6 +26,7 @@ import modelo.Detalle_VentaServicio;
 import modelo.Efectivo;
 import modelo.Forma_pago;
 import modelo.Mascota;
+import modelo.Persona;
 import modelo.Personal_Caja;
 import modelo.Producto;
 import modelo.Servicio;
@@ -50,9 +52,49 @@ public class Ctr_Personal_Caja implements Control_Session{
     }
     
     //Devielde el personal de caja con un numero usuario de la tabla usuarios recivido
-    public Personal_Caja selectPersonalCaja(String ususario){
-        return new Personal_Caja("0975368545", "Filomeno", "Gonzalez", new Sucursal(1, "Mi casa", "Cerca de mi casa", true));
+    public Personal_Caja selectPersonalCaja(String usuario){
+        Statement stmt;
+        try {
+            stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("select usuario,usuario_ID,personal_caja.sucursal_ID,persona.nombre,persona.apellido from usuario\n" +
+                "  join persona on usuario.usuario_ID = persona.cedula\n" +
+                "  join personal_caja on persona.cedula = personal_caja.cedula\n" +
+                "  join sucursal on personal_caja.sucursal_ID = sucursal.sucursal_ID\n" +
+                "  where Usuario.usuario=\"" + usuario + "\";");
+            if(rs.next()){
+                String cedula = rs.getString(2);
+                int sucursal_id = rs.getInt(3);
+                String nombre = rs.getString(4);                
+                String apellido = rs.getString(5);
+                Sucursal s = selectSucursal(sucursal_id);
+                Personal_Caja personal = new Personal_Caja(cedula,nombre,apellido,s);
+                return personal;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+        //return new Personal_Caja("0975368545", "Filomeno", "Gonzalez", new Sucursal(1, "Mi casa", "Cerca de mi casa", true));
     }
+    
+    public Sucursal selectSucursal(int id){
+        Statement stmt;
+        try {
+            stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("select * from sucursal where sucursal_ID ="+id+";");
+            if(rs.next()){
+                String nombre = rs.getString(2);
+                String direccion = rs.getString(3);
+                boolean services = rs.getBoolean(4);
+                Sucursal s = new Sucursal(id,nombre,direccion,services);
+                return s;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
+    }
+    
     
     private boolean insertMascota(Mascota m){
         try {
@@ -82,8 +124,8 @@ public class Ctr_Personal_Caja implements Control_Session{
     
     private boolean insertCotizacion(Cotizacion c){
         try {
-            PreparedStatement ps = con.prepareStatement("insert into Cotizacion(cotizacion_ID,fecha,valor,cliente_ID,personal_cajas_ID) values(?,?,?,?,?);");
             c.setIdCotizacion(maxCotizacion()+1);
+            PreparedStatement ps = con.prepareStatement("insert into Cotizacion(cotizacion_ID,fecha,valor,cliente_ID,personal_cajas_ID) values(?,?,?,?,?);");
             
             ps.setInt(1, c.getIdCotizacion());
             LocalDate fecha = c.getFecha();
@@ -160,56 +202,59 @@ public class Ctr_Personal_Caja implements Control_Session{
         } 
     }
     
-    public int idProducto(Producto p){
-       int id = 0;
-       try {
-            Statement stmt = con.createStatement();
-            String q = "select producto_ID from producto where nombre =\"" + p.getNombre()+
-                    "\" and precio_unitario="+p.getPrecioUnitario()+";";
-            System.out.println(q);
-            ResultSet rs = stmt.executeQuery(q);
-            if(rs.next())
-                id = rs.getInt(1);
-            
-        } catch (SQLException ex) {
-            Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-       return id;
-    }
     
     //En este metodo guarde los detaller de denta dependiendo si es un detalle de venta de producto o un detalle de venta de servicios para solucionar la relacion de muchos a muchos
     public boolean guardarDetalleVenta(Detalle_Venta ventas){
         try {
             if(ventas instanceof Detalle_VentaProducto){
+                System.out.println("Produ");
                 Detalle_VentaProducto d_producto = (Detalle_VentaProducto)ventas;
-//                PreparedStatement ps = con.prepareStatement("insert into DetalleVentaProducto(detalle_venta_ID, cantidad,"
-//                        + "venta_ID,producto_ID,cotizacion_ID) values(default,?,?,?,?);");
-//                ps.setInt(1, d_producto.getCantidad());
-//                ps.setInt(2, d_producto.getVenta().getId_venta());
-//                Producto p = d_producto.getProducto();
-//                ps.setInt(3,idProducto(p));
-//                ps.setInt(4, d_producto.);
-//                ps.executeUpdate();
-//                ps.close();      
-//                return true;
+                PreparedStatement ps = con.prepareStatement("insert into DetalleVentaProducto(detalle_venta_ID, cantidad,"
+                        + "venta_ID,producto_ID,cotizacion_ID) values(default,?,?,?,?);");
+                ps.setInt(1, d_producto.getCantidad());
+//                ps.setObject(2,d_producto.getVenta().getId_venta(), java.sql.Types.INTEGER);
+                if(d_producto.getVenta() != null)
+                    ps.setInt(2, d_producto.getVenta().getId_venta());
+                else
+                    ps.setInt(2,java.sql.Types.INTEGER);
+                ps.setInt(3,d_producto.getProducto().getId_producto());
+//                ps.setObject(4,d_producto.getCotizacion().getIdCotizacion(), java.sql.Types.INTEGER);
+                if(d_producto.getCotizacion() != null)
+                    ps.setInt(4, d_producto.getCotizacion().getIdCotizacion());
+                else
+                    ps.setInt(4,java.sql.Types.INTEGER);
+                ps.executeUpdate();
+                ps.close();      
+                return true;
                 
             }
             else{
-                Detalle_VentaServicio d_venta = (Detalle_VentaServicio)ventas;
-//                PreparedStatement ps = con.prepareStatement("insert into DetalleVentaServicio(cedula,nombre,apellido) values(?,?,?);");
-//                ps.setString(1, c.getCedula());
-//                ps.setString(2, c.getNombre());
-//                ps.setString(3, c.getApellido());
-//                ps.executeUpdate();
-//                ps.close();
-//                return true;
+                Detalle_VentaServicio d_serv = (Detalle_VentaServicio)ventas;
+                PreparedStatement ps = con.prepareStatement("insert into DetalleVentaServicio(detalle_venta_ID, cantidad,venta_ID,servicio_ID,cotizacion_ID)"
+                        + " values(default,?,?,?,?)");
+                System.out.println(d_serv.getCantidad());
+                ps.setInt(1, d_serv.getCantidad());
+//                ps.setObject(2,d_serv.getVenta().getId_venta(), java.sql.JDBCType.INTEGER);
+                if(d_serv.getVenta() != null)
+                    ps.setInt(2, d_serv.getVenta().getId_venta());
+                else
+                    ps.setNull(2,java.sql.Types.INTEGER);
+                System.out.println(d_serv.getServicio().getId_servicio());
+                ps.setInt(3,d_serv.getServicio().getId_servicio());
+//                ps.setObject(4, d_serv.getCotizacion().getIdCotizacion(), java.sql.JDBCType.INTEGER);
+                if(d_serv.getCotizacion() != null)
+                    ps.setInt(4, d_serv.getCotizacion().getIdCotizacion());
+                else
+                    ps.setInt(4,java.sql.Types.INTEGER);
+                ps.executeUpdate();
+                ps.close();
+                return true;
             }
         
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
         }
-    return true;
         
     }
     
