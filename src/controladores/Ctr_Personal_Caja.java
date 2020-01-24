@@ -21,6 +21,7 @@ import modelo.Cliente;
 import modelo.Cotizacion;
 import modelo.Detalle_Venta;
 import modelo.Mascota;
+import modelo.Persona;
 import modelo.Personal_Caja;
 import modelo.Producto;
 import modelo.Servicio;
@@ -230,7 +231,47 @@ public class Ctr_Personal_Caja implements Control_Session{
     //retorna una lista con solo un cliente que cumpla con la cedula que se esta mandando en caso de no hacer reotrna una lista vacia
     public List<Cliente> selectCliente(String cedula){
         List<Cliente> lista = new ArrayList<>();
-        lista.add(new Cliente("0928072487", "Eduardo", "Gonzalez", "Mi casa", "090999841"));
+        
+        String stbuscarCliente = "SELECT * FROM Cliente where cedula = '" + cedula + "';";
+        
+        String stbuscarPersona = "SELECT * FROM Persona where cedula = '" + cedula + "';";
+        
+        try (Statement st = con.createStatement()) {
+            try(ResultSet rsPersona = st.executeQuery(stbuscarPersona)){
+                
+                String cedulaPersona = null;
+                String nombrePersona = null;
+                String apellidoPersona = null;
+                
+                
+                while(rsPersona.next()){
+                    cedulaPersona = rsPersona.getString("cedula");
+                    nombrePersona = rsPersona.getString("nombre");
+                    apellidoPersona = rsPersona.getString("apellido");
+                }
+                
+                try(ResultSet rsCliente = st.executeQuery(stbuscarCliente)){
+                    
+                    Cliente cliente;
+                    
+                    while (rsCliente.next()) {
+                        String direccionCliente = rsCliente.getString("direccion");
+                        String telefonoCliente = rsCliente.getString("telefono");
+                        cliente = new Cliente(cedulaPersona, nombrePersona, apellidoPersona, direccionCliente, telefonoCliente);
+                        lista.add(cliente);
+                    }
+                    
+                } catch (SQLException ex) {
+                    throw new SQLException("La base de datos se desconectó inesperadamente." + ex);
+                }
+                
+            } catch (SQLException ex) {
+                throw new SQLException("La base de datos se desconectó inesperadamente." +ex);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         return lista;
     }
     
@@ -291,12 +332,27 @@ public class Ctr_Personal_Caja implements Control_Session{
     }
     
     public List<Categoria> selectAllCategorias(){
-        List<Categoria> list = new ArrayList<>();
+        List<Categoria> lista = new ArrayList<>();
         
-       list.add(new Categoria("Alimentos", "Cosas ricas"));
-       list.add(new Categoria("Medicamentos", "Cosas del hpspital"));
-       
-       return list;
+        String stbuscar = "SELECT * FROM categoria;";
+        
+        try (Statement st = con.createStatement()) {
+            try(ResultSet rs = st.executeQuery(stbuscar)){
+                Categoria categoria;
+                while (rs.next()) {
+                    String nombreCategoria = rs.getString("nombre_c");
+                    String descriCategoria = rs.getString("descripcion");
+                    categoria = new Categoria(nombreCategoria, descriCategoria);
+                    lista.add(categoria);
+                }
+            } catch (SQLException ex) {
+                throw new SQLException("La base de datos se desconectó inesperadamente." + ex);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+        return lista;
     }
 
     //Metodo que me retorna la seccion valida de un empleado de caja retorn su enum correspondiente

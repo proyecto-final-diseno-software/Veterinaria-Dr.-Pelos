@@ -337,4 +337,3 @@ drop user if exists 'adminDrPelos'@'localhost';
 create user 'adminDrPelos'@'localhost' identified by 'admin';
 grant select,insert,delete,update on drpeloscentral.* to 'adminDrPelos'@'localhost';
 flush privileges;
-
