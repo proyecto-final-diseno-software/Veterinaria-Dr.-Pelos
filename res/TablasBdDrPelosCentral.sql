@@ -45,6 +45,15 @@ CREATE TABLE Repartidor(
   CONSTRAINT _1cedula FOREIGN KEY (cedula) REFERENCES Persona (cedula) 
   );
   
+DROP TABLE IF EXISTS Personal_Caja;
+CREATE TABLE PersonalCaja(
+  cedula varchar(10) NOT NULL,
+  sucursal_ID int NOT NULL,
+  PRIMARY KEY(cedula),
+  CONSTRAINT _1sucursal_ID FOREIGN KEY (sucursal_ID) REFERENCES Sucursal (sucursal_ID),
+  CONSTRAINT _1cedula FOREIGN KEY (cedula) REFERENCES Persona (cedula) 
+);
+  
 DROP TABLE IF EXISTS JefeBodega;
 CREATE TABLE JefeBodega(
   cedula varchar(10) NOT NULL,
