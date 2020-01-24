@@ -203,7 +203,34 @@ CREATE TABLE Forma_Pago(
   PRIMARY KEY(forma_pago_ID)
   );
   
-insert into Forma_Pago values(123, 17.0,"Dinero en efectio");
+-- insert into Forma_Pago values(123, 17.0,"Dinero en efectio");
+    
+DROP TABLE IF EXISTS Pago_Efectivo;
+CREATE TABLE Pago_Efectivo(
+  efectivo_ID integer(3)  NOT NULL AUTO_INCREMENT ,
+  forma_pago int(3) NOT NULL,
+  cantidad_efectivo FLOAT NOT NULL,
+  PRIMARY KEY(efectivo_ID),
+  CONSTRAINT _pago_efectivo_ID FOREIGN KEY (forma_pago) REFERENCES Forma_Pago(forma_pago_ID)
+  );
+  
+DROP TABLE IF EXISTS Pago_PayPal;
+CREATE TABLE Pago_PayPal(
+  payPal_ID integer(3)  NOT NULL AUTO_INCREMENT ,
+  forma_pago int(3) NOT NULL,
+  correoElectronico varchar(20) NOT NULL,
+  PRIMARY KEY(payPal_ID),
+  CONSTRAINT _pago_paypal_ID FOREIGN KEY (forma_pago) REFERENCES Forma_Pago(forma_pago_ID)
+  );
+  
+DROP TABLE IF EXISTS Pago_Tarjeta;
+CREATE TABLE Pago_Tarjeta(
+  tarjeta_ID integer(3)  NOT NULL AUTO_INCREMENT ,
+  forma_pago int(3) NOT NULL,
+  num_cuenta varchar(15) NOT NULL,
+  PRIMARY KEY(tarjeta_ID),
+  CONSTRAINT _pago_tarjeta_ID FOREIGN KEY (forma_pago) REFERENCES Forma_Pago(forma_pago_ID)
+  );
     
 DROP TABLE IF EXISTS Venta;
   CREATE TABLE Venta(
@@ -226,9 +253,9 @@ DROP TABLE IF EXISTS DetalleVentaProducto;
   CREATE TABLE DetalleVentaProducto(
 	detalle_venta_ID int NOT NULL AUTO_INCREMENT,
     cantidad int NOT NULL,
-    venta_ID int NOT NULL,
+    venta_ID int,
     producto_ID int NOT NULL,
-    cotizacion_ID int NOT NULL,
+    cotizacion_ID int,
     PRIMARY KEY(detalle_venta_ID),
     CONSTRAINT _venta_ID FOREIGN KEY (venta_ID) REFERENCES Venta(venta_ID),
     CONSTRAINT _2producto_ID FOREIGN KEY (producto_ID) REFERENCES Producto(producto_ID),
@@ -239,14 +266,15 @@ DROP TABLE IF EXISTS DetalleVentaServicio;
 CREATE TABLE DetalleVentaServicio(
 	detalle_venta_ID int NOT NULL AUTO_INCREMENT,
 	cantidad int NOT NULL,
-    venta_ID int NOT NULL,
+    venta_ID int,
     servicio_ID int NOT NULL,
-    cotizacion_ID int NOT NULL,
+    cotizacion_ID int,
     PRIMARY KEY(detalle_venta_ID),
     CONSTRAINT _1venta_ID FOREIGN KEY (venta_ID) REFERENCES Venta(venta_ID),
     CONSTRAINT _Servicio_ID FOREIGN KEY (servicio_ID) REFERENCES Servicio(servicio_ID),
      CONSTRAINT _2cotizacion_ID FOREIGN KEY (cotizacion_ID) REFERENCES Cotizacion(cotizacion_ID)
     );
+    
  -- inserts
  -- categoria
     insert into categoria values(default,"Alimentos","aplica a todos los productos alimentarios");
@@ -318,6 +346,8 @@ CREATE TABLE DetalleVentaServicio(
     insert into repartidor values("0934829524", "GEE-385","0977530446",1);
 	insert into repartidor values("0953482343", "GJL-195","0834955124",2);
     insert into repartidor values("0947875245", "PEQ-439","0985655654",3);
+
+	 
 
 -- views
 -- views producto
