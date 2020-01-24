@@ -10,7 +10,7 @@ package modelo;
  * @author paula
  */
 public interface Forma_pago {
-    public boolean pagar();
-    public void registrar_monto();
-    
+    boolean pagar();
+    void registrar_monto();
+    int getId_FormaPago();
 }

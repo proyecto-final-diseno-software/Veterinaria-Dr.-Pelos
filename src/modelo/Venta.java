@@ -47,12 +47,21 @@ public class Venta {
     }
     
     public boolean comprobarValidesDeVenta(){
-        if(this.cliente == null)
+        if(this.fecha == null)
+            return false;
+        if(this.numeroFactura == 0)
             return false;
         if(this.subtotal == 0)
             return false;
-        if(fecha == null)
+        if(this.total == 0)
             return false;
+        if(this.personalCaja == null)
+            return false;
+        if(this.forma_pago_ID == null)
+            return false;
+        if(this.cliente == null)
+            return false;
+        
         return this.personalCaja != null;
     }
     

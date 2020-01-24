@@ -34,7 +34,7 @@ public class Ctr_BaseDatosProxy implements BaseDatos{
         
         //conectionBaseCentral usa eso para la busqueda
         
-        String cedula = "Cedula";
+        String cedula = "0975368545";
         
         return cedula;
     }

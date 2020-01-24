@@ -202,6 +202,8 @@ CREATE TABLE Forma_Pago(
   descripcion varchar(120) NOT NULL,
   PRIMARY KEY(forma_pago_ID)
   );
+  
+insert into Forma_Pago values(123, 17.0,"Dinero en efectio");
     
 DROP TABLE IF EXISTS Venta;
   CREATE TABLE Venta(

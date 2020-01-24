@@ -147,6 +147,9 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
         botonConfirmarVenta.setOnMousePressed(validarVenta -> {
             paneError.getChildren().clear();
             nuevaVenta.setFecha(LocalDate.now());
+            nuevaVenta.setForma_pago_ID(ctr.retornaMetodoPago());
+            nuevaVenta.setNumeroFactura(123456789);
+            nuevaVenta.setPersonalCaja(personal);
             if(nuevaVenta.comprobarValidesDeVenta()){
                 if(ctr.insertVenta(nuevaVenta))
                     guardarDetallesVenta(itemsCarrito);

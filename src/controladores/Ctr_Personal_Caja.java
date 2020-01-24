@@ -20,6 +20,8 @@ import modelo.Categoria;
 import modelo.Cliente;
 import modelo.Cotizacion;
 import modelo.Detalle_Venta;
+import modelo.Efectivo;
+import modelo.Forma_pago;
 import modelo.Mascota;
 import modelo.Personal_Caja;
 import modelo.Producto;
@@ -47,7 +49,7 @@ public class Ctr_Personal_Caja implements Control_Session{
     
     //Devielde el personal de caja con un numero usuario de la tabla usuarios recivido
     public Personal_Caja selectPersonalCaja(String ususario){
-        return new Personal_Caja("1234567890", "Filomeno", "Gonzalez", new Sucursal(1, "Mi casa", "Cerca de mi casa", true));
+        return new Personal_Caja("0975368545", "Filomeno", "Gonzalez", new Sucursal(1, "Mi casa", "Cerca de mi casa", true));
     }
     
     private boolean insertMascota(Mascota m){
@@ -100,22 +102,21 @@ public class Ctr_Personal_Caja implements Control_Session{
     
     public boolean insertVenta(Venta v){
         try {
-            PreparedStatement ps = con.prepareStatement("insert into venta(venta_ID,fecha,n_factura,sub_total,total,descuento,personal_cajas_ID, forma_pago_ID) values(?,?,?,?,?,?,?,?);");
-            ps.setInt(1, v.getId_venta());
+            PreparedStatement ps = con.prepareStatement("insert into venta(fecha, n_factura, sub_total, total, descuento, personal_cajas_ID, forma_pago_ID, id_cliente) values(?,?,?,?,?,?,?,?);");
             
             LocalDate fecha = v.getFecha();
             Date fechasql = Date.valueOf(fecha);
-            ps.setDate(2, fechasql);
-            
-            ps.setInt(3, v.getNumeroFactura());
-            
-            ps.setFloat(4, (float)v.getSubtotal());
-            ps.setFloat(5, (float)v.getTotal() );
-            ps.setFloat(6, (float)v.getDescuento());
-            ps.setString(7, v.getPersonalCaja().getCedula());
+            ps.setDate(1, fechasql);
+            ps.setInt(2, v.getNumeroFactura());
+            ps.setFloat(3, (float)v.getSubtotal());
+            ps.setFloat(4, (float)v.getTotal() );
+            ps.setFloat(5, (float)v.getDescuento());
+            ps.setString(6, v.getPersonalCaja().getCedula());
+            ps.setInt(7, v.getForma_pago_ID().getId_FormaPago());
+            ps.setString(8, v.getCliente().getCedula());
             
             ps.executeUpdate();
-            //Connection con1 = Ctr_BaseDatos.getConnection();
+            
             ps.close();
             return true;
             
@@ -128,6 +129,11 @@ public class Ctr_Personal_Caja implements Control_Session{
     //En este metodo guarde los detaller de denta dependiendo si es un detalle de venta de producto o un detalle de venta de servicios para solucionar la relacion de muchos a muchos
     public boolean guardarDetalleVenta(Detalle_Venta ventas){
         return true;
+    }
+    
+    public Forma_pago retornaMetodoPago(){
+        Forma_pago efectivo = new Efectivo();
+        return efectivo;
     }
             
     public Cliente createCliente(List<Tool> list){

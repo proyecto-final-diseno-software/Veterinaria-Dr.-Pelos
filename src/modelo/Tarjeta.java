@@ -24,5 +24,10 @@ public class Tarjeta implements Forma_pago {
     public boolean validarTarjeta(){
         return true;
     }
+
+    @Override
+    public int getId_FormaPago() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }
