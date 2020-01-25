@@ -22,15 +22,6 @@ CREATE TABLE Sucursal(
     PRIMARY KEY(sucursal_ID)
     );
   
-DROP TABLE IF EXISTS Registro_sesion;
-CREATE TABLE Registro_sesion(
-	sesion_ID int NOT NULL AUTO_INCREMENT,
-	usuario_ID varchar(45) NOT NULL,
-	fecha DATE NOT NULL,
-	PRIMARY KEY(sesion_ID),
-	CONSTRAINT _usuario_sesion_ID FOREIGN KEY (usuario_ID) REFERENCES Usuario (usuario_ID)
-);
-  
 DROP TABLE IF EXISTS Usuario;
 CREATE TABLE Usuario(
 	usuario_ID varchar(10) NOT NULL,
@@ -41,6 +32,15 @@ CREATE TABLE Usuario(
 	PRIMARY KEY(usuario_ID),
 	CONSTRAINT _sucursal_ID FOREIGN KEY (sucursal_ID) REFERENCES Sucursal (sucursal_ID),
 	CONSTRAINT _usuario_ID FOREIGN KEY (usuario_ID) REFERENCES Persona (cedula)
+);
+
+DROP TABLE IF EXISTS Registro_sesion;
+CREATE TABLE Registro_sesion(
+	sesion_ID int NOT NULL AUTO_INCREMENT,
+	usuario_ID varchar(45) NOT NULL,
+	fecha DATE NOT NULL,
+	PRIMARY KEY(sesion_ID),
+	CONSTRAINT _usuario_sesion_ID FOREIGN KEY (usuario_ID) REFERENCES Usuario (usuario_ID)
 );
  
 DROP TABLE IF EXISTS Repartidor;

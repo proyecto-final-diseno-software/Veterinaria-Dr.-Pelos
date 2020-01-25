@@ -150,7 +150,7 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
             nuevaVenta.setForma_pago_ID(ctr.retornaMetodoPago());
             nuevaVenta.setNumeroFactura(123456789);
             nuevaVenta.setPersonalCaja(personal);
-            if(nuevaVenta.comprobarValidesDeVenta()){
+            if(nuevaVenta.comprobarValidesVenta()){
                 if(ctr.insertVenta(nuevaVenta))
                     guardarDetallesVenta(itemsCarrito);
                 else

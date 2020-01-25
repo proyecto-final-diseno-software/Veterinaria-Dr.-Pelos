@@ -19,27 +19,22 @@ import java.util.logging.Logger;
  *
  * @author paula
  */
-public class Venta {
-    private int id_venta;
-    private LocalDate fecha;
-    private int numeroFactura;
+public class Venta extends Documento{
     private double subtotal;
     private double total;
     private double descuento;
-    private Personal_Caja personalCaja;
     private Forma_pago forma_pago_ID;
-    private Cliente cliente;
-    private List<Detalle_Venta> carrito;
     
     public void calcularMontoApagar(List<Detalle_Venta> itemsCarrito){
         this.carrito = itemsCarrito;
+        
         Iterator<Detalle_Venta> it = itemsCarrito.iterator();
         
         double monto = 0;
         
         while(it.hasNext()){
             Detalle_Venta det = it.next();
-            det.setVenta(this);
+            det.setDocumento(this);
             monto += det.calcularPrecio();
         }
         
@@ -47,7 +42,7 @@ public class Venta {
         this.total = subtotal - descuento;
     }
     
-    public boolean comprobarValidesDeVenta(){
+    public boolean comprobarValidesVenta(){
         if(this.fecha == null)
             return false;
         if(this.numeroFactura == 0)
@@ -133,14 +128,6 @@ public class Venta {
 
     public void setPersonalCaja(Personal_Caja personalCaja) {
         this.personalCaja = personalCaja;
-    }
-
-    public int getId_venta() {
-        return id_venta;
-    }
-
-    public void setId_venta(int id_venta) {
-        this.id_venta = id_venta;
     }
 
     public LocalDate getFecha() {

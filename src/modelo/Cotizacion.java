@@ -19,27 +19,22 @@ import java.util.logging.Logger;
  *
  * @author paula
  */
-public class Cotizacion {
-    private int idCotizacion;
-    private LocalDate fecha;
-    private double valor = 0;
-    private Cliente cliente;
-    private Personal_Caja personal_caja;
-    private List<Detalle_Venta> detalles;
+public class Cotizacion extends Documento{
+    private double valor;
 
     public Cotizacion() {
         this.fecha = LocalDate.now();
-        detalles = new LinkedList<>();
+        carrito = new LinkedList<>();
     }
     
     public void agregarDetalle(Detalle_Venta detalle){
-        detalle.setCotizacion(this);
+        detalle.setDocumento(this);
         valor += detalle.calcularPrecio();
-        detalles.add(detalle);
+        carrito.add(detalle);
     }
     
     public static void generarCotizacion(Cotizacion cotizacion){
-        String ruta = "res/cotizaciones/cotizacion" +cotizacion.idCotizacion+".txt";
+        String ruta = "res/cotizaciones/cotizacion" +cotizacion.id_documento+".txt";
         File archivo = new File(ruta);
         BufferedWriter bw;
         try {
@@ -88,18 +83,16 @@ public class Cotizacion {
 //    }
 
     public List<Detalle_Venta> getDetalles() {
-        return detalles;
+        return carrito;
     }
     
     public Personal_Caja getPersonal_caja() {
-        return personal_caja;
+        return personalCaja;
     }
 
     public void setPersonal_caja(Personal_Caja personal_caja) {
-        this.personal_caja = personal_caja;
+        this.personalCaja = personal_caja;
     }
-    
-    
 
     public Cliente getCliente() {
         return cliente;
@@ -107,14 +100,6 @@ public class Cotizacion {
 
     public void setCliente(Cliente cliente) {
         this.cliente = cliente;
-    }
-    
-    public int getIdCotizacion() {
-        return idCotizacion;
-    }
-
-    public void setIdCotizacion(int idCotizacion) {
-        this.idCotizacion = idCotizacion;
     }
 
     public LocalDate getFecha() {
@@ -133,8 +118,4 @@ public class Cotizacion {
     public void setValor(double valor) {
         this.valor = valor;
     }
-    
-    
-    
-    
 }

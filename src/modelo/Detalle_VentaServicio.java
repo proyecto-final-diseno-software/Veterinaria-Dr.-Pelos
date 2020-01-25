@@ -10,8 +10,7 @@ package modelo;
  * @author ADMIN
  */
 public class Detalle_VentaServicio extends Detalle_Venta{
-    private Servicio servicio;
-    
+    private final Servicio servicio;
     
     public Detalle_VentaServicio(int cantidad, Servicio servicio) {
         super(cantidad);
