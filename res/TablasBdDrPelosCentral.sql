@@ -353,7 +353,16 @@ CREATE TABLE DetalleVentaServicio(
 	insert into repartidor values("0953482343", "GJL-195","0834955124",2);
     insert into repartidor values("0947875245", "PEQ-439","0985655654",3);
 
-	 
+-- insert cliente
+	insert into Persona values("0990999841","Eduardo","Gonzalez");
+    insert into Cliente values("0990999841","Guayacanes","042859384");
+    
+    insert into Mascota values(default,"Coffe","Mestizo","Sucursal","0990999841");
+    insert into Mascota values(default,"Filomeno","Mestizo","Domicilio","0990999841");
+    insert into Mascota values(default,"Cuy","Mestizo","Translado a domicilio","0990999841");
+    insert into Mascota values(default,"Gato","Mestizo","Translado a sucursal","0990999841");
+    
+    select * from Mascota where dueno_id = "0990999841";
 
 -- views
 -- views producto
