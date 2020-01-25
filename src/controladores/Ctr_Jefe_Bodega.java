@@ -32,30 +32,46 @@ public class Ctr_Jefe_Bodega implements Control_Session{
         return null;
     }
     
+    /*
+    Metodo en construccion
+    */
     public boolean manejarPrecio(){
-        //En construccion
-        return true;
+        Producto p = new Producto();
+        int precio = 0;
+        return modificarPrecioProducto(p,precio);
     }
     
+    /*
+    Metodo en construccion
+    */
     public boolean modificarPrecioProducto(Producto p, int precio){
-        //En construccion
-        return true;
+        throw new UnsupportedOperationException();
     }
     
     //Metodo que me retorna la seccion valida de un empleado de caja
     @Override
     public UserType verificarSesion(String cedula) {
-        Statement stmt;
-        try {
-            stmt = con.createStatement();
-            String q = "select usuario_ID from Usuario join Jefe_Bodega on Usuario.usuario_ID = Jefe_Bodega.cedula where Usuario.usuario_ID =\""+cedula+"\"";
-            ResultSet rs = stmt.executeQuery(q);
+        String q = "select usuario_ID from Usuario join Jefe_Bodega on Usuario.usuario_ID = Jefe_Bodega.cedula where Usuario.usuario_ID =\""+cedula+"\"";
+
+        ResultSet rs = null;
+        try (Statement stmt = con.createStatement()) {
+            rs = stmt.executeQuery(q);
             if(rs.next()){
                 return UserType.JEFE_BODEGA;
             }
         } catch (SQLException ex) {
             Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                if(rs != null){
+                    rs.close();
+                }
+                
+            } catch (SQLException|NullPointerException ex) {
+                Logger.getLogger(Ctr_Administrador.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
+        
         return null;
     }
 }

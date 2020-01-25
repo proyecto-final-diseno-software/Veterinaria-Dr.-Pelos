@@ -30,11 +30,17 @@ public class Ctr_Categorias {
     
     public List<Categoria> selectAllCategorias(){
         List<Categoria> lista = new ArrayList<>();
-        
         String stbuscar = "SELECT * FROM categoria;";
-        
         try (Statement st = con.createStatement()) {
-            try(ResultSet rs = st.executeQuery(stbuscar)){
+            tryCategoria(st,lista,stbuscar);
+        } catch (SQLException ex) {
+            Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return lista;
+    }
+
+    private void tryCategoria(Statement st,List<Categoria> lista, String stbuscar){
+        try(ResultSet rs = st.executeQuery(stbuscar)){
                 Categoria categoria;
                 while (rs.next()) {
                     String nombreCategoria = rs.getString("nombre_c");
@@ -43,12 +49,9 @@ public class Ctr_Categorias {
                     lista.add(categoria);
                 }
             } catch (SQLException ex) {
-                throw new SQLException("La base de datos se desconectó inesperadamente." + ex);
+
+                Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
             }
-        } catch (SQLException ex) {
-            Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        
-        return lista;
+
     }
 }

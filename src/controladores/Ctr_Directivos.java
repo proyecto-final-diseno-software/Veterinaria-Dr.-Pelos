@@ -26,23 +26,35 @@ public class Ctr_Directivos implements Control_Session{
         this.con = controlDataBase.getConnection();
     }
     
+    /*
+    Metodo en construccion
+    */
     public void asignarAdministrador(Usuario u){
-        //En constuccion
+        throw new UnsupportedOperationException();
     }
     
     //Metodo que me retorna la seccion valida de un empleado de caja
     @Override
     public UserType verificarSesion(String cedula) {
-        Statement stmt;
-        try {
-            stmt = con.createStatement();
-            String q = "select usuario_ID from Usuario join Directivos on Usuario.usuario_ID = Directivos.cedula where Usuario.usuario_ID =\""+cedula+"\"";
-            ResultSet rs = stmt.executeQuery(q);
+        ResultSet rs = null;
+        String q = "select usuario_ID from Usuario join Directivos on Usuario.usuario_ID = Directivos.cedula where Usuario.usuario_ID =\""+cedula+"\"";
+
+        try (Statement stmt = con.createStatement()) {
+                        
+            rs = stmt.executeQuery(q);
             if(rs.next()){
                 return UserType.DIRECTIVO;
             }
-        } catch (SQLException ex) {
+        } catch (SQLException | NullPointerException ex) {
             Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                if(rs != null){
+                    rs.close();
+                }
+            } catch (SQLException|NullPointerException ex) {
+                Logger.getLogger(Ctr_Administrador.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return null;
     }

@@ -11,9 +11,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import modelo.Producto;
-import modelo.Servicio;
-
 
 /**
  * Clase en construccion
@@ -28,38 +25,34 @@ public class Ctr_Administrador implements Control_Session{
         this.con = controlDataBase.getConnection();
     }
     
-    
-    public void crearProducto(Producto p){
-    }
-    
-    public void crearServicio(Servicio s){
-    }
-        
-    public void modificarProducto(Producto p){
-    }
-    
-    public void modificarServicio(Servicio s){
-    }
-    
-    public void descartarProducto(Producto p){
-    }
-    
-    public void descartarServicio(Servicio s){
+    /*
+    En construccion
+    */
+    public void editarBaseDatos(){
+        throw new UnsupportedOperationException();
     }
     
     //Metodo que me retorna la seccion valida de un empleado de caja
     @Override
     public UserType verificarSesion(String cedula) {
-        Statement stmt;
-        try {
-            stmt = con.createStatement();
+        ResultSet rs = null;
+        try (Statement stmt = con.createStatement()) {
+            
             String q = "select usuario_ID from Usuario join Administrador on Usuario.usuario_ID = Administrador.cedula where Usuario.usuario_ID =\""+cedula+"\"";
-            ResultSet rs = stmt.executeQuery(q);
+            rs = stmt.executeQuery(q);
             if(rs.next()){
                 return UserType.ADMINISTRADOR;
             }
         } catch (SQLException ex) {
             Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
+        }finally{
+            try {
+                if(rs != null){
+                    rs.close();
+                }
+            } catch (SQLException|NullPointerException ex) {
+                Logger.getLogger(Ctr_Administrador.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
         return null;
         
