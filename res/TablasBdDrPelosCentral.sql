@@ -156,12 +156,12 @@ DROP TABLE IF EXISTS Cotizacion;
 	cotizacion_ID int NOT NULL AUTO_INCREMENT,
     fecha DATE,
     valor float DEFAULT 0.00,
-    cliente_ID varchar(6) NOT NULL,
+    cliente_ID varchar(10) NOT NULL,
     personal_caja_ID varchar(10) NOT NULL,
     PRIMARY KEY(cotizacion_ID),
     CONSTRAINT _personal_caja_ID FOREIGN KEY (personal_caja_ID) REFERENCES Usuario(usuario_ID) ON DELETE NO ACTION,
     CONSTRAINT _cliente_ID FOREIGN KEY (cliente_ID) REFERENCES Cliente(cedula)
-    );
+);
     
  -- componentes de Pedidos 
 DROP TABLE IF EXISTS Ruta;

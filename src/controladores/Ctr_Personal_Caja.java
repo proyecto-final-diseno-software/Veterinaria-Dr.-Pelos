@@ -124,15 +124,14 @@ public class Ctr_Personal_Caja implements Control_Session{
         try {
             c.setId_documento(maxCotizacion()+1);
             
-            PreparedStatement ps = con.prepareStatement("insert into Cotizacion(cotizacion_ID,fecha,valor,cliente_ID,personal_cajas_ID) values(?,?,?,?,?);");
-            
-            ps.setInt(1, c.getId_documento());
+            PreparedStatement ps = con.prepareStatement("insert into Cotizacion(fecha, valor, cliente_ID, personal_caja_ID) values(?,?,?,?);");
+       
             LocalDate fecha = c.getFecha();
             Date fechasql = Date.valueOf(fecha);
-            ps.setDate(2, fechasql);
-            ps.setFloat(3, (float)c.getValor());
-            ps.setString(4, c.getCliente().getCedula());
-            ps.setString(5, c.getPersonalCaja().getCedula());
+            ps.setDate(1, fechasql);
+            ps.setFloat(2, (float)c.getValor());
+            ps.setString(3, c.getCliente().getCedula());
+            ps.setString(4, c.getPersonalCaja().getCedula());
             
             ps.executeUpdate();
             ps.close();
@@ -217,6 +216,8 @@ public class Ctr_Personal_Caja implements Control_Session{
                 
                 PreparedStatement ps = con.prepareStatement("insert into DetalleVentaProducto(cantidad ,"+separador+", producto_ID) values(?, ?, ?);");
                 
+                System.out.println(ps);
+                
                 ps.setInt(1, ventas.getCantidad());
                 ps.setInt(2, ventas.getDocumento().getId_documento());
                 ps.setInt(3, ((Detalle_VentaProducto) ventas).getProducto().getId_producto());
@@ -228,6 +229,8 @@ public class Ctr_Personal_Caja implements Control_Session{
             } else {
                 
                 PreparedStatement ps = con.prepareStatement("insert into detalleventaservicio(cantidad ,"+separador+", servicio_ID) values(?, ?, ?);");
+                
+                System.out.println(ps);
                 
                 ps.setInt(1, ventas.getCantidad());
                 ps.setInt(2, ventas.getDocumento().getId_documento());

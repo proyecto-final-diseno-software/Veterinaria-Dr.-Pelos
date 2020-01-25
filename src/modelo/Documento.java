@@ -7,6 +7,7 @@ package modelo;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.Iterator;
 
 /**
  *
@@ -76,4 +77,13 @@ public abstract class Documento {
     
     public abstract void calcularMonto(List<Detalle_Venta> itemsCarrito);
     public abstract boolean comprobarValides();
+    
+    public void actualizarReferencias(){
+        Iterator<Detalle_Venta> it = carrito.iterator();
+        
+        while(it.hasNext()){
+            Detalle_Venta det = it.next();
+            det.setDocumento(this);
+        }
+    }
 }

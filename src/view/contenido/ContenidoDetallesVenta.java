@@ -58,11 +58,11 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
         this.colunma1 = new VBox(20);
         this.colunma1.setTranslateX((anchoVentana - reduccionX + 20)/2 - 150);
         this.colunma1.setTranslateY((altoVentana - reduccionY + 20)/2 - 150);
+        this.colunma1.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), new Insets(-20))));
         
         this.setTranslateX(20);
         
         this.paneFondo = new Pane();
-        this.paneFondo.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), new Insets(-20))));
         
         this.paneDatosPago = new HBox(5);
         
@@ -71,13 +71,14 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
         this.ctr = new Ctr_Personal_Caja();
         
         docuementoRespaldo = new Cotizacion(((Venta) documento).getSubtotal(), documento.getFecha(), documento.getNumeroFactura(), documento.getPersonalCaja(), documento.getCliente(), documento.getCarrito());
+        docuementoRespaldo.actualizarReferencias();
     }
     
     @Override
     public void crearContenidoCentral(List<Tool> toolUsados) {
         Rectangle bg = new Rectangle(anchoVentana - reduccionX + 20, altoVentana - reduccionY + 20);
         bg.setFill(Color.WHITE);
-        bg.setOpacity(0.1);
+        bg.setOpacity(0.5);
         bg.setTranslateY(-10);
         
         HBox cabecera = new HBox(5);
