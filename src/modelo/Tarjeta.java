@@ -35,4 +35,21 @@ public class Tarjeta implements Forma_pago {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    public void setImpuesto(float impuesto) {
+        this.impuesto = impuesto;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public void setNum_cuenta(String num_cuenta) {
+        this.num_cuenta = num_cuenta;
+    }
+
+    public String getNum_cuenta() {
+        return num_cuenta;
+    }
+    
+    
 }

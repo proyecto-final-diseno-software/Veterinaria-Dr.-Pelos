@@ -14,7 +14,7 @@ public class Efectivo implements Forma_pago{
     private float impuesto;
     private String descripcion;
     
-    private float cantidad_efectivo;
+    private double cantidad_efectivo;
     
     @Override
     public boolean pagar() {
@@ -30,4 +30,18 @@ public class Efectivo implements Forma_pago{
     public int getId_FormaPago() {
         return 123;
     }
+
+    public void setImpuesto(float impuesto) {
+        this.impuesto = impuesto;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public void setCantidad_efectivo(double cantidad_efectivo) {
+        this.cantidad_efectivo = cantidad_efectivo;
+    }
+    
+    
 }

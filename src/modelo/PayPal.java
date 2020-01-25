@@ -35,4 +35,19 @@ public class PayPal implements Forma_pago{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    public void setImpuesto(float impuesto) {
+        this.impuesto = impuesto;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public void setCorreo_electronico(String correo_electronico) {
+        this.correo_electronico = correo_electronico;
+    }
+
+    public String getCorreo_electronico() {
+        return correo_electronico;
+    }
 }

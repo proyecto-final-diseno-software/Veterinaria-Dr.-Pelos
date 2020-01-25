@@ -361,8 +361,6 @@ CREATE TABLE DetalleVentaServicio(
     insert into Mascota values(default,"Filomeno","Mestizo","Domicilio","0990999841");
     insert into Mascota values(default,"Cuy","Mestizo","Translado a domicilio","0990999841");
     insert into Mascota values(default,"Gato","Mestizo","Translado a sucursal","0990999841");
-    
-    select * from Mascota where dueno_id = "0990999841";
 
 -- views
 -- views producto

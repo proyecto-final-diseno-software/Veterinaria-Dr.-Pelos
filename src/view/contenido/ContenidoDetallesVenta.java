@@ -6,7 +6,6 @@
 package view.contenido;
 
 import controladores.Ctr_Personal_Caja;
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -21,14 +20,12 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.FontWeight;
-import modelo.Cliente;
 import modelo.Cotizacion;
 import modelo.Detalle_Venta;
 import modelo.Documento;
 import modelo.Efectivo;
 import modelo.Forma_pago;
 import modelo.PayPal;
-import modelo.Personal_Caja;
 import modelo.Tarjeta;
 import modelo.Venta;
 import view.tool.BotonTool;
@@ -43,7 +40,7 @@ import view.tool.Tool;
  */
 public class ContenidoDetallesVenta extends Contenido implements ContenidoCentral{
     private Documento documento;
-    private Documento documentoCotizacion;
+    private Documento docuementoRespaldo;
     
     private HBox paneDatosPago;
     
@@ -59,25 +56,28 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
         this.documento = documento;
         
         this.colunma1 = new VBox(20);
+        this.colunma1.setTranslateX((anchoVentana - reduccionX + 20)/2 - 150);
+        this.colunma1.setTranslateY((altoVentana - reduccionY + 20)/2 - 150);
+        
         this.setTranslateX(20);
         
         this.paneFondo = new Pane();
         this.paneFondo.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), new Insets(-20))));
-        this.paneFondo.setTranslateX((anchoVentana - reduccionX + 20)/2 - 150);
-        this.paneFondo.setTranslateY((altoVentana - reduccionY + 20)/2 - 150);
         
         this.paneDatosPago = new HBox(5);
         
         this.toolUsados = new ArrayList<>();
         
         this.ctr = new Ctr_Personal_Caja();
+        
+        docuementoRespaldo = new Cotizacion(((Venta) documento).getSubtotal(), documento.getFecha(), documento.getNumeroFactura(), documento.getPersonalCaja(), documento.getCliente(), documento.getCarrito());
     }
     
     @Override
     public void crearContenidoCentral(List<Tool> toolUsados) {
         Rectangle bg = new Rectangle(anchoVentana - reduccionX + 20, altoVentana - reduccionY + 20);
         bg.setFill(Color.WHITE);
-        bg.setOpacity(0.5);
+        bg.setOpacity(0.1);
         bg.setTranslateY(-10);
         
         HBox cabecera = new HBox(5);
@@ -105,10 +105,13 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
         botonConfirmar.setOnMousePressed(confirmaVenta -> {
             
             if(documento instanceof Venta){
-                //documento.
+                
+                crearFormaPago();
+                ((Venta) documento).setForma_pago_ID(formaPago);
+                
                 if(ctr.insertVenta((Venta) documento))
                     guardarDetallesVenta(documento.getCarrito());
-                else{
+                else {
                     //paneError.getChildren().add(new BoxTextTool("\nError al registrar venta", Color.RED, titulo2, FontWeight.NORMAL));   
                 }
             } else {
@@ -120,7 +123,7 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
             }
         });
         
-        colunma1.getChildren().addAll(cabecera, primero);
+        colunma1.getChildren().addAll(cabecera, primero, botonCancelar, botonConfirmar);
         paneFondo.getChildren().addAll(bg, colunma1);
         
         getChildren().add(paneFondo);
@@ -134,10 +137,14 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
         
         switch((String) combo.getValue()){
             case "Efectivo":
+                if(documento instanceof Cotizacion)
+                    inventirRefrencias();
                 formaPago = new Efectivo();
             break;
             
             case "Targeta":
+                if(documento instanceof Cotizacion)
+                    inventirRefrencias();
                 TextFieldTool num_cuenta = new TextFieldTool("Ingrese numero cuenta", "Numero cuenta:", titulo2, Pos.CENTER_LEFT, 200, titulo2);
                 this.toolUsados.add(num_cuenta);
                 paneDatosPago.getChildren().add(num_cuenta);
@@ -145,6 +152,8 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
             break;
             
             case "PayPal":
+                if(documento instanceof Cotizacion)
+                    inventirRefrencias();
                 TextFieldTool correoElectronico = new TextFieldTool("Ingrese el correo electronico", "Correo Electronico:", titulo2, Pos.CENTER_LEFT, 200, titulo2);
                 this.toolUsados.add(correoElectronico);
                 paneDatosPago.getChildren().add(correoElectronico);
@@ -152,7 +161,7 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
                 
             case "Cotizacion":
                 if(documento instanceof Venta)
-                    tranformarCotizacion();
+                    inventirRefrencias();
                 formaPago = new PayPal();
             break;
         }
@@ -163,14 +172,37 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
         panebotones.getChildren().addAll(botonAceptar, botonEliminar);
         colunma1.getChildren().add(panebotones);
     }
+    
+    private boolean crearFormaPago(){
+        
+        if(this.comprobarCampos(this.toolUsados)){
+            if(formaPago instanceof Efectivo){
+                ((Efectivo) formaPago).setCantidad_efectivo(((Venta) documento).getTotal());
+                ((Efectivo) formaPago).setDescripcion("Se pago en efecto:" + ((Venta) documento).getTotal() + "A nombre de " + documento.getCliente().getCedula());
+                ((Efectivo) formaPago).setImpuesto(0.12f);
+            } else if(formaPago instanceof Tarjeta){
+                ((Tarjeta) formaPago).setNum_cuenta((String) toolUsados.get(1).getValue());
+                ((Tarjeta) formaPago).setDescripcion("Se pago con targeta:" + ((Tarjeta) formaPago).getNum_cuenta() + "A nombre de " + documento.getCliente().getCedula());
+                ((Tarjeta) formaPago).setImpuesto(0.12f);
+            } else if(formaPago instanceof PayPal){
+                ((PayPal) formaPago).setCorreo_electronico((String) toolUsados.get(1).getValue());
+                ((PayPal) formaPago).setDescripcion("Se pago con targeta:" + ((PayPal) formaPago).getCorreo_electronico() + "A nombre de " + documento.getCliente().getCedula());
+                ((PayPal) formaPago).setImpuesto(0.12f);
+            }
+        }
+        
+        return false;
+    }
 
     @Override
     public void establecerPaneles() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
-    private void tranformarCotizacion(){
-        documentoCotizacion = new Cotizacion(((Venta) documento).getSubtotal(), documento.getFecha(), documento.getNumeroFactura(), documento.getPersonalCaja(), documento.getCliente(), documento.getCarrito());
+    private void inventirRefrencias(){
+        Documento temp = documento;
+        documento = docuementoRespaldo;
+        docuementoRespaldo = temp;
     }
     
     private void guardarDetallesVenta(List<Detalle_Venta> itemsCarrito){

@@ -158,7 +158,11 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
             documento.setNumeroFactura(123456789);
             documento.setPersonalCaja(personal);
             if(documento.comprobarValides()){
-                System.out.println("hola");
+                ContenidoDetallesVenta confirmaDocuemnto = new ContenidoDetallesVenta(reduccionX, reduccionY, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior, documento);
+                confirmaDocuemnto.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
+                confirmaDocuemnto.crearContenidoCentral(new ArrayList<>());
+                
+                this.getChildren().add(confirmaDocuemnto);
             } else
                 paneError.getChildren().add(new BoxTextTool("\nFalta informacion", Color.RED, titulo2, FontWeight.NORMAL));
         });
