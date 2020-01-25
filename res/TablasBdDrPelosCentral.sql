@@ -171,6 +171,8 @@ CREATE TABLE Ruta(
     PRIMARY KEY(ruta_id)
     );
     
+    select * from ruta;
+    
  DROP TABLE IF EXISTS Pedido;
   CREATE TABLE Pedido(
 	pedido_ID int NOT NULL AUTO_INCREMENT,
@@ -402,7 +404,7 @@ CREATE TABLE DetalleVentaServicio(
     insert into Ruta values(default, "Av. Francisco de Orellana y calle Justino Cornejo");
     insert into Ruta values(default, "Cdla Garzota Mz 130 Villa 12 Esq");
     insert into Ruta values(default, "Cdla Guayacanes Mz 63 Villa 34 Esq");
-	
+    
 -- views
 -- views producto
 drop view if exists V_Productos;
