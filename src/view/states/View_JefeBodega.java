@@ -5,10 +5,46 @@
  */
 package view.states;
 
+import javafx.scene.Parent;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
+import view.contenido.ContenidoConstruccion;
+
 /**
  *
  * @author paula
  */
-public class View_JefeBodega {
+public class View_JefeBodega extends Ventana{
+    private PrincipalContenedorCaja ventana;
+
+    public View_JefeBodega() {
+    }
+
+    @Override
+    void mostrar_ventana(Stage primaryStage) {}
+
+    @Override
+    void close() {}
+
+    @Override
+    void cambiar_ventana(Pane root) {
+        this.root = root;
+        this.root.getChildren().clear();
+        this.ventana = new PrincipalContenedorCaja();
+        this.root.getChildren().add(ventana);
+    }
     
+    private class PrincipalContenedorCaja extends Parent{
+        private ContenidoConstruccion ventanEnCostrucion;
+        
+        public PrincipalContenedorCaja(){}
+        
+        private void establecerContenidoAnadirUser(){
+            ventanEnCostrucion = new ContenidoConstruccion(0, 0, anchoVentana, altoVentana, 0, 0, 0, 0);
+            ventanEnCostrucion.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
+            ventanEnCostrucion.crearContenidoCentral(null);
+            
+            this.getChildren().add(ventanEnCostrucion);
+        }
+    }
 }

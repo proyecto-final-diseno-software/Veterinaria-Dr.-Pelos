@@ -95,7 +95,9 @@ public class View_ssesion extends Ventana{
                             break;
                             
                         case ADMINISTRADOR:
-                            
+                            View_JefeBodega newContentBodega = new View_JefeBodega();
+                            newContentBodega.crear_ventana(null, anchoVentana, altoVentana);
+                            newContentBodega.cambiar_ventana(root);
                             break;
                             
                         case DIRECTIVO:

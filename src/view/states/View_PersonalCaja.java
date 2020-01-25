@@ -28,6 +28,7 @@ import view.tool.BotonTool;
 import view.tool.BoxTextTool;
 import view.tool.Tool;
 import view.contenido.ContenidoAnadirUsuario;
+import view.contenido.ContenidoConstruccion;
 import view.contenido.ContenidoConsultaEntregas;
 import view.contenido.ContenidoPerfil;
 import view.contenido.ContenidoTraslado;
@@ -80,6 +81,7 @@ public class View_PersonalCaja extends Ventana{
         private ContenidoVentas contenVentas;
         private ContenidoTraslado ventanaTraslado;
         private ContenidoConsultaEntregas ventanaConsultaEntrega;
+        private ContenidoConstruccion ventaEnConstratuccion;
         
         public PrincipalContenedorCaja(){
             menuLateral = new VBox();
@@ -125,7 +127,7 @@ public class View_PersonalCaja extends Ventana{
             
             BotonTool botonConsultarClientes = new BotonTool(" - Consultar cliente", titulo2 - 5, anchoLateral, altoBotones - 20, false);
             botonConsultarClientes.setOnMousePressed(seccionClientes -> {
-                ocultarContenidos();
+                cambiarEnConstraccion();
                 comportamientoMenuLateral(botonConsultarClientes);
             });
             botonClientes.setOnMousePressed(seccionClientes -> {
@@ -145,7 +147,7 @@ public class View_PersonalCaja extends Ventana{
             
             BotonTool botonInventario = new BotonTool("Inventario", titulo2, anchoLateral, altoBotones, false);
             botonInventario.setOnMousePressed(seccionClientes -> {
-                ocultarContenidos();
+                cambiarEnConstraccion();
                 comportamientoMenuLateral(botonInventario);
             });
             
@@ -153,7 +155,7 @@ public class View_PersonalCaja extends Ventana{
             
             BotonTool botonProveedores = new BotonTool("Proveedores", titulo2, anchoLateral, altoBotones, false);
             botonProveedores.setOnMousePressed(seccionClientes -> {
-                ocultarContenidos();
+                cambiarEnConstraccion();
                 comportamientoMenuLateral(botonProveedores);
             });
             
@@ -161,7 +163,7 @@ public class View_PersonalCaja extends Ventana{
             
             BotonTool botonReportes = new BotonTool("Reportes", titulo2, anchoLateral, altoBotones, false);
             botonReportes.setOnMousePressed(seccionClientes -> {
-                ocultarContenidos();
+                cambiarEnConstraccion();
                 comportamientoMenuLateral(botonReportes);
             });
             
@@ -194,7 +196,7 @@ public class View_PersonalCaja extends Ventana{
                 botonesLateral.add(botonTransladoMercaderia);
 
                 botonTraslado.setOnMousePressed(seccionClientes -> {
-                    ocultarContenidos();
+                    cambiarEnConstraccion();
                     comportamientoMenuLateral(botonTraslado);
                     if(paneTraslado.getChildren().contains(botonTransladoMercaderia))
                         paneTraslado.getChildren().removeAll(botonTransladoMercaderia, botonTrasladoMascota);
@@ -209,7 +211,7 @@ public class View_PersonalCaja extends Ventana{
             
             BotonTool botonFacturacion = new BotonTool("Facturacion", titulo2, anchoLateral, altoBotones, false);
             botonFacturacion.setOnMousePressed(seccionClientes -> {
-                ocultarContenidos();
+                cambiarEnConstraccion();
                 comportamientoMenuLateral(botonFacturacion);
             });
             
@@ -231,6 +233,7 @@ public class View_PersonalCaja extends Ventana{
             establecerContenidoVentas();
             establecerContenidoTraslado("Traslado de mascotas", "Buscar Cliente");
             establecerConsultantregas();
+            establecerEnConstracion();
         }
         
         private void establecerContenidoAnadirUser(){
@@ -313,6 +316,21 @@ public class View_PersonalCaja extends Ventana{
             paneFondo.getChildren().add(ventanaConsultaEntrega);
             ventanaConsultaEntrega.setVisible(false);
             this.contenidos.add(ventanaConsultaEntrega);
+        }
+        
+        private void establecerEnConstracion(){
+            ventaEnConstratuccion = new ContenidoConstruccion(reduccionX, reduccionY, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior);
+            ventaEnConstratuccion.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
+            ventaEnConstratuccion.crearContenidoCentral(new ArrayList<>());
+           
+            paneFondo.getChildren().add(ventaEnConstratuccion);
+            ventaEnConstratuccion.setVisible(false);
+            this.contenidos.add(ventaEnConstratuccion);
+        }
+        
+        private void cambiarEnConstraccion(){   
+            ocultarContenidos();
+            ventaEnConstratuccion.setVisible(true);
         }
         
         private void cambiarConsultantregas(){
