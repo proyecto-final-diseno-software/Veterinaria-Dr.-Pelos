@@ -547,6 +547,67 @@ public class Ctr_Personal_Caja implements Control_Session{
         return false;
     }
     
+    public List<Cotizacion> selectCotizacion(Cliente c){
+        List<Cotizacion> lista = new ArrayList<>();
+        Statement stmt;
+        try {
+            stmt = con.createStatement();
+            String q = "select * from V_Cotizacion where cliente_ID = \""+c.getCedula()+"\";";
+            ResultSet rs = stmt.executeQuery(q);
+            while(rs.next()){
+                int cotizacion_ID = rs.getInt(1);
+                Date fecha = rs.getDate(2);
+                LocalDate f_nueva = fecha.toLocalDate();
+                float valor = rs.getFloat(3);
+                String user_caja = rs.getString(5);
+                
+                Cotizacion cotizacion = new Cotizacion();
+                cotizacion.setId_documento(cotizacion_ID);
+                cotizacion.setValor(valor);
+                cotizacion.setFecha(f_nueva);
+                cotizacion.setCliente(c);
+                cotizacion.setPersonalCaja(this.selectPersonalCaja(user_caja));
+                lista.add(cotizacion);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return lista;
+    }
+    
+     public List<Venta> selectVenta(Cliente c){
+        List<Venta> lista = new ArrayList<>();
+        Statement stmt;
+        try {
+            stmt = con.createStatement();
+            String q = "select * from V_Ventas where id_cliente = \""+c.getCedula()+"\";";
+            ResultSet rs = stmt.executeQuery(q);
+            while(rs.next()){
+                int venta_ID = rs.getInt(1);
+                Date fecha = rs.getDate(2);
+                LocalDate f_nueva = fecha.toLocalDate();
+                int n_factura = rs.getInt(3);
+                float sub_total = rs.getFloat(4);
+                float total = rs.getFloat(5);
+                float descuento = rs.getFloat(6);
+                String user_caja = rs.getString(15);
+                
+                Venta v = new Venta();
+                v.setId_documento(venta_ID);
+                v.setDescuento(descuento);
+                v.setSubtotal(sub_total);
+                v.setTotal(total);
+                v.setFecha(f_nueva);
+                v.setCliente(c);
+                v.setPersonalCaja(this.selectPersonalCaja(user_caja));
+                lista.add(v);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return lista;
+    }
+    
     //Este metodo tiene que retornar todas las mascota que tengan como cable foranea al cliente enviado
     public List<Mascota> selectMascotasCliente(Cliente cli){
         List<Mascota> listMascota = new ArrayList<>();
