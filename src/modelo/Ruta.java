@@ -17,6 +17,19 @@ public class Ruta {
         this.id_ruta = id_ruta;
     }
 
+    public Ruta(int id_ruta, String direccion) {
+        this.id_ruta = id_ruta;
+        this.direccion = direccion;
+    }
+    
+    public String getDireccion() {
+        return direccion;
+    }
+
+    public void setDireccion(String direccion) {
+        this.direccion = direccion;
+    }
+
     public int getId_ruta() {
         return id_ruta;
     }

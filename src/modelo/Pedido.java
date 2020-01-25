@@ -16,6 +16,32 @@ public class Pedido {
     protected Cliente destinatario;
     protected Ruta ruta;
 
+    public Pedido() {
+    }
+
+    public Pedido(String descripcion, Sucursal remitente, Cliente destinatario, Ruta ruta) {
+        this.descripcion = descripcion;
+        this.remitente = remitente;
+        this.destinatario = destinatario;
+        this.ruta = ruta;
+    }
+
+    public int getPedido_ID() {
+        return pedido_ID;
+    }
+
+    public void setPedido_ID(int pedido_ID) {
+        this.pedido_ID = pedido_ID;
+    }
+
+    public Ruta getRuta() {
+        return ruta;
+    }
+
+    public void setRuta(Ruta ruta) {
+        this.ruta = ruta;
+    }
+    
     public String getDescripcion() {
         return descripcion;
     }
@@ -24,7 +50,7 @@ public class Pedido {
         this.descripcion = descripcion;
     }
 
-    public Object getRemitente() {
+    public Sucursal getRemitente() {
         return remitente;
     }
 
@@ -32,7 +58,7 @@ public class Pedido {
         this.remitente = remitente;
     }
 
-    public Object getDestinatario() {
+    public Cliente getDestinatario() {
         return destinatario;
     }
 
