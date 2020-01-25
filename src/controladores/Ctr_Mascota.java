@@ -7,6 +7,8 @@ package controladores;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import modelo.Mascota;
 
 /**
@@ -44,7 +46,14 @@ public class Ctr_Mascota {
     }
     
     public boolean setEstadoMascota(Mascota mas, String nuevoEstado){
-        return true;
+        String q = "update mascota set estado = \""+nuevoEstado+"\" where mascota_ID = " +mas.getMascota_id()+";";
+        try (PreparedStatement ps = con.prepareStatement(q)) {
+            ps.executeUpdate();
+            return true;
+        } catch (Exception ex) {
+            Logger.getLogger(Ctr_Mascota.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return false;
     }
     
 }
