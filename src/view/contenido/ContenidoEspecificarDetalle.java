@@ -17,7 +17,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.FontWeight;
-import modelo.Detalle_Venta;
+import modelo.DetalleVenta;
 import view.tool.BotonTool;
 import view.tool.BoxTextTool;
 import view.tool.TextFieldTool;
@@ -30,11 +30,11 @@ import view.tool.Tool;
 public class ContenidoEspecificarDetalle extends Contenido implements ContenidoCentral{
     private final int anchoVentanaContenido;
     
-    private Detalle_Venta det;
+    private DetalleVenta det;
     
     private TextFieldTool textFieldCantidad;
     
-    public ContenidoEspecificarDetalle(int reduccionx, int reduccionY, int anchoVentana, int altoVentana, int anchoColunma1, int anchoColunma2, int anchoLateral, int altoSuperior, Detalle_Venta det){
+    public ContenidoEspecificarDetalle(int reduccionx, int reduccionY, int anchoVentana, int altoVentana, int anchoColunma1, int anchoColunma2, int anchoLateral, int altoSuperior, DetalleVenta det){
         super(reduccionx, reduccionY, anchoVentana, altoVentana, anchoColunma1, anchoColunma2, anchoLateral, altoSuperior);
         this.anchoVentanaContenido = 300;
         this.det = det;

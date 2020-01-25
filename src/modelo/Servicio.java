@@ -13,32 +13,32 @@ import java.util.List;
  * @author paula
  */
 public class Servicio {
-    private int id_servicio;
-    private Double precio_unitario;
+    private int idServicio;
+    private Double precioUnitario;
     private String nombre;
     private String descripcion;
 
     public Servicio(int id_servicio, String nombre, String descripcion, Double precio_unitario) {
-        this.id_servicio = id_servicio;
+        this.idServicio = id_servicio;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.precio_unitario = precio_unitario;
+        this.precioUnitario = precio_unitario;
     }
     
     public boolean cambiarPrecio(Double precio){
         if(precio>0){
-            this.precio_unitario = precio;
+            this.precioUnitario = precio;
             return true;
         }
         return false;
     }
 
-    public int getId_servicio() {
-        return id_servicio;
+    public int getIdServicio() {
+        return idServicio;
     }
 
-    public void setId_servicio(int id_servicio) {
-        this.id_servicio = id_servicio;
+    public void setIdServicio(int idServicio) {
+        this.idServicio = idServicio;
     }
 
     public String getNombre() {
@@ -58,19 +58,19 @@ public class Servicio {
     }
 
     public Double getPrecio() {
-        return precio_unitario;
+        return precioUnitario;
     }
 
     public void setPrecio(Double precio) {
-        this.precio_unitario = precio;
+        this.precioUnitario = precio;
     }
 
     public List<String> retornarAllData(){
         List<String> lista = new ArrayList<>();
         
-        lista.add(Integer.toString(id_servicio));
+        lista.add(Integer.toString(idServicio));
         lista.add(nombre);
-        lista.add(Double.toString(precio_unitario));
+        lista.add(Double.toString(precioUnitario));
         
         return lista;
     }

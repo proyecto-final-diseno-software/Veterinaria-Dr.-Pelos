@@ -5,7 +5,7 @@
  */
 package modelo;
 
-import controladores.Control_Factura;
+import controladores.ControlFactura;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Iterator;
@@ -15,16 +15,16 @@ import java.util.Iterator;
  * @author ADMIN
  */
 public abstract class Documento {
-    protected int id_documento;
+    protected int idDocumento;
     protected LocalDate fecha;
     protected int numeroFactura;
-    protected Personal_Caja personalCaja;
+    protected PersonalCaja personalCaja;
     protected Cliente cliente;
-    protected List<Detalle_Venta> carrito;
+    protected List<DetalleVenta> carrito;
     
     protected Documento(){}
 
-    protected Documento(LocalDate fecha, int numeroFactura, Personal_Caja personalCaja, Cliente cliente, List<Detalle_Venta> carrito) {
+    protected Documento(LocalDate fecha, int numeroFactura, PersonalCaja personalCaja, Cliente cliente, List<DetalleVenta> carrito) {
         this.fecha = fecha;
         this.numeroFactura = numeroFactura;
         this.personalCaja = personalCaja;
@@ -32,15 +32,15 @@ public abstract class Documento {
         this.carrito = carrito;
     }
 
-    public int getId_documento() {
-        return id_documento;
+    public int getIdDocumento() {
+        return idDocumento;
     }
 
-    public void setId_documento(int id_documento) {
-        this.id_documento = id_documento;
+    public void setIdDocumento(int idDocumento) {
+        this.idDocumento = idDocumento;
     }
 
-    public List<Detalle_Venta> getCarrito() {
+    public List<DetalleVenta> getCarrito() {
         return carrito;
     }
 
@@ -57,15 +57,15 @@ public abstract class Documento {
     }
 
     public void setNumeroFactura() {
-        Control_Factura ctr = new Control_Factura();
+        ControlFactura ctr = new ControlFactura();
         this.numeroFactura = ctr.obtenerNumeroFactura();
     }
 
-    public Personal_Caja getPersonalCaja() {
+    public PersonalCaja getPersonalCaja() {
         return personalCaja;
     }
 
-    public void setPersonalCaja(Personal_Caja personalCaja) {
+    public void setPersonalCaja(PersonalCaja personalCaja) {
         this.personalCaja = personalCaja;
     }
 
@@ -77,14 +77,14 @@ public abstract class Documento {
         this.cliente = cliente;
     }
     
-    public abstract void calcularMonto(List<Detalle_Venta> itemsCarrito);
+    public abstract void calcularMonto(List<DetalleVenta> itemsCarrito);
     public abstract boolean comprobarValides();
     
     public void actualizarReferencias(){
-        Iterator<Detalle_Venta> it = carrito.iterator();
+        Iterator<DetalleVenta> it = carrito.iterator();
         
         while(it.hasNext()){
-            Detalle_Venta det = it.next();
+            DetalleVenta det = it.next();
             det.setDocumento(this);
         }
     }

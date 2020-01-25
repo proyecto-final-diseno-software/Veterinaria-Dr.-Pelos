@@ -18,26 +18,27 @@ public class Directivos extends Persona{
     }
     
     public LinkedList<Venta> consultarVentas(){
-        return null;
+        return new LinkedList<>();
     }
     
     public LinkedList<Cliente> consultarCliente(){
-        return null;
+        return new LinkedList<>();
     }
     
     public LinkedList<Pedido> consultarPedidos(){
-        return null;
+        return new LinkedList<>();
     }
     
     public LinkedList<Servicio> consultarServicios(){
-        return null;
+        return new LinkedList<>();
     }
     
     public LinkedList<Producto> consultarProducto(){
-        return null;
+        return new LinkedList<>();
     }
     
     public void mostrarVistaDir(boolean b){
+        //mostrarVista
         
     }
 }

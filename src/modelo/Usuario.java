@@ -10,11 +10,11 @@ package modelo;
  * @author paula
  */
 public class Usuario extends Persona{
-    private String id_usuario;
+    private String idUsuario;
     private String usuario;
     private String contrasena;
     private Sucursal sucur;
-    private boolean permiso_administrador;
+    private boolean permisoAdministrador;
     private Persona persona;
 
     public Usuario(String cedula, String nombre, String apellido) {
@@ -45,20 +45,20 @@ public class Usuario extends Persona{
         this.contrasena = contrasena;
     }
 
-    public boolean isPermiso_administrador() {
-        return permiso_administrador;
+    public boolean isPermisoAdministrador() {
+        return permisoAdministrador;
     }
 
-    public void setPermiso_administrador(boolean permiso_administrador) {
-        this.permiso_administrador = permiso_administrador;
+    public void setPermisoAdministrador(boolean permisoAdministrador) {
+        this.permisoAdministrador = permisoAdministrador;
     }
 
-    public String getId_usuario() {
-        return id_usuario;
+    public String getIdUsuario() {
+        return idUsuario;
     }
 
-    public void setId_usuario(String id_usuario) {
-        this.id_usuario = id_usuario;
+    public void setIdUsuario(String idUsuario) {
+        this.idUsuario = idUsuario;
     }
     
 }

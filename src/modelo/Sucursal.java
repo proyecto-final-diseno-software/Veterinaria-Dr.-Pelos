@@ -10,13 +10,13 @@ package modelo;
  * @author paula
  */
 public class Sucursal {
-    private int id_sucursal;
+    private int idSucursal;
     private String nombre;
     private String direccion;
     private boolean ofreceServicios;
 
     public Sucursal(int id_sucursal, String nombre, String direccion, boolean ofreceServicios) {
-        this.id_sucursal = id_sucursal;
+        this.idSucursal = id_sucursal;
         this.nombre = nombre;
         this.direccion = direccion;
         this.ofreceServicios = ofreceServicios;
@@ -38,12 +38,12 @@ public class Sucursal {
         this.direccion = direccion;
     }
 
-    public int getId_sucursal() {
-        return id_sucursal;
+    public int getIdSucursal() {
+        return idSucursal;
     }
 
-    public void setId_sucursal(int id_sucursal) {
-        this.id_sucursal = id_sucursal;
+    public void setIdSucursal(int idSucursal) {
+        this.idSucursal = idSucursal;
     }
 
     public boolean isOfreceServicios() {

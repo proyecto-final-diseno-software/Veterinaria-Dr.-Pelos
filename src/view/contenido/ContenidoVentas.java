@@ -5,7 +5,7 @@
  */
 package view.contenido;
 
-import controladores.Ctr_Personal_Caja;
+import controladores.CtrPersonalCaja;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -19,11 +19,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
 import modelo.Cliente;
 import modelo.Cotizacion;
-import modelo.Detalle_Venta;
-import modelo.Detalle_VentaProducto;
-import modelo.Detalle_VentaServicio;
+import modelo.DetalleVenta;
+import modelo.DetalleVentaProducto;
+import modelo.DetalleVentaServicio;
 import modelo.Documento;
-import modelo.Personal_Caja;
+import modelo.PersonalCaja;
 import modelo.Venta;
 import view.tool.BotonTool;
 import view.tool.BoxTextTool;
@@ -39,19 +39,19 @@ import view.tool.Tool;
 public class ContenidoVentas extends Contenido implements ContenidoCentral{
     private Documento documento;
     
-    private Ctr_Personal_Caja ctr;
+    private CtrPersonalCaja ctr;
     
-    private Personal_Caja personal;
+    private PersonalCaja personal;
     
     private TableVentaTool tablaPago;
     private TableTool tablaRegistro;
     private VBox paneCliente;
     
-    public ContenidoVentas(int reduccionx, int reduccionY, int anchoVentana, int altoVentana, int anchoColunma1, int anchoColunma2, int anchoLateral, int altoSuperior, Personal_Caja personal){
+    public ContenidoVentas(int reduccionx, int reduccionY, int anchoVentana, int altoVentana, int anchoColunma1, int anchoColunma2, int anchoLateral, int altoSuperior, PersonalCaja personal){
         super(reduccionx, reduccionY, anchoVentana, altoVentana, anchoColunma1, anchoColunma2, anchoLateral, altoSuperior);
         this.personal = personal;
         
-        ctr = new Ctr_Personal_Caja();
+        ctr = new CtrPersonalCaja();
         
         this.paneFondo = new Pane();
         this.paneCentral = new HBox(15);
@@ -88,7 +88,7 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
 
     @Override
     public void crearContenidoCentral(List<Tool> toolUsados) {
-        List<Detalle_Venta> itemsCarrito = new ArrayList<>();
+        List<DetalleVenta> itemsCarrito = new ArrayList<>();
         
         documento = new Venta();
         
@@ -189,23 +189,23 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
     private void insertarItems(){
         tablaRegistro.limpiarContenido();
         
-        Iterator<Detalle_Venta> it = documento.getCarrito().iterator();
+        Iterator<DetalleVenta> it = documento.getCarrito().iterator();
         
         while(it.hasNext()){
-            Detalle_Venta det = it.next();
+            DetalleVenta det = it.next();
             
             List<String> dataItem = new ArrayList<>();
             
-            if(det instanceof Detalle_VentaProducto ){
-                    dataItem.add(((Detalle_VentaProducto) det).getProducto().getNombre());
-                    dataItem.add(Double.toString(((Detalle_VentaProducto) det).getProducto().getPrecioUnitario()));
+            if(det instanceof DetalleVentaProducto ){
+                    dataItem.add(((DetalleVentaProducto) det).getProducto().getNombre());
+                    dataItem.add(Double.toString(((DetalleVentaProducto) det).getProducto().getPrecioUnitario()));
                     dataItem.add(Integer.toString(det.getCantidad()));
-                    dataItem.add(Double.toString(((Detalle_VentaProducto) det).calcularPrecio()));
-            } else if(det instanceof Detalle_VentaServicio){
-                    dataItem.add(((Detalle_VentaServicio) det).getServicio().getNombre());
-                    dataItem.add(Double.toString(((Detalle_VentaServicio) det).getServicio().getPrecio()));
+                    dataItem.add(Double.toString(((DetalleVentaProducto) det).calcularPrecio()));
+            } else if(det instanceof DetalleVentaServicio){
+                    dataItem.add(((DetalleVentaServicio) det).getServicio().getNombre());
+                    dataItem.add(Double.toString(((DetalleVentaServicio) det).getServicio().getPrecio()));
                     dataItem.add(Integer.toString(det.getCantidad()));
-                    dataItem.add(Double.toString(((Detalle_VentaServicio) det).calcularPrecio()));
+                    dataItem.add(Double.toString(((DetalleVentaServicio) det).calcularPrecio()));
                 }
                 
                 BotonTool especificarDetalles = new BotonTool("Editar", titulo2, 100, titulo2 + 10, ColorOscuro);

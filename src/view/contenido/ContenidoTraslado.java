@@ -5,7 +5,7 @@
  */
 package view.contenido;
 
-import controladores.Ctr_Personal_Caja;
+import controladores.CtrPersonalCaja;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ListIterator;
@@ -33,7 +33,7 @@ import view.tool.Tool;
  * @author Eduardo Gonzalez
  */
 public class ContenidoTraslado extends Contenido implements ContenidoCentral{
-    private Ctr_Personal_Caja ctrCaja;
+    private CtrPersonalCaja ctrCaja;
     
     private List<Tool> toolUsados;
     private List<Mascota> mascotasCliente;
@@ -50,7 +50,7 @@ public class ContenidoTraslado extends Contenido implements ContenidoCentral{
         super(reduccionx, reduccionY, anchoVentana, altoVentana, anchoColunma1, anchoColunma2, anchoLateral, altoSuperior);
         
         this.error = new BoxTextTool("Hubo un error con el estado de esta mascota", Color.RED, titulo2, FontWeight.BOLD);
-        this.ctrCaja = new Ctr_Personal_Caja();
+        this.ctrCaja = new CtrPersonalCaja();
         
         this.toolUsados = new ArrayList<>();
         this.colunma1 = new VBox(20);

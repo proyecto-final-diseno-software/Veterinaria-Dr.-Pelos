@@ -82,7 +82,7 @@ public class ContenidoPerfil extends Contenido implements ContenidoCentral{
         BoxTextTool textoDireccionCliente = new BoxTextTool(cliente.getDireccion(), Color.BLACK, titulo2, FontWeight.NORMAL);
  
         BoxTextTool textoTelefono = new BoxTextTool("Telefono cliente: ", Color.BLACK, titulo2, FontWeight.BOLD);
-        BoxTextTool textoTelefonoCliente = new BoxTextTool(cliente.getNum_telefonico(), Color.BLACK, titulo2, FontWeight.NORMAL);
+        BoxTextTool textoTelefonoCliente = new BoxTextTool(cliente.getNumTelefonico(), Color.BLACK, titulo2, FontWeight.NORMAL);
         
         datos.getChildren().addAll(textoCedula, textoNombre, textoApellido, textoDireccion, textoTelefono);
         datosCliente.getChildren().addAll(textoCedulaCliente, textoNombreCliente, textoApellidoCliente, textoDireccionCliente, textoTelefonoCliente);

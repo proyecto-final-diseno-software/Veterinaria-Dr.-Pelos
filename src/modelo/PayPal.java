@@ -9,16 +9,16 @@ package modelo;
  *
  * @author paula
  */
-public class PayPal implements Forma_pago{
-    private int forma_pago_ID;
+public class PayPal implements FormaPago{
+    private int formaPagoID;
     private float impuesto;
     private String descripcion;
     
-    private String correo_electronico;
+    private String correoElectronico;
 
     public PayPal(float impuesto, String correo_electronico) {
         this.impuesto = impuesto;
-        this.correo_electronico = correo_electronico;
+        this.correoElectronico = correo_electronico;
     }
     
     public PayPal(){}
@@ -29,8 +29,8 @@ public class PayPal implements Forma_pago{
     }
 
     @Override
-    public void setForma_pago_ID(int forma_pago_ID) {
-        this.forma_pago_ID = forma_pago_ID;
+    public void setFormaPagoID(int forma_pago_ID) {
+        this.formaPagoID = forma_pago_ID;
     }
     
     @Override
@@ -45,7 +45,7 @@ public class PayPal implements Forma_pago{
 
     @Override
     public int getId_FormaPago() {
-        return forma_pago_ID;
+        return formaPagoID;
     }
     
     public void setImpuesto(float impuesto) {
@@ -56,12 +56,12 @@ public class PayPal implements Forma_pago{
         this.descripcion = descripcion;
     }
 
-    public void setCorreo_electronico(String correo_electronico) {
-        this.correo_electronico = correo_electronico;
+    public void setCorreoElectronico(String correoElectronico) {
+        this.correoElectronico = correoElectronico;
     }
 
-    public String getCorreo_electronico() {
-        return correo_electronico;
+    public String getCorreoElectronico() {
+        return correoElectronico;
     }
 
     @Override

@@ -4,19 +4,19 @@
  * and open the template in the editor.
  */
 
-import controladores.Ctr_Administrador;
-import controladores.Ctr_BaseDatosProxy;
-import controladores.Ctr_Directivos;
-import controladores.Ctr_Jefe_Bodega;
-import controladores.Ctr_Personal_Caja;
-import controladores.Ctr_Sucursal;
-import controladores.Ctr_Venta;
+import controladores.CtrAdministrador;
+import controladores.CtrBaseDatosProxy;
+import controladores.CtrDirectivos;
+import controladores.CtrJefeBodega;
+import controladores.CtrPersonalCaja;
+import controladores.CtrSucursal;
+import controladores.CtrVenta;
 import controladores.UserType;
 import modelo.Cliente;
-import modelo.Detalle_VentaServicio;
+import modelo.DetalleVentaServicio;
 import modelo.Efectivo;
 import modelo.PayPal;
-import modelo.Personal_Caja;
+import modelo.PersonalCaja;
 import modelo.Servicio;
 import modelo.Sucursal;
 import modelo.Tarjeta;
@@ -32,13 +32,13 @@ import static org.junit.Assert.*;
  * @author scarlet Espinoza
  */
 public class PruebaTest {
-     Ctr_BaseDatosProxy base = new Ctr_BaseDatosProxy();
-     Ctr_Personal_Caja cp = new Ctr_Personal_Caja(); 
-     Ctr_Venta v = new Ctr_Venta(); 
-     Ctr_Administrador adm=new Ctr_Administrador();
-     Ctr_Jefe_Bodega jefe=new Ctr_Jefe_Bodega();
-     Ctr_Directivos directivo=new Ctr_Directivos();
-     Ctr_Sucursal sur= new Ctr_Sucursal();
+     CtrBaseDatosProxy base = new CtrBaseDatosProxy();
+     CtrPersonalCaja cp = new CtrPersonalCaja(); 
+     CtrVenta v = new CtrVenta(); 
+     CtrAdministrador adm=new CtrAdministrador();
+     CtrJefeBodega jefe=new CtrJefeBodega();
+     CtrDirectivos directivo=new CtrDirectivos();
+     CtrSucursal sur= new CtrSucursal();
     public PruebaTest() {
     }
     
@@ -105,7 +105,7 @@ public class PruebaTest {
     // el metodo SelectPersonalCaja funciona correctamente.
     @Test
     public void ComprobarPersonaCaja(){
-        Personal_Caja persona = cp.selectPersonalCaja("SEspinoza");
+        PersonalCaja persona = cp.selectPersonalCaja("SEspinoza");
         assertNull(persona);
         
         

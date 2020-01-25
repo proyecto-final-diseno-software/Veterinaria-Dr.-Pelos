@@ -9,8 +9,8 @@ package modelo;
  *
  * @author paula
  */
-public class Efectivo implements Forma_pago{
-    private int forma_pago_ID;
+public class Efectivo implements FormaPago{
+    private int formaPagoID;
     private float impuesto;
     private String descripcion;
     private double cantidad_efectivo;
@@ -35,8 +35,8 @@ public class Efectivo implements Forma_pago{
     }
 
     @Override
-    public void setForma_pago_ID(int forma_pago_ID) {
-        this.forma_pago_ID = forma_pago_ID;
+    public void setFormaPagoID(int formaPagoID) {
+        this.formaPagoID = formaPagoID;
     }
 
     @Override
@@ -46,7 +46,7 @@ public class Efectivo implements Forma_pago{
 
     @Override
     public int getId_FormaPago() {
-        return forma_pago_ID;
+        return formaPagoID;
     }
 
     public void setImpuesto(float impuesto) {

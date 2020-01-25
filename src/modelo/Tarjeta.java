@@ -9,8 +9,8 @@ package modelo;
  *
  * @author paula
  */
-public class Tarjeta implements Forma_pago {
-    private int forma_pago_ID;
+public class Tarjeta implements FormaPago {
+    private int formaPagoID;
     private float impuesto;
     private String descripcion;
     
@@ -39,12 +39,12 @@ public class Tarjeta implements Forma_pago {
 
     @Override
     public int getId_FormaPago() {
-        return forma_pago_ID;
+        return formaPagoID;
     }
 
     @Override
-    public void setForma_pago_ID(int forma_pago_ID) {
-        this.forma_pago_ID = forma_pago_ID;
+    public void setFormaPagoID(int forma_pago_ID) {
+        this.formaPagoID = forma_pago_ID;
     }
     
     public void setImpuesto(float impuesto) {

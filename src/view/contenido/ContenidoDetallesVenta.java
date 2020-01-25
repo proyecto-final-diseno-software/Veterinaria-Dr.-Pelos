@@ -5,7 +5,7 @@
  */
 package view.contenido;
 
-import controladores.Ctr_Personal_Caja;
+import controladores.CtrPersonalCaja;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
@@ -21,12 +21,11 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.FontWeight;
 import modelo.Cotizacion;
-import modelo.Detalle_Venta;
-import modelo.Detalle_VentaProducto;
-import modelo.Detalle_VentaServicio;
+import modelo.DetalleVenta;
+import modelo.DetalleVentaProducto;
+import modelo.DetalleVentaServicio;
 import modelo.Documento;
 import modelo.Efectivo;
-import modelo.Forma_pago;
 import modelo.PayPal;
 import modelo.Pedido;
 import modelo.Ruta;
@@ -38,6 +37,7 @@ import view.tool.ComBoxTool;
 import view.tool.TableTool;
 import view.tool.TextFieldTool;
 import view.tool.Tool;
+import modelo.FormaPago;
 
 /**
  *
@@ -49,9 +49,9 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
     
     private List<Tool> toolUsados;
     
-    private Forma_pago formaPago;
+    private FormaPago formaPago;
     
-    private Ctr_Personal_Caja ctr;
+    private CtrPersonalCaja ctr;
     
     private HBox paneDatosPago;
     private HBox paneBotones;
@@ -76,7 +76,7 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
         
         this.toolUsados = new ArrayList<>();
         
-        this.ctr = new Ctr_Personal_Caja();
+        this.ctr = new CtrPersonalCaja();
         
         docuementoRespaldo = new Cotizacion(((Venta) documento).getSubtotal(), documento.getFecha(), documento.getNumeroFactura(), documento.getPersonalCaja(), documento.getCliente(), documento.getCarrito());
     
@@ -156,7 +156,7 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
                         ((Venta) documento).sumarExtra();
 
                         if(crearFormaPago()){
-                            ((Venta) documento).setForma_pago_ID(formaPago);
+                            ((Venta) documento).setFormaPagoID(formaPago);
 
                             if(ctr.insertVenta((Venta) documento)){
                                 ((Venta) documento).generarFactura();
@@ -255,8 +255,8 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
                 ((Tarjeta) formaPago).setImpuesto(0.12f);
                 return true;
             } else if(formaPago instanceof PayPal){
-                ((PayPal) formaPago).setCorreo_electronico((String) toolUsados.get(1).getValue());
-                ((PayPal) formaPago).setDescripcion("Se pago con el correo: " + ((PayPal) formaPago).getCorreo_electronico() + " A nombre de " + documento.getCliente().getCedula());
+                ((PayPal) formaPago).setCorreoElectronico((String) toolUsados.get(1).getValue());
+                ((PayPal) formaPago).setDescripcion("Se pago con el correo: " + ((PayPal) formaPago).getCorreoElectronico() + " A nombre de " + documento.getCliente().getCedula());
                 ((PayPal) formaPago).setImpuesto(0.12f);
                 return true;
             }
@@ -277,25 +277,25 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
     }
     
     private void anadirItems(TableTool table){
-        Iterator<Detalle_Venta> it = this.documento.getCarrito().iterator();
+        Iterator<DetalleVenta> it = this.documento.getCarrito().iterator();
         
         while(it.hasNext()){
             List<String> datosPorDetalle = new ArrayList<>();
             
-            Detalle_Venta tempDet = it.next();
+            DetalleVenta tempDet = it.next();
             
             String codigo = "";
             String precioUnitario = "";
             String precioTotal = "";
             
-            if(tempDet instanceof Detalle_VentaProducto){
-                codigo = Integer.toString(((Detalle_VentaProducto) tempDet).getProducto().getId_producto());
-                precioUnitario = Double.toString(((Detalle_VentaProducto) tempDet).getProducto().getPrecioUnitario());
-                precioTotal = Double.toString(((Detalle_VentaProducto) tempDet).getProducto().getPrecioUnitario() * tempDet.getCantidad());
+            if(tempDet instanceof DetalleVentaProducto){
+                codigo = Integer.toString(((DetalleVentaProducto) tempDet).getProducto().getIdProducto());
+                precioUnitario = Double.toString(((DetalleVentaProducto) tempDet).getProducto().getPrecioUnitario());
+                precioTotal = Double.toString(((DetalleVentaProducto) tempDet).getProducto().getPrecioUnitario() * tempDet.getCantidad());
             }else{
-                codigo = Integer.toString(((Detalle_VentaServicio) tempDet).getServicio().getId_servicio());
-                precioUnitario = Double.toString(((Detalle_VentaServicio) tempDet).getServicio().getPrecio());
-                precioTotal = Double.toString(((Detalle_VentaServicio) tempDet).getServicio().getPrecio() * tempDet.getCantidad());
+                codigo = Integer.toString(((DetalleVentaServicio) tempDet).getServicio().getIdServicio());
+                precioUnitario = Double.toString(((DetalleVentaServicio) tempDet).getServicio().getPrecio());
+                precioTotal = Double.toString(((DetalleVentaServicio) tempDet).getServicio().getPrecio() * tempDet.getCantidad());
             }
             
             String cantidad = Integer.toString(tempDet.getCantidad());
@@ -309,11 +309,11 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
         }
     }
     
-    private void guardarDetallesVenta(List<Detalle_Venta> itemsCarrito){
-        Iterator<Detalle_Venta> it = itemsCarrito.iterator();
+    private void guardarDetallesVenta(List<DetalleVenta> itemsCarrito){
+        Iterator<DetalleVenta> it = itemsCarrito.iterator();
         
         while(it.hasNext()){
-            Detalle_Venta det = it.next();
+            DetalleVenta det = it.next();
             ctr.guardarDetalleVenta(det);
         }
     }

@@ -11,17 +11,17 @@ package modelo;
  */
 public class Cliente extends Persona{
     private String direccion;
-    private String num_telefonico;
+    private String numTelefonico;
 
     public Cliente(String cedula, String nombre, String apellido, String direccion, String num_telefonico) {
         super(cedula, nombre, apellido);
         this.direccion = direccion;
-        this.num_telefonico = num_telefonico;
+        this.numTelefonico = num_telefonico;
     }
     
     @Override
     public String toString() {
-        return "Persona{" + "cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido + "Cliente{" + "direccion=" + direccion + ", num_telefonico=" + num_telefonico + '}';
+        return "Persona{" + "cedula=" + cedula + ", nombre=" + nombre + ", apellido=" + apellido + "Cliente{" + "direccion=" + direccion + ", num_telefonico=" + numTelefonico + '}';
     }
     
     public String getCedula() {
@@ -40,7 +40,7 @@ public class Cliente extends Persona{
         return direccion;
     }
 
-    public String getNum_telefonico() {
-        return num_telefonico;
+    public String getNumTelefonico() {
+        return numTelefonico;
     }
 }

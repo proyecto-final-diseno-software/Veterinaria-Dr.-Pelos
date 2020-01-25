@@ -22,21 +22,21 @@ public class Venta extends Documento{
     private double subtotal;
     private double total;
     private double descuento;
-    private Forma_pago forma_pago_ID;
+    private FormaPago formaPagoID;
     
     private double montoExtraEnvio;
     private Pedido pedido;
     
     @Override
-    public void calcularMonto(List<Detalle_Venta> itemsCarrito){
+    public void calcularMonto(List<DetalleVenta> itemsCarrito){
         this.carrito = itemsCarrito;
         
-        Iterator<Detalle_Venta> it = itemsCarrito.iterator();
+        Iterator<DetalleVenta> it = itemsCarrito.iterator();
         
         double monto = 0;
         
         while(it.hasNext()){
-            Detalle_Venta det = it.next();
+            DetalleVenta det = it.next();
             det.setDocumento(this);
             monto += det.calcularPrecio();
         }
@@ -66,34 +66,30 @@ public class Venta extends Documento{
     public void generarFactura(){
         String ruta = "res/facturas/factura" +this.numeroFactura+".txt";
         File archivo = new File(ruta);
-        BufferedWriter bw;
-        try {
-            bw = new BufferedWriter(new FileWriter(archivo));
+        try (BufferedWriter bw = new BufferedWriter(new FileWriter(archivo))) {
             bw.write(facturaEncabezado());
             bw.write(productosFactura());
-            bw.close();
         } catch (IOException ex) {
             Logger.getLogger(Venta.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
     private String facturaEncabezado(){
-        String s = "\t*VETERINARIA DR. PELOS*\t\t\nNro. Factura: "+this.numeroFactura+
+        return "\t*VETERINARIA DR. PELOS*\t\t\nNro. Factura: "+this.numeroFactura+
                 String.format("\nFecha de emision: %tF \n",this.getFecha() )+
                 "\tRUC:0987654321 \n\tGUAYAQUIL-ECUADOR\n"+
                 "Cliente   : "+ this.cliente.getNombre()+" "+ this.cliente.getApellido()+
                 "\nCED/RUC  : "+ this.cliente.getCedula()+
-                "\nTelefono : "+ this.cliente.getNum_telefonico()+
+                "\nTelefono : "+ this.cliente.getNumTelefonico()+
                 "\n-----------------------------------------------\n"+
                 String.format("|%-18s|", "Producto")+String.format("|%-8s|", "Cantidad")+String.format("|%-8s|\n", "Pre.Total")+
                 "-----------------------------------------------\n"
                 ;
-        return s;
     }
     private String productosFactura(){
-        Iterator<Detalle_Venta> it = this.getCarrito().listIterator();
+        Iterator<DetalleVenta> it = this.getCarrito().listIterator();
         StringBuilder sb = new StringBuilder();
         while(it.hasNext()){
-            Detalle_Venta d = it.next();
+            DetalleVenta d = it.next();
             sb.append(String.format("%-20s %-10s %-10s\n",d.getNombre(),d.getCantidad(),d.calcularPrecio()));
         }
         sb.append(String.format("\t Subtotal : %-10s",this.subtotal));
@@ -127,12 +123,12 @@ public class Venta extends Documento{
         this.descuento = descuento;
     }
 
-    public Forma_pago getForma_pago_ID() {
-        return forma_pago_ID;
+    public FormaPago getFormaPagoID() {
+        return formaPagoID;
     }
 
-    public void setForma_pago_ID(Forma_pago forma_pago_ID) {
-        this.forma_pago_ID = forma_pago_ID;
+    public void setFormaPagoID(FormaPago formaPagoID) {
+        this.formaPagoID = formaPagoID;
     }
 
     public double getMontoExtraEnvio() {
@@ -154,6 +150,12 @@ public class Venta extends Documento{
     public Pedido getPedido() {
         return pedido;
     }
+
+    public void setNumeroFactura(int numeroFactura) {
+        this.numeroFactura = numeroFactura;
+    }
+    
+    
     
     
 }

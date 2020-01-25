@@ -16,10 +16,10 @@ import java.util.List;
  */
 public class Verification {
     private Connection con;
-    private Ctr_BaseDatosProxy controlDataBase;
+    private CtrBaseDatosProxy controlDataBase;
 
     public Verification() {
-        this.controlDataBase = new Ctr_BaseDatosProxy();
+        this.controlDataBase = new CtrBaseDatosProxy();
         this.con = controlDataBase.getConnection();
     }
     
@@ -29,15 +29,15 @@ public class Verification {
         String cedula = controlDataBase.isUser(user, pass);
         
         if(cedula != null){
-            List<Control_Session> metodos = new ArrayList<>();
+            List<ControlSession> metodos = new ArrayList<>();
 
-            metodos.add(new Ctr_Administrador());
-            metodos.add(new Ctr_Directivos());
-            metodos.add(new Ctr_Jefe_Bodega());
-            metodos.add(new Ctr_Personal_Caja());
+            metodos.add(new CtrAdministrador());
+            metodos.add(new CtrDirectivos());
+            metodos.add(new CtrJefeBodega());
+            metodos.add(new CtrPersonalCaja());
 
-            Iterator<Control_Session> it = metodos.iterator();
-            Control_Session control_session;
+            Iterator<ControlSession> it = metodos.iterator();
+            ControlSession control_session;
 
             while(it.hasNext()){
                 control_session = it.next();

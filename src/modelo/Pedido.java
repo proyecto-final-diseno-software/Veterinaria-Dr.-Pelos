@@ -10,7 +10,7 @@ package modelo;
  * @author paula
  */
 public class Pedido {
-    private int pedido_ID;
+    private int pedidoID;
     protected String descripcion;
     protected Sucursal remitente;
     protected Cliente destinatario;
@@ -23,12 +23,12 @@ public class Pedido {
         this.ruta = ruta;
     }
 
-    public int getPedido_ID() {
-        return pedido_ID;
+    public int getPedidoID() {
+        return pedidoID;
     }
 
-    public void setPedido_ID(int pedido_ID) {
-        this.pedido_ID = pedido_ID;
+    public void setPedidoID(int pedidoID) {
+        this.pedidoID = pedidoID;
     }
 
     public Ruta getRuta() {

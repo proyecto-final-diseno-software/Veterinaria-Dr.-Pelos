@@ -1,0 +1,6 @@
+projectKey=pbenit2019:Veterinaria
+serverUrl=http://200.9.176.59:9000
+serverVersion=7.7.0.23042
+dashboardUrl=http://200.9.176.59:9000/dashboard?id=pbenit2019%3AVeterinaria
+ceTaskId=AW_fFXLRvXyWqgoFqhFH
+ceTaskUrl=http://200.9.176.59:9000/api/ce/task?id=AW_fFXLRvXyWqgoFqhFH

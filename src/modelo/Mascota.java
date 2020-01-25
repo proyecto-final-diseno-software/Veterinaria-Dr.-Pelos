@@ -13,26 +13,26 @@ import java.util.List;
  * @author paula
  */
 public class Mascota{
-    private int mascota_id;
+    private int mascotaId;
     private String nombre;
     private String raza;
     private String estado;
     private Cliente cliente;
 
     public Mascota(int mascota_id, String nombre, String raza, String estado, Cliente cliente) {
-        this.mascota_id = mascota_id;
+        this.mascotaId = mascota_id;
         this.nombre = nombre;
         this.raza = raza;
         this.estado = estado;
         this.cliente = cliente;
     }
 
-    public int getMascota_id() {
-        return mascota_id;
+    public int getMascotaId() {
+        return mascotaId;
     }
 
-    public void setMascota_id(int mascota_id) {
-        this.mascota_id = mascota_id;
+    public void setMascotaId(int mascotaId) {
+        this.mascotaId = mascotaId;
     }
 
     public String getNombre() {
@@ -70,7 +70,7 @@ public class Mascota{
     public List<String> retornarAllData(){
         List<String> lista = new ArrayList<>();
         
-        lista.add(Integer.toString(mascota_id));
+        lista.add(Integer.toString(mascotaId));
         lista.add(nombre);
         lista.add(raza);
         lista.add(estado);

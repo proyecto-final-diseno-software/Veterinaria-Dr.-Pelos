@@ -8,7 +8,7 @@ package view;
 import javafx.application.Application;
 import static javafx.application.Application.launch;
 import javafx.stage.Stage;
-import view.states.View_ssesion;
+import view.states.ViewSsesion;
 
 /**
  *
@@ -25,7 +25,7 @@ public class View extends Application{
     
     @Override
     public void start(Stage theStage) throws Exception{
-        View_ssesion PaginaPrincipal = new View_ssesion();
+        ViewSsesion PaginaPrincipal = new ViewSsesion();
         PaginaPrincipal.crear_ventana(theStage, 1280, 720);
     }
     
