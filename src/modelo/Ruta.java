@@ -17,6 +17,9 @@ public class Ruta {
         this.direccion = direccion;
     }
 
+    public Ruta(){
+    }
+    
     public Ruta(int id_ruta, String direccion) {
         this.id_ruta = id_ruta;
         this.direccion = direccion;
