@@ -376,6 +376,27 @@ CREATE VIEW V_Servicios
 AS SELECT  s.servicio_ID,s.nombre, s.precio_unitario, s.descripcion
 FROM Servicio as s;
 
+-- view ventas
+drop view if exists V_Ventas;
+CREATE VIEW V_Ventas
+AS SELECT Venta.*,cliente.direccion, cliente.telefono,persona.nombre,
+persona.apellido,Forma_Pago.descripcion as pago_descripcion ,Personal_Caja.*  FROM Venta
+JOIN Cliente on venta.id_cliente = Cliente.cedula
+JOIN Persona on Cliente.cedula = Persona.cedula
+JOIN Forma_Pago on Forma_Pago.forma_pago_ID = Venta.forma_pago_ID
+JOIN Personal_Caja on Venta.personal_cajas_ID = Personal_Caja.cedula;
+
+
+-- view cotizacion
+drop view if exists V_Cotizacion;
+CREATE VIEW V_Cotizacion
+AS SELECT Cotizacion.*,cliente.direccion, cliente.telefono,persona.nombre,
+persona.apellido, Personal_Caja.cedula  FROM Cotizacion
+JOIN Cliente on cotizacion.cliente_ID = Cliente.cedula
+JOIN Persona on Cliente.cedula = Persona.cedula
+JOIN Personal_Caja on cotizacion.personal_caja_ID = Personal_Caja.cedula;
+
+
     # Creacion de usuario
 
 drop user if exists 'adminDrPelos'@'localhost';
