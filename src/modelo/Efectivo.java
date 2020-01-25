@@ -34,10 +34,7 @@ public class Efectivo implements Forma_pago{
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public int getForma_pago_ID() {
-        return forma_pago_ID;
-    }
-
+    @Override
     public void setForma_pago_ID(int forma_pago_ID) {
         this.forma_pago_ID = forma_pago_ID;
     }
@@ -49,7 +46,7 @@ public class Efectivo implements Forma_pago{
 
     @Override
     public int getId_FormaPago() {
-        return 123;
+        return forma_pago_ID;
     }
 
     public void setImpuesto(float impuesto) {

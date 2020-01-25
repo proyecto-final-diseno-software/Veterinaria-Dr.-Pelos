@@ -225,7 +225,7 @@ CREATE TABLE Pago_Efectivo(
 DROP TABLE IF EXISTS Pago_PayPal;
 CREATE TABLE Pago_PayPal(
   payPal_ID integer(3)  NOT NULL AUTO_INCREMENT ,
-  correoElectronico varchar(20) NOT NULL,
+  correoElectronico varchar(50) NOT NULL,
   PRIMARY KEY(payPal_ID),
   CONSTRAINT _pago_paypal_ID FOREIGN KEY (payPal_ID) REFERENCES Forma_Pago(forma_pago_ID)
   );

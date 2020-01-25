@@ -177,7 +177,9 @@ public class Ctr_Personal_Caja implements Control_Session{
     
     public boolean insertVenta(Venta v){
         try {
-            v.setId_documento(maxVenta()+1);
+            insertForma_Pago(v.getForma_pago_ID());
+            
+            v.setId_documento(maxVenta() + 1);
             
             PreparedStatement ps = con.prepareStatement("insert into venta(fecha, n_factura, sub_total, total, descuento, personal_cajas_ID, forma_pago_ID, id_cliente) values(?,?,?,?,?,?,?,?);");
             
@@ -192,9 +194,12 @@ public class Ctr_Personal_Caja implements Control_Session{
             ps.setInt(7, v.getForma_pago_ID().getId_FormaPago());
             ps.setString(8, v.getCliente().getCedula());
             
+            System.out.println(ps);
+            
             ps.executeUpdate();
             
             ps.close();
+            
             return true;
             
         } catch (Exception ex) {
@@ -203,8 +208,6 @@ public class Ctr_Personal_Caja implements Control_Session{
         } 
     }
     
-    
-    //En este metodo guarde los detaller de denta dependiendo si es un detalle de venta de producto o un detalle de venta de servicios para solucionar la relacion de muchos a muchos
     public boolean guardarDetalleVenta(Detalle_Venta ventas){
         String separador = "";
         
@@ -218,12 +221,12 @@ public class Ctr_Personal_Caja implements Control_Session{
                 
                 PreparedStatement ps = con.prepareStatement("insert into DetalleVentaProducto(cantidad ,"+separador+", producto_ID) values(?, ?, ?);");
                 
-                System.out.println(ps);
-                
                 ps.setInt(1, ventas.getCantidad());
                 ps.setInt(2, ventas.getDocumento().getId_documento());
                 ps.setInt(3, ((Detalle_VentaProducto) ventas).getProducto().getId_producto());
 
+                System.out.println(ps);
+                    
                 ps.executeUpdate();
                 ps.close();
                 
@@ -232,12 +235,12 @@ public class Ctr_Personal_Caja implements Control_Session{
                 
                 PreparedStatement ps = con.prepareStatement("insert into detalleventaservicio(cantidad ,"+separador+", servicio_ID) values(?, ?, ?);");
                 
-                System.out.println(ps);
-                
                 ps.setInt(1, ventas.getCantidad());
                 ps.setInt(2, ventas.getDocumento().getId_documento());
                 ps.setInt(3, ((Detalle_VentaServicio) ventas).getServicio().getId_servicio());
 
+                System.out.println(ps);
+                
                 ps.executeUpdate();
                 ps.close();
                 
@@ -444,7 +447,7 @@ public class Ctr_Personal_Caja implements Control_Session{
         return lista;
     }
     
-    public int maxForma_Pago(){
+    private int maxForma_Pago(){
         int max = 0;
         Statement stmt;
         try {
@@ -454,71 +457,92 @@ public class Ctr_Personal_Caja implements Control_Session{
                 max = rs.getInt(1);
         } catch (SQLException ex) {
             Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
-
-            
         }
         return max;
     }
     
-    private boolean insertForma_Pago(float impuesto,String descripcion){
+    private boolean insertForma_Pago(Forma_pago formpago){
         try {
-            PreparedStatement ps = con.prepareStatement("insert into Forma_Pago(forma_pago_ID,impuesto,descripcion) values(default,?,?);");
-            ps.setFloat(1,impuesto);
-            ps.setString(2, descripcion);
+            formpago.setForma_pago_ID(maxForma_Pago() + 1);
+            
+            PreparedStatement ps = con.prepareStatement("insert into Forma_Pago(forma_pago_ID,impuesto,descripcion) values(?,?,?);");
+            
+            ps.setFloat(1, formpago.getId_FormaPago());
+            ps.setFloat(2, formpago.getImpuesto());
+            ps.setString(3, formpago.getDescripcion());
+            
+            System.out.println(ps);
+            
             ps.executeUpdate();
             ps.close();
-            return true;
+            
+            if(formpago instanceof Efectivo)
+                return insertEfectivo(formpago);
+            
+            if(formpago instanceof PayPal)
+                return insertPaypal(formpago);
+            
+            if(formpago instanceof Tarjeta)
+                return insertTarjeta(formpago);
+            
         } catch (Exception ex) {
             ex.printStackTrace();
-            return false;
+            
         }
+        return false;
     }
     
-    public boolean insertEfectivo(Efectivo pago){
-        if(insertForma_Pago(pago.getImpuesto(),pago.getDescripcion())){
-            try {
+    private boolean insertEfectivo(Forma_pago formpago){
+        try {
+            Efectivo efectivo = (Efectivo) formpago;
             PreparedStatement ps = con.prepareStatement("insert into Pago_Efectivo(efectivo_ID,cantidad_efectivo) values(?,?);");
-            ps.setInt(1,this.maxForma_Pago());
-            ps.setFloat(2,(float)pago.getCantidad_efectivo());
+            
+            ps.setInt(1, efectivo.getId_FormaPago());
+            ps.setFloat(2,(float) efectivo.getCantidad_efectivo());
+            
+            System.out.println(ps);
             ps.executeUpdate();
             ps.close();
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();
             return false;
-            }
         }
-        return false;
     }
     
-    public boolean insertTarjeta(Tarjeta pago){
-        if(insertForma_Pago(pago.getImpuesto(),pago.getDescripcion())){
-            try {
+    public boolean insertTarjeta(Forma_pago formpago){
+        try {
+            Tarjeta pago = (Tarjeta) formpago;
             PreparedStatement ps = con.prepareStatement("insert into Pago_Tarjeta(tarjeta_ID,num_cuenta) values(?,?);");
-            ps.setInt(1,this.maxForma_Pago());
-            ps.setString(2,pago.getNum_cuenta());
+            
+            ps.setInt(1, pago.getId_FormaPago());
+            ps.setString(2, pago.getNum_cuenta());
+            
+            System.out.println(ps);
             ps.executeUpdate();
             ps.close();
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();
-            }
         }
+        
         return false;
     }
     
-    public boolean insertPaypal(PayPal pago){
-        if(insertForma_Pago(pago.getImpuesto(),pago.getDescripcion())){
-            try {
+    public boolean insertPaypal(Forma_pago formpago){
+        try {
+            PayPal pago = (PayPal) formpago;
             PreparedStatement ps = con.prepareStatement("insert into Pago_PayPal(payPal_ID,correoElectronico) values(?,?);");
-            ps.setInt(1,this.maxForma_Pago());
-            ps.setString(2,pago.getCorreo_electronico());
+            
+            ps.setInt(1, pago.getId_FormaPago());
+            ps.setString(2, pago.getCorreo_electronico());
+            
+            System.out.println(ps);
             ps.executeUpdate();
             ps.close();
             return true;
         } catch (Exception ex) {
             ex.printStackTrace();
-        }
         }
         return false;
     }

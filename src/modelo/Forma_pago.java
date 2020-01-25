@@ -15,4 +15,5 @@ public interface Forma_pago {
     int getId_FormaPago();
     String getDescripcion();
     float getImpuesto();
+    void setForma_pago_ID(int forma_pago_ID);
 }

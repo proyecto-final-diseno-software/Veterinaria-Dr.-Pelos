@@ -8,6 +8,7 @@ package view.contenido;
 import controladores.Ctr_Personal_Caja;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import javafx.geometry.Pos;
@@ -43,12 +44,17 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
     
     private Personal_Caja personal;
     
+    private TableVentaTool tablaPago;
+    private TableTool tablaRegistro;
+    private VBox paneCliente;
+    
     public ContenidoVentas(int reduccionx, int reduccionY, int anchoVentana, int altoVentana, int anchoColunma1, int anchoColunma2, int anchoLateral, int altoSuperior, Personal_Caja personal){
         super(reduccionx, reduccionY, anchoVentana, altoVentana, anchoColunma1, anchoColunma2, anchoLateral, altoSuperior);
         this.personal = personal;
         
         ctr = new Ctr_Personal_Caja();
         
+        this.paneFondo = new Pane();
         this.paneCentral = new HBox(15);
         
         this.colunma1 = new VBox(40);
@@ -87,10 +93,9 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
         
         documento = new Venta();
         
-        documento.setPersonalCaja(personal);
-        
-        TableVentaTool tablaPago = new TableVentaTool(anchoColunma2, titulo3);
+        tablaPago = new TableVentaTool(anchoColunma2, titulo3);
         documento.calcularMonto(itemsCarrito);
+        
         if(documento instanceof Venta)
             tablaPago.actualizarMonto(((Venta) documento).getSubtotal());
         else
@@ -98,7 +103,7 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
         
         List<String> lista = new ArrayList<>();
         lista.add("Nombre"); lista.add("Precio"); lista.add("Cantidad"); lista.add("Total");
-        TableTool tablaRegistro = new TableTool(anchoColunma1 - 100, lista, "No hay articulos en el carrito", titulo3);
+        tablaRegistro = new TableTool(anchoColunma1 - 100, lista, "No hay articulos en el carrito", titulo3);
         
         HBox secionBuscador = new HBox();
         
@@ -107,12 +112,12 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
         botonBuscar.setOnMousePressed(buscarArticulo -> {
             BotonTool cerrar = new BotonTool("X", titulo2, titulo2 * 2, titulo2 * 2, Color.RED);
             
-            ContenidoBusqueda ventana_busqueda = new ContenidoBusqueda(anchoVentana - reduccionX - 10, altoVentana - reduccionY - 10, titulo2, cerrar, itemsCarrito, personal.getSucursal().isOfreceServicios());
+            ContenidoBusqueda ventana_busqueda = new ContenidoBusqueda(anchoVentana - reduccionX - 10, altoVentana - reduccionY - 10, titulo2, cerrar, documento.getCarrito(), personal.getSucursal().isOfreceServicios());
             
             cerrar.setOnMousePressed(cerrar_ventana -> {
                 getChildren().remove(ventana_busqueda);
-                insertarItems(itemsCarrito, tablaRegistro, tablaPago);
-                documento.calcularMonto(itemsCarrito);
+                insertarItems();
+                documento.calcularMonto(documento.getCarrito());
                 
                 if(documento instanceof Venta)
                     tablaPago.actualizarMonto(((Venta) documento).getSubtotal());
@@ -126,7 +131,7 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
             ventana_busqueda.setTranslateY(5);
         });
             
-        VBox paneCliente = new VBox(10);
+        paneCliente = new VBox(10);
         paneCliente.setAlignment(Pos.CENTER);
         
         VBox dataCliente = new VBox(5);
@@ -158,11 +163,11 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
             documento.setNumeroFactura(123456789);
             documento.setPersonalCaja(personal);
             if(documento.comprobarValides()){
-                ContenidoDetallesVenta confirmaDocuemnto = new ContenidoDetallesVenta(reduccionX, reduccionY, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior, documento);
+                ContenidoDetallesVenta confirmaDocuemnto = new ContenidoDetallesVenta(reduccionX, reduccionY, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior, documento, this);
                 confirmaDocuemnto.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
                 confirmaDocuemnto.crearContenidoCentral(new ArrayList<>());
                 
-                this.getChildren().add(confirmaDocuemnto);
+                this.paneFondo.getChildren().add(confirmaDocuemnto);
             } else
                 paneError.getChildren().add(new BoxTextTool("\nFalta informacion", Color.RED, titulo2, FontWeight.NORMAL));
         });
@@ -176,14 +181,16 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
         pane3.getChildren().add(paneCliente);
         pane4.getChildren().addAll(tablaPago, botonConfirmarVenta, paneError);
         
-        this.getChildren().add(paneCentral);
+        paneFondo.getChildren().add(paneCentral);
+        
+        this.getChildren().add(paneFondo);
     }
     
     
-    private void insertarItems(List<Detalle_Venta> itemsCarrito, TableTool table, TableVentaTool tablaPago){
-        table.limpiarContenido();
+    private void insertarItems(){
+        tablaRegistro.limpiarContenido();
         
-        ListIterator<Detalle_Venta> it = itemsCarrito.listIterator();
+        Iterator<Detalle_Venta> it = documento.getCarrito().iterator();
         
         while(it.hasNext()){
             Detalle_Venta det = it.next();
@@ -215,8 +222,8 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
                     botonSacarDetalles.setOnMousePressed(eliminarVnetanEmerrgente -> {
                         getChildren().remove(detalleArticulo);
                         detalleArticulo.setCantidad();
-                        insertarItems(itemsCarrito, table, tablaPago);
-                        documento.calcularMonto(itemsCarrito);
+                        insertarItems();
+                        documento.calcularMonto(documento.getCarrito());
                         if(documento instanceof Venta)
                             tablaPago.actualizarMonto(((Venta) documento).getSubtotal());
                         else
@@ -225,9 +232,9 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
                     
                     botonEliminar.setOnMousePressed(eleiminarDeCarrito -> {
                         getChildren().remove(detalleArticulo);
-                        itemsCarrito.remove(det);
-                        insertarItems(itemsCarrito, table, tablaPago);
-                        documento.calcularMonto(itemsCarrito);
+                        documento.getCarrito().remove(det);
+                        insertarItems();
+                        documento.calcularMonto(documento.getCarrito());
                         if(documento instanceof Venta)
                             tablaPago.actualizarMonto(((Venta) documento).getSubtotal());
                         else
@@ -237,7 +244,18 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
                     getChildren().add(detalleArticulo);
                 });
                 
-                table.anadirItem(dataItem, especificarDetalles);
+                tablaRegistro.anadirItem(dataItem, especificarDetalles);
         }
+    }
+
+    public Pane getPaneFondo() {
+        return paneFondo;
+    }
+
+    @Override
+    public void limpirarContenido() {
+        tablaPago.actualizarMonto(0);
+        tablaRegistro.limpiarContenido();
+        documento.calcularMonto(new ArrayList<>());
     }
 }

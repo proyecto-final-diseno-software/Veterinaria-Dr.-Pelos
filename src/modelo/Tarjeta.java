@@ -17,14 +17,11 @@ public class Tarjeta implements Forma_pago {
     private String num_cuenta;
 
     public Tarjeta(float impuesto, String num_cuenta) {
-        this.descripcion = "Tarjeta";
         this.impuesto = impuesto;
         this.num_cuenta = num_cuenta;
     }
     
-    public Tarjeta(){
-        
-    }
+    public Tarjeta(){}
     
     @Override
     public boolean pagar() {
@@ -42,13 +39,10 @@ public class Tarjeta implements Forma_pago {
 
     @Override
     public int getId_FormaPago() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    public int getForma_pago_ID() {
         return forma_pago_ID;
     }
 
+    @Override
     public void setForma_pago_ID(int forma_pago_ID) {
         this.forma_pago_ID = forma_pago_ID;
     }

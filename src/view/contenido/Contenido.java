@@ -70,8 +70,6 @@ public abstract class Contenido extends Parent{
         this.colorClaro = colorClaro;
     }
     
-    public abstract void establecerPaneles();
-    
     protected void establecerFondoUnico(Pos pos){
         this.colunma1.getChildren().add(pane1);
         this.paneCentral.getChildren().add(colunma1);
@@ -93,4 +91,7 @@ public abstract class Contenido extends Parent{
         }
         return true;
     }
+    
+    public abstract void establecerPaneles();
+    public abstract void limpirarContenido();
 }
