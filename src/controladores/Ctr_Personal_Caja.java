@@ -476,6 +476,17 @@ public class Ctr_Personal_Caja implements Control_Session{
     //Metodo que me retorna la seccion valida de un empleado de caja retorn su enum correspondiente
     @Override
     public UserType verificarSesion(String cedula) {
-        return UserType.PERSONAL_CAJA;
+        Statement stmt;
+        try {
+            stmt = con.createStatement();
+            String q = "select usuario_ID from Usuario join Personal_Caja on Usuario.usuario_ID = Personal_Caja.cedula where Usuario.usuario_ID =\""+cedula+"\"";
+            ResultSet rs = stmt.executeQuery(q);
+            if(rs.next()){
+                return UserType.PERSONAL_CAJA;
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
 }

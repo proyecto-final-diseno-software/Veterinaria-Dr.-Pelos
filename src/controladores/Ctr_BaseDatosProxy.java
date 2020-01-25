@@ -6,6 +6,11 @@
 package controladores;
 
 import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -29,14 +34,20 @@ public class Ctr_BaseDatosProxy implements BaseDatos{
     @Override
     public void disconnect() {}
     
-    //Cecibe los datos y retorna la cedula a la que pertene el usuario
+    //Recibe los datos y retorna la cedula a la que pertene el usuario
     public String isUser(String user, String pass){
-        
-        //conectionBaseCentral usa eso para la busqueda
-        
-        String cedula = "0975368545";
-        
-        return cedula;
+        Statement stmt;
+        try {
+            stmt = conectionBaseCentral.createStatement();
+            ResultSet rs = stmt.executeQuery("select usuario_ID from usuario "
+                    + "where usuario=\""+user+"\" and passwordUser = \""+pass+"\";");
+            if(rs.next()){
+                return rs.getString(1);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return null;
     }
     
 }
