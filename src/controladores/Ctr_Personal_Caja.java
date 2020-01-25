@@ -25,10 +25,12 @@ import modelo.Detalle_VentaServicio;
 import modelo.Efectivo;
 import modelo.Forma_pago;
 import modelo.Mascota;
+import modelo.PayPal;
 import modelo.Personal_Caja;
 import modelo.Producto;
 import modelo.Servicio;
 import modelo.Sucursal;
+import modelo.Tarjeta;
 import modelo.Venta;
 import view.tool.Tool;
 
@@ -440,6 +442,85 @@ public class Ctr_Personal_Caja implements Control_Session{
         }
         
         return lista;
+    }
+    
+    public int maxForma_Pago(){
+        int max = 0;
+        Statement stmt;
+        try {
+            stmt = con.createStatement();
+            ResultSet rs = stmt.executeQuery("select max(forma_pago_ID) from Forma_Pago");
+            if(rs.next())
+                max = rs.getInt(1);
+        } catch (SQLException ex) {
+            Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
+
+            
+        }
+        return max;
+    }
+    
+    private boolean insertForma_Pago(float impuesto,String descripcion){
+        try {
+            PreparedStatement ps = con.prepareStatement("insert into Forma_Pago(forma_pago_ID,impuesto,descripcion) values(default,?,?);");
+            ps.setFloat(1,impuesto);
+            ps.setString(2, descripcion);
+            ps.executeUpdate();
+            ps.close();
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+        }
+    }
+    
+    public boolean insertEfectivo(Efectivo pago){
+        if(insertForma_Pago(pago.getImpuesto(),pago.getDescripcion())){
+            try {
+            PreparedStatement ps = con.prepareStatement("insert into Pago_Efectivo(efectivo_ID,cantidad_efectivo) values(?,?);");
+            ps.setInt(1,this.maxForma_Pago());
+            ps.setFloat(2,(float)pago.getCantidad_efectivo());
+            ps.executeUpdate();
+            ps.close();
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            return false;
+            }
+        }
+        return false;
+    }
+    
+    public boolean insertTarjeta(Tarjeta pago){
+        if(insertForma_Pago(pago.getImpuesto(),pago.getDescripcion())){
+            try {
+            PreparedStatement ps = con.prepareStatement("insert into Pago_Tarjeta(tarjeta_ID,num_cuenta) values(?,?);");
+            ps.setInt(1,this.maxForma_Pago());
+            ps.setString(2,pago.getNum_cuenta());
+            ps.executeUpdate();
+            ps.close();
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            }
+        }
+        return false;
+    }
+    
+    public boolean insertPaypal(PayPal pago){
+        if(insertForma_Pago(pago.getImpuesto(),pago.getDescripcion())){
+            try {
+            PreparedStatement ps = con.prepareStatement("insert into Pago_PayPal(payPal_ID,correoElectronico) values(?,?);");
+            ps.setInt(1,this.maxForma_Pago());
+            ps.setString(2,pago.getCorreo_electronico());
+            ps.executeUpdate();
+            ps.close();
+            return true;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+        }
+        return false;
     }
     
     //Este metodo tiene que retornar todas las mascota que tengan como cable foranea al cliente enviado

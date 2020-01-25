@@ -16,6 +16,16 @@ public class Tarjeta implements Forma_pago {
     
     private String num_cuenta;
 
+    public Tarjeta(float impuesto, String num_cuenta) {
+        this.descripcion = "Tarjeta";
+        this.impuesto = impuesto;
+        this.num_cuenta = num_cuenta;
+    }
+    
+    public Tarjeta(){
+        
+    }
+    
     @Override
     public boolean pagar() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
@@ -35,6 +45,14 @@ public class Tarjeta implements Forma_pago {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
+    public int getForma_pago_ID() {
+        return forma_pago_ID;
+    }
+
+    public void setForma_pago_ID(int forma_pago_ID) {
+        this.forma_pago_ID = forma_pago_ID;
+    }
+    
     public void setImpuesto(float impuesto) {
         this.impuesto = impuesto;
     }
@@ -51,5 +69,14 @@ public class Tarjeta implements Forma_pago {
         return num_cuenta;
     }
     
+    @Override
+    public String getDescripcion() {
+        return this.descripcion;
+    }
+
+    @Override
+    public float getImpuesto() {
+        return this.impuesto;
+    }
     
 }

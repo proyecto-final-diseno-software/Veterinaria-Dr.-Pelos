@@ -13,4 +13,6 @@ public interface Forma_pago {
     boolean pagar();
     void registrar_monto();
     int getId_FormaPago();
+    String getDescripcion();
+    float getImpuesto();
 }

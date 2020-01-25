@@ -13,12 +13,33 @@ public class Efectivo implements Forma_pago{
     private int forma_pago_ID;
     private float impuesto;
     private String descripcion;
-    
     private double cantidad_efectivo;
+
+    public double getCantidad_efectivo() {
+        return cantidad_efectivo;
+    }
+
+    public Efectivo(){
+        
+    }
+    
+    public Efectivo(float impuesto, double cantidad_efectivo) {
+        this.descripcion  = "Efectivo";
+        this.impuesto = impuesto;
+        this.cantidad_efectivo = cantidad_efectivo;
+    }
     
     @Override
     public boolean pagar() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public int getForma_pago_ID() {
+        return forma_pago_ID;
+    }
+
+    public void setForma_pago_ID(int forma_pago_ID) {
+        this.forma_pago_ID = forma_pago_ID;
     }
 
     @Override
@@ -41,6 +62,16 @@ public class Efectivo implements Forma_pago{
 
     public void setCantidad_efectivo(double cantidad_efectivo) {
         this.cantidad_efectivo = cantidad_efectivo;
+    }
+
+    @Override
+    public String getDescripcion() {
+        return this.descripcion;
+    }
+
+    @Override
+    public float getImpuesto() {
+        return this.impuesto;
     }
     
     

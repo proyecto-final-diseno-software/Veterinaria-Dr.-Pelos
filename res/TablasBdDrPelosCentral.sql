@@ -212,7 +212,9 @@ CREATE TABLE Forma_Pago(
   PRIMARY KEY(forma_pago_ID)
   );
   
-insert into Forma_Pago values(123, 17.0,"Dinero en efectio");
+insert into Forma_Pago values(123, 17.0,"Efectivo");
+    
+    select * from forma_pago;
     
 DROP TABLE IF EXISTS Pago_Efectivo;
 CREATE TABLE Pago_Efectivo(
@@ -229,6 +231,7 @@ CREATE TABLE Pago_PayPal(
   PRIMARY KEY(payPal_ID),
   CONSTRAINT _pago_paypal_ID FOREIGN KEY (payPal_ID) REFERENCES Forma_Pago(forma_pago_ID)
   );
+  
   
 DROP TABLE IF EXISTS Pago_Tarjeta;
 CREATE TABLE Pago_Tarjeta(
