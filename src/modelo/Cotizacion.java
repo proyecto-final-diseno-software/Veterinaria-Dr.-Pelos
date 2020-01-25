@@ -38,41 +38,41 @@ public class Cotizacion extends Documento{
         carrito.add(detalle);
     }
     
-    public static void generarCotizacion(Cotizacion cotizacion){
-        String ruta = "res/cotizaciones/cotizacion" +cotizacion.id_documento+".txt";
+    public void generarCotizacion(){
+        String ruta = "res/cotizaciones/cotizacion" + this.id_documento+".txt";
         File archivo = new File(ruta);
         BufferedWriter bw;
         try {
             bw = new BufferedWriter(new FileWriter(archivo));
-            bw.write(cotizacionEncabezado(cotizacion));
-            bw.write(productosCotizacion(cotizacion));
+            bw.write(cotizacionEncabezado());
+            bw.write(productosCotizacion());
             bw.close();
         } catch (IOException ex) {
             Logger.getLogger(Venta.class.getName()).log(Level.SEVERE, null, ex);
         } 
     }
     
-    private static String cotizacionEncabezado(Cotizacion cotizacion){
+    private String cotizacionEncabezado(){
         String s = "\t*VETERINARIA DR. PELOS*\t\t\n"+
                 "\t  **COTIZACION**\n"+
-                String.format("Fecha de emision: %tF \n",cotizacion.getFecha() )+
+                String.format("Fecha de emision: %tF \n",this.getFecha() )+
                 "\tRUC:0987654321 \n\tGUAYAQUIL-ECUADOR\n"+
-                "Cliente   : "+cotizacion.cliente.getNombre()+" "+ cotizacion.cliente.getApellido()+
-                "\nCED/RUC  : "+ cotizacion.cliente.getCedula()+
-                "\nTelefono : "+ cotizacion.cliente.getNum_telefonico()+
+                "Cliente   : "+this.cliente.getNombre()+" "+ this.cliente.getApellido()+
+                "\nCED/RUC  : "+ this.cliente.getCedula()+
+                "\nTelefono : "+ this.cliente.getNum_telefonico()+
                 "\n-----------------------------------------------\n"+
                 String.format("|%-18s|", "Producto")+String.format("|%-8s|", "Cantidad")+String.format("|%-8s|\n", "Pre.Total")+
                 "-----------------------------------------------\n";
         return s;
     }
-    private static String productosCotizacion(Cotizacion cotizacion){
-        java.util.Iterator<Detalle_Venta> it = cotizacion.getCarrito().listIterator();
+    private String productosCotizacion(){
+        java.util.Iterator<Detalle_Venta> it = this.getCarrito().listIterator();
         StringBuilder sb = new StringBuilder();
         while(it.hasNext()){
             Detalle_Venta d = it.next();
             sb.append(String.format("%-20s %-10s %-10s\n",d.getNombre(),d.getCantidad(),d.calcularPrecio()));
         }
-        sb.append(String.format("\t Total : %-10s",cotizacion.getValor()));
+        sb.append(String.format("\t Total : %-10s",this.getValor()));
 
         return sb.toString();
     }

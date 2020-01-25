@@ -43,7 +43,7 @@ public class Ctr_Mascota {
         } 
     }
     
-    public boolean setEstadoMascota(Mascota mas){
+    public boolean setEstadoMascota(Mascota mas, String nuevoEstado){
         return true;
     }
     

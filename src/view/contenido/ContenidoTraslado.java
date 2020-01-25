@@ -89,9 +89,9 @@ public class ContenidoTraslado extends Contenido implements ContenidoCentral{
         botonBuscar.setOnMousePressed(buscar -> {
             paneError.getChildren().clear();
             if(!textFieldCliente.isEmplyTool()){
-                Cliente cli = ctrCaja.selectCliente((String) textFieldCliente.getValue()).get(0);
-                if(cli != null){
-                    establecerTrasladoMascotas(cli);
+                List<Cliente> list = ctrCaja.selectCliente((String) textFieldCliente.getValue());
+                if(!list.isEmpty()){
+                    establecerTrasladoMascotas(list.get(0));
                 } else 
                     paneError.getChildren().add(new BoxTextTool("Cliente no existente", Color.RED, 10, FontWeight.NORMAL));
             } else 
@@ -113,12 +113,6 @@ public class ContenidoTraslado extends Contenido implements ContenidoCentral{
     }
     
     private void establecerTrasladoMascotas(Cliente cliente){
-        //ComBoxTool escogerRuta = new ComBoxTool(250, "Ruta:", new ArrayList<>(), titulo2);
-        //ComBoxTool escogerRepartidor = new ComBoxTool(250, "Repartidor:", new ArrayList<>(), titulo2);
-        
-        //toolUsados.add(escogerRuta);
-        //toolUsados.add(escogerRepartidor);
-        
         datoCliente.setText("Mascotas del usuario: " + cliente.getCedula());
         mascotasCliente = ctrCaja.selectMascotasCliente(cliente);
         anadirMascotasTabla();
@@ -169,7 +163,7 @@ public class ContenidoTraslado extends Contenido implements ContenidoCentral{
     private void cambiarEstado(Mascota mas, String nuevoEstado){
         colunma1.getChildren().remove(error);
         
-        if(ctrCaja.setEstadoMascota(mas)){
+        if(ctrCaja.setEstadoMascota(mas, nuevoEstado)){
             mas.setEstado(nuevoEstado);
             anadirMascotasTabla();
         } else 

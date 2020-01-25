@@ -5,6 +5,7 @@
  */
 package modelo;
 
+import controladores.Control_Factura;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Iterator;
@@ -55,8 +56,9 @@ public abstract class Documento {
         return numeroFactura;
     }
 
-    public void setNumeroFactura(int numeroFactura) {
-        this.numeroFactura = numeroFactura;
+    public void setNumeroFactura() {
+        Control_Factura ctr = new Control_Factura();
+        this.numeroFactura = ctr.obtenerNumeroFactura();
     }
 
     public Personal_Caja getPersonalCaja() {

@@ -14,6 +14,7 @@ import java.sql.Statement;
 import java.time.LocalDate;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import modelo.Documento;
 import modelo.Efectivo;
 import modelo.Forma_pago;
 import modelo.PayPal;
@@ -28,11 +29,13 @@ public class Ctr_Venta {
     private final Connection con;
     private final Ctr_BaseDatosProxy controlDataBase;
     private final Ctr_Pedido controlPedido;
+    private final Control_Factura controlFactura;
 
     public Ctr_Venta() {
         this.controlDataBase = new Ctr_BaseDatosProxy();
         this.con = controlDataBase.getConnection();
         this.controlPedido = new Ctr_Pedido();
+        this.controlFactura = new Control_Factura();
     }
     
     private int maxVenta(){
@@ -53,6 +56,8 @@ public class Ctr_Venta {
     public boolean insertVenta(Venta v){
         try {
             insertForma_Pago(v.getForma_pago_ID());
+            
+            controlFactura.insertFactura(v);
             
             if(v.getPedido() != null)
                 this.controlPedido.insertPedido(v.getPedido());
@@ -180,5 +185,4 @@ public class Ctr_Venta {
         }
         return false;
     }
-    
 }

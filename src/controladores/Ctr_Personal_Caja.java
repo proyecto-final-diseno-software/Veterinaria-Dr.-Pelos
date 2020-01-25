@@ -106,8 +106,8 @@ public class Ctr_Personal_Caja implements Control_Session{
         return this.controlMascota.insertMascota(m);
     }
     
-    public boolean setEstadoMascota(Mascota mas){
-        return this.controlMascota.setEstadoMascota(mas);
+    public boolean setEstadoMascota(Mascota mas, String nuevoEstado){
+        return this.controlMascota.setEstadoMascota(mas, nuevoEstado);
     }
     
     public boolean insertCotizacion(Cotizacion c){

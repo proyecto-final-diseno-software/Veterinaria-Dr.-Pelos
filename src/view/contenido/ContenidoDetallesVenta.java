@@ -68,7 +68,6 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
         
         this.colunma1 = new VBox(20);
         this.colunma1.setTranslateX(200);
-        this.colunma1.setTranslateY(100);
         this.colunma1.setBackground(new Background(new BackgroundFill(Color.WHITE, new CornerRadii(5), new Insets(-20))));
         
         this.paneFondo = new Pane();
@@ -90,7 +89,7 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
         
         Rectangle bg = new Rectangle(anchoVentana - reduccionX + 20, altoVentana - reduccionY + 20);
         bg.setFill(Color.WHITE);
-        bg.setOpacity(0.5);
+        bg.setOpacity(0.7);
         bg.setTranslateY(-10);
         
         HBox cabecera = new HBox(5);
@@ -160,6 +159,7 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
                             ((Venta) documento).setForma_pago_ID(formaPago);
 
                             if(ctr.insertVenta((Venta) documento)){
+                                ((Venta) documento).generarFactura();
                                 parentPerteneciente.getPaneFondo().getChildren().remove(this);
                                 parentPerteneciente.limpirarContenido();
                                 guardarDetallesVenta(documento.getCarrito());
@@ -169,6 +169,7 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
                 } else {
                     documento.actualizarReferencias();
                     if(ctr.insertCotizacion((Cotizacion) documento)){
+                        ((Cotizacion) documento).generarCotizacion();
                         parentPerteneciente.getPaneFondo().getChildren().remove(this);
                         parentPerteneciente.limpirarContenido();
                         guardarDetallesVenta(documento.getCarrito());

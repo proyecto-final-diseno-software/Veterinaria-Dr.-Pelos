@@ -10,7 +10,6 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 import javafx.geometry.Pos;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.HBox;
@@ -160,7 +159,7 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
         botonConfirmarVenta.setOnMousePressed(validarVenta -> {
             paneError.getChildren().clear();
             documento.setFecha(LocalDate.now());
-            documento.setNumeroFactura(123456789);
+            documento.setNumeroFactura();
             documento.setPersonalCaja(personal);
             if(documento.comprobarValides()){
                 ContenidoDetallesVenta confirmaDocuemnto = new ContenidoDetallesVenta(reduccionX, reduccionY, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior, documento, this);

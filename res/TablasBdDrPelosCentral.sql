@@ -240,6 +240,13 @@ CREATE TABLE Pago_Tarjeta(
   PRIMARY KEY(tarjeta_ID),
   CONSTRAINT _pago_tarjeta_ID FOREIGN KEY (tarjeta_ID) REFERENCES Forma_Pago(forma_pago_ID)
   );
+  
+  DROP TABLE IF EXISTS Factura;
+  CREATE TABLE Factura(
+	n_factura int NULL AUTO_INCREMENT,
+    fecha DATE,
+    UNIQUE KEY(n_factura)
+);
     
 DROP TABLE IF EXISTS Venta;
   CREATE TABLE Venta(
@@ -254,6 +261,7 @@ DROP TABLE IF EXISTS Venta;
     id_cliente varchar(10) NOT NULL,
     pedido_ID int,
     UNIQUE KEY(venta_ID),
+    CONSTRAINT _factura_ FOREIGN KEY (n_factura) REFERENCES Factura(n_factura),
     CONSTRAINT _personal_cajas_ID FOREIGN KEY (personal_cajas_ID) REFERENCES Usuario(usuario_ID) ON DELETE NO ACTION,
     CONSTRAINT _forma_pago_ID FOREIGN KEY (forma_pago_ID) REFERENCES Forma_Pago(forma_pago_ID),
     CONSTRAINT cliente_ID FOREIGN KEY (id_cliente) REFERENCES Cliente(cedula),
@@ -393,10 +401,12 @@ CREATE TABLE DetalleVentaServicio(
     
     insert into Pago_PayPal values(202,"amorales@correo.com");
     
-    insert into Venta values(default,"2020-01-02",000-2302,4.0,10,6,"0975368545",200,"0927389243", null);
-    insert into Venta values(default,"2020-01-02",000-2303,4.0,10,10.5,"0945343504",201,"0994854756", null);
-    insert into Venta values(default,"2019-11-10",000-024,4.0,10,24.9,"0945343504",202,"0987743422", null);
-    insert into Venta values(default,"2019-09-11",000-2339,4.0,10,6,"0924940396",203,"0927389243", null);
+    insert into Factura values(1, "2020-01-02");
+    
+    insert into Venta values(default,"2020-01-02",1,4.0,10,6,"0975368545",200,"0927389243", null);
+    insert into Venta values(default,"2020-01-02",1,4.0,10,10.5,"0945343504",201,"0994854756", null);
+    insert into Venta values(default,"2019-11-10",1,4.0,10,24.9,"0945343504",202,"0987743422", null);
+    insert into Venta values(default,"2019-09-11",1,4.0,10,6,"0924940396",203,"0927389243", null);
 	
     insert into Cotizacion values(default, "2020-01-10",10.0,"0994854756","0924940396");
     insert into Cotizacion values(default, "2019-10-14",25.5,"0994854756","0935843645");

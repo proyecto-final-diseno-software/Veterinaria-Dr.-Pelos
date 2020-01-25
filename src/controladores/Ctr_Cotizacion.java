@@ -23,15 +23,18 @@ import modelo.Cotizacion;
 public class Ctr_Cotizacion {
     private final Connection con;
     private final Ctr_BaseDatosProxy controlDataBase;
+    private final Control_Factura controlFactura;
 
     public Ctr_Cotizacion() {
         this.controlDataBase = new Ctr_BaseDatosProxy();
         this.con = controlDataBase.getConnection();
+        this.controlFactura = new Control_Factura();
     }
     
     public boolean insertCotizacion(Cotizacion c){
         try {
             c.setId_documento(maxCotizacion()+1);
+            controlFactura.insertFactura(c);
             
             PreparedStatement ps = con.prepareStatement("insert into Cotizacion(fecha, valor, cliente_ID, personal_caja_ID) values(?,?,?,?);");
        
