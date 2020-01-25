@@ -41,6 +41,7 @@ import view.tool.Tool;
 public class Ctr_Personal_Caja implements Control_Session{
     private Connection con;
     private Ctr_BaseDatosProxy controlDataBase;
+    private Ctr_Cliente controlCliente;
 
     public Ctr_Personal_Caja() {
         this.controlDataBase = new Ctr_BaseDatosProxy();
@@ -194,8 +195,6 @@ public class Ctr_Personal_Caja implements Control_Session{
             ps.setInt(7, v.getForma_pago_ID().getId_FormaPago());
             ps.setString(8, v.getCliente().getCedula());
             
-            System.out.println(ps);
-            
             ps.executeUpdate();
             
             ps.close();
@@ -224,8 +223,6 @@ public class Ctr_Personal_Caja implements Control_Session{
                 ps.setInt(1, ventas.getCantidad());
                 ps.setInt(2, ventas.getDocumento().getId_documento());
                 ps.setInt(3, ((Detalle_VentaProducto) ventas).getProducto().getId_producto());
-
-                System.out.println(ps);
                     
                 ps.executeUpdate();
                 ps.close();
@@ -238,8 +235,6 @@ public class Ctr_Personal_Caja implements Control_Session{
                 ps.setInt(1, ventas.getCantidad());
                 ps.setInt(2, ventas.getDocumento().getId_documento());
                 ps.setInt(3, ((Detalle_VentaServicio) ventas).getServicio().getId_servicio());
-
-                System.out.println(ps);
                 
                 ps.executeUpdate();
                 ps.close();
@@ -253,57 +248,16 @@ public class Ctr_Personal_Caja implements Control_Session{
         }
         
     }
-    
-    public Forma_pago retornaMetodoPago(){
-        Forma_pago efectivo = new Efectivo();
-        return efectivo;
-    }
             
     public Cliente createCliente(List<Tool> list){
-        String cedula = (String) list.get(0).getValue();
-        String nombre = (String) list.get(1).getValue();
-        String apellido = (String) list.get(2).getValue();
-        String direccion = (String) list.get(3).getValue();
-        String numTelefonico = (String) list.get(4).getValue();
-        
-        return new Cliente(cedula, nombre, apellido, direccion, numTelefonico);
+        return controlCliente.createCliente(list);
     }
     
     public boolean addClienteDataBase(Cliente cliente){
-        if(insertPersona(cliente)){
-            return insertCliente( cliente);
+        if(controlCliente.insertPersona(cliente)){
+            return controlCliente.insertCliente( cliente);
         }
         return false;
-    }
-    
-    private boolean insertPersona(Cliente c){
-        try {
-            PreparedStatement ps = con.prepareStatement("insert into persona(cedula,nombre,apellido) values(?,?,?);");
-            ps.setString(1, c.getCedula());
-            ps.setString(2, c.getNombre());
-            ps.setString(3, c.getApellido());
-            ps.executeUpdate();
-            ps.close();
-            return true;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
-    }
-    
-    private boolean insertCliente(Cliente c){
-        try {
-            PreparedStatement ps = con.prepareStatement("insert into cliente(cedula,direccion,telefono) values(?,?,?);");
-            ps.setString(1, c.getCedula());
-            ps.setString(2, c.getDireccion());
-            ps.setString(3, c.getNum_telefonico());
-            ps.executeUpdate();
-            ps.close();
-            return true;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return false;
-        }
     }
     
     public List<Producto> filtarProductos(List<Tool> toolsUsado){
@@ -471,8 +425,6 @@ public class Ctr_Personal_Caja implements Control_Session{
             ps.setFloat(2, formpago.getImpuesto());
             ps.setString(3, formpago.getDescripcion());
             
-            System.out.println(ps);
-            
             ps.executeUpdate();
             ps.close();
             
@@ -499,8 +451,6 @@ public class Ctr_Personal_Caja implements Control_Session{
             
             ps.setInt(1, efectivo.getId_FormaPago());
             ps.setFloat(2,(float) efectivo.getCantidad_efectivo());
-            
-            System.out.println(ps);
             ps.executeUpdate();
             ps.close();
             return true;
@@ -517,8 +467,6 @@ public class Ctr_Personal_Caja implements Control_Session{
             
             ps.setInt(1, pago.getId_FormaPago());
             ps.setString(2, pago.getNum_cuenta());
-            
-            System.out.println(ps);
             ps.executeUpdate();
             ps.close();
             return true;
@@ -536,8 +484,6 @@ public class Ctr_Personal_Caja implements Control_Session{
             
             ps.setInt(1, pago.getId_FormaPago());
             ps.setString(2, pago.getCorreo_electronico());
-            
-            System.out.println(ps);
             ps.executeUpdate();
             ps.close();
             return true;
