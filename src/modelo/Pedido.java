@@ -11,17 +11,30 @@ package modelo;
  */
 public class Pedido {
     private int pedido_ID;
-    protected String descripcion;
     protected Sucursal remitente;
     protected Cliente destinatario;
     protected Ruta ruta;
 
-    public String getDescripcion() {
-        return descripcion;
+    public Pedido(Sucursal remitente, Cliente destinatario, Ruta ruta) {
+        this.remitente = remitente;
+        this.destinatario = destinatario;
+        this.ruta = ruta;
     }
 
-    public void setDescripcion(String descripcion) {
-        this.descripcion = descripcion;
+    public int getPedido_ID() {
+        return pedido_ID;
+    }
+
+    public void setPedido_ID(int pedido_ID) {
+        this.pedido_ID = pedido_ID;
+    }
+
+    public Ruta getRuta() {
+        return ruta;
+    }
+
+    public void setRuta(Ruta ruta) {
+        this.ruta = ruta;
     }
 
     public Object getRemitente() {

@@ -20,8 +20,8 @@ import modelo.Categoria;
  * @author ADMIN
  */
 public class Ctr_Categorias {
-    private Connection con;
-    private Ctr_BaseDatosProxy controlDataBase;
+    private final Connection con;
+    private final Ctr_BaseDatosProxy controlDataBase;
 
     public Ctr_Categorias() {
         this.controlDataBase = new Ctr_BaseDatosProxy();

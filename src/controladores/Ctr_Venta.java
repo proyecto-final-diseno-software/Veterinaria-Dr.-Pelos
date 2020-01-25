@@ -12,11 +12,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import modelo.Cliente;
 import modelo.Efectivo;
 import modelo.Forma_pago;
 import modelo.PayPal;
@@ -28,8 +25,8 @@ import modelo.Venta;
  * @author ADMIN
  */
 public class Ctr_Venta {
-    private Connection con;
-    private Ctr_BaseDatosProxy controlDataBase;
+    private final Connection con;
+    private final Ctr_BaseDatosProxy controlDataBase;
 
     public Ctr_Venta() {
         this.controlDataBase = new Ctr_BaseDatosProxy();

@@ -23,8 +23,8 @@ import view.tool.Tool;
  * @author ADMIN
  */
 public class Ctr_Cliente {
-    private Connection con;
-    private Ctr_BaseDatosProxy controlDataBase;
+    private final Connection con;
+    private final Ctr_BaseDatosProxy controlDataBase;
 
     public Ctr_Cliente() {
         this.controlDataBase = new Ctr_BaseDatosProxy();

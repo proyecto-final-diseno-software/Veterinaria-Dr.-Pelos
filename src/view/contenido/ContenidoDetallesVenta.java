@@ -28,6 +28,8 @@ import modelo.Documento;
 import modelo.Efectivo;
 import modelo.Forma_pago;
 import modelo.PayPal;
+import modelo.Pedido;
+import modelo.Ruta;
 import modelo.Tarjeta;
 import modelo.Venta;
 import view.tool.BotonTool;
@@ -53,8 +55,11 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
     
     private HBox paneDatosPago;
     private HBox paneBotones;
+    private HBox adomiciolio;
     
     private ContenidoVentas parentPerteneciente;
+    
+    private double montoExtraEnvio;
     
     public ContenidoDetallesVenta(int reduccionx, int reduccionY, int anchoVentana, int altoVentana, int anchoColunma1, int anchoColunma2, int anchoLateral, int altoSuperior, Documento documento, ContenidoVentas parentPerteneciente){
         super(reduccionx, reduccionY, anchoVentana, altoVentana, anchoColunma1, anchoColunma2, anchoLateral, altoSuperior);
@@ -75,6 +80,8 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
         this.ctr = new Ctr_Personal_Caja();
         
         docuementoRespaldo = new Cotizacion(((Venta) documento).getSubtotal(), documento.getFecha(), documento.getNumeroFactura(), documento.getPersonalCaja(), documento.getCliente(), documento.getCarrito());
+    
+        this.montoExtraEnvio = ((double) 2 * documento.getCarrito().size());
     }
     
     @Override
@@ -104,6 +111,21 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
         
         primero.getChildren().addAll(comboTipoPago, paneDatosPago);
         
+        List<String> listaAdomicilio = new ArrayList<>();
+        listaAdomicilio.add("Si");
+        listaAdomicilio.add("No");
+        
+        adomiciolio = new HBox(5);
+        ComBoxTool comboDomicilio = new ComBoxTool(150, "¿Servicio a domicilio?" , listaAdomicilio, titulo2);
+        BoxTextTool cajaMentoExtra = new BoxTextTool("Monto extra "+ montoExtraEnvio +"$", Color.BLACK, titulo2, FontWeight.NORMAL);
+        cajaMentoExtra.setVisible(false);
+        comboDomicilio.getCombo().setOnAction(domicilio -> {
+            if(documento instanceof Venta)
+                cambiarEnvio(comboDomicilio, cajaMentoExtra);
+        });
+        
+        adomiciolio.getChildren().addAll(comboDomicilio,cajaMentoExtra);
+        
         List<String> lista = new ArrayList<>();
         lista.add("CODIGO");
         lista.add("CANT.");
@@ -131,31 +153,31 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
         botonConfirmar.setOnMousePressed(confirmaVenta -> {
             if(this.comprobarCampos(this.toolUsados)){
                 if(documento instanceof Venta){
+                    if(!comboDomicilio.isEmplyTool()){
+                        ((Venta) documento).sumarExtra();
 
-                    if(crearFormaPago()){
-                        ((Venta) documento).setForma_pago_ID(formaPago);
+                        if(crearFormaPago()){
+                            ((Venta) documento).setForma_pago_ID(formaPago);
 
-                        if(ctr.insertVenta((Venta) documento)){
-                            guardarDetallesVenta(documento.getCarrito());
-                        } else {
-                            //paneError.getChildren().add(new BoxTextTool("\nError al registrar venta", Color.RED, titulo2, FontWeight.NORMAL));   
+                            if(ctr.insertVenta((Venta) documento)){
+                                parentPerteneciente.getPaneFondo().getChildren().remove(this);
+                                parentPerteneciente.limpirarContenido();
+                                guardarDetallesVenta(documento.getCarrito());
+                            }
                         }
                     }
                 } else {
                     documento.actualizarReferencias();
-                    if(ctr.insertCotizacion((Cotizacion) documento))
+                    if(ctr.insertCotizacion((Cotizacion) documento)){
+                        parentPerteneciente.getPaneFondo().getChildren().remove(this);
+                        parentPerteneciente.limpirarContenido();
                         guardarDetallesVenta(documento.getCarrito());
-                    else{
-                        //paneError.getChildren().add(new BoxTextTool("\nError al registrar venta", Color.RED, titulo2, FontWeight.NORMAL));  
                     }
                 }
-
-                parentPerteneciente.getPaneFondo().getChildren().remove(this);
-                parentPerteneciente.limpirarContenido();
             }
         });
         
-        colunma1.getChildren().addAll(cabecera, primero, tablaRegistros, paneBotones);
+        colunma1.getChildren().addAll(cabecera, primero, adomiciolio, tablaRegistros, paneBotones);
         paneFondo.getChildren().addAll(bg, colunma1);
         
         getChildren().add(paneFondo);
@@ -169,12 +191,14 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
         
         switch((String) combo.getValue()){
             case "Efectivo":
+                adomiciolio.setVisible(true);
                 if(documento instanceof Cotizacion)
                     inventirRefrencias();
                 formaPago = new Efectivo();
             break;
             
             case "Targeta":
+                adomiciolio.setVisible(true);
                 if(documento instanceof Cotizacion)
                     inventirRefrencias();
                 TextFieldTool num_cuenta = new TextFieldTool("Ingrese numero cuenta", "Numero cuenta:", titulo2, Pos.CENTER_LEFT, 400, titulo2);
@@ -184,6 +208,7 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
             break;
             
             case "PayPal":
+                adomiciolio.setVisible(true);
                 if(documento instanceof Cotizacion)
                     inventirRefrencias();
                 TextFieldTool correoElectronico = new TextFieldTool("Ingrese el correo electronico", "Correo Electronico:", titulo2, Pos.CENTER_LEFT, 400, titulo2);
@@ -193,20 +218,30 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
             break; 
                
             case "Cotizacion":
+                adomiciolio.setVisible(false);
                 if(documento instanceof Venta)
                     inventirRefrencias();
             break;
         }
     }
     
-    public void anadirBotones(BotonTool botonAceptar,BotonTool botonEliminar){
-        HBox panebotones = new HBox(5);
-        panebotones.getChildren().addAll(botonAceptar, botonEliminar);
-        colunma1.getChildren().add(panebotones);
+    private void cambiarEnvio(ComBoxTool combo, BoxTextTool text){
+        switch((String) combo.getValue()){
+            case "Si":
+                text.setVisible(true);
+                ((Venta) documento).setMontoExtraEnvio(montoExtraEnvio);
+                ((Venta) documento).setPedido(new Pedido(documento.getPersonalCaja().getSucursal(), documento.getCliente(), new Ruta(documento.getCliente().getDireccion())));
+            break;
+            
+            case "No":
+                text.setVisible(false);
+                ((Venta) documento).setPedido(null);
+                ((Venta) documento).setMontoExtraEnvio(0);
+            break;
+        }
     }
     
     private boolean crearFormaPago(){
-        
         if(this.comprobarCampos(this.toolUsados)){
             if(formaPago instanceof Efectivo){
                 ((Efectivo) formaPago).setCantidad_efectivo(((Venta) documento).getTotal());

@@ -24,6 +24,9 @@ public class Venta extends Documento{
     private double descuento;
     private Forma_pago forma_pago_ID;
     
+    private double montoExtraEnvio;
+    private Pedido pedido;
+    
     @Override
     public void calcularMonto(List<Detalle_Venta> itemsCarrito){
         this.carrito = itemsCarrito;
@@ -130,5 +133,21 @@ public class Venta extends Documento{
 
     public void setForma_pago_ID(Forma_pago forma_pago_ID) {
         this.forma_pago_ID = forma_pago_ID;
+    }
+
+    public double getMontoExtraEnvio() {
+        return montoExtraEnvio;
+    }
+
+    public void setMontoExtraEnvio(double montoExtraEnvio) {
+        this.montoExtraEnvio = montoExtraEnvio;
+    }
+    
+    public void sumarExtra(){
+        setTotal(this.total + this.montoExtraEnvio);
+    }
+    
+    public void setPedido(Pedido pedido){
+        this.pedido = pedido;
     }
 }

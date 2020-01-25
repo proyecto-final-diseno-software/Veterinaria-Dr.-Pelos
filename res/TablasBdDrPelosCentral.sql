@@ -169,7 +169,7 @@ CREATE TABLE Ruta(
 	ruta_ID int NOT NULL AUTO_INCREMENT,
     direccion varchar(50) NOT NULL,
     PRIMARY KEY(ruta_id)
-    );
+);
     
  DROP TABLE IF EXISTS Pedido;
   CREATE TABLE Pedido(
@@ -250,11 +250,13 @@ DROP TABLE IF EXISTS Venta;
     personal_cajas_ID varchar(10) NOT NULL,
     forma_pago_ID int(3) NOT NULL,
     id_cliente varchar(10) NOT NULL,
+    pedido_ID int,
     UNIQUE KEY(venta_ID),
     CONSTRAINT _personal_cajas_ID FOREIGN KEY (personal_cajas_ID) REFERENCES Usuario(usuario_ID) ON DELETE NO ACTION,
     CONSTRAINT _forma_pago_ID FOREIGN KEY (forma_pago_ID) REFERENCES Forma_Pago(forma_pago_ID),
-    CONSTRAINT cliente_ID FOREIGN KEY (id_cliente) REFERENCES Cliente(cedula)
-    );
+    CONSTRAINT cliente_ID FOREIGN KEY (id_cliente) REFERENCES Cliente(cedula),
+    CONSTRAINT pedido_ID FOREIGN KEY (pedido_ID) REFERENCES Pedido(pedido_ID)
+);
     
 DROP TABLE IF EXISTS DetalleVentaProducto;
   CREATE TABLE DetalleVentaProducto(
@@ -372,7 +374,7 @@ CREATE TABLE DetalleVentaServicio(
     
     insert into Pago_Efectivo values(200,6);
     
-    insert into Venta values(default,"2020-01-02",02302,4.0,10,3.4,"0975368545",200,"0927389243");
+    insert into Venta values(default,"2020-01-02",02302,4.0,10,3.4,"0975368545",200,"0927389243", null);
 	
 
 	

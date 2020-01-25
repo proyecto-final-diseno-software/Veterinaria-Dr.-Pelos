@@ -14,8 +14,8 @@ import modelo.Mascota;
  * @author ADMIN
  */
 public class Ctr_Mascota {
-    private Connection con;
-    private Ctr_BaseDatosProxy controlDataBase;
+    private final Connection con;
+    private final Ctr_BaseDatosProxy controlDataBase;
 
     public Ctr_Mascota() {
         this.controlDataBase = new Ctr_BaseDatosProxy();
