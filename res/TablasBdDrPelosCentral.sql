@@ -214,8 +214,6 @@ CREATE TABLE Forma_Pago(
   
 insert into Forma_Pago values(123, 17.0,"Efectivo");
     
-    select * from forma_pago;
-    
 DROP TABLE IF EXISTS Pago_Efectivo;
 CREATE TABLE Pago_Efectivo(
   efectivo_ID integer(3)  NOT NULL AUTO_INCREMENT,
@@ -358,13 +356,26 @@ CREATE TABLE DetalleVentaServicio(
 
 -- insert cliente
 	insert into Persona values("0990999841","Eduardo","Gonzalez");
+	insert into Persona values("0927389243","Mariana","Ortiz");
+	insert into Persona values("0994854756","Jose","Castro");
+
     insert into Cliente values("0990999841","Guayacanes","042859384");
+    insert into Cliente values("0927389243","Sur","016548654");
+    -- insert into Cliente values("0994854756");
     
     insert into Mascota values(default,"Coffe","Mestizo","Sucursal","0990999841");
     insert into Mascota values(default,"Filomeno","Mestizo","Domicilio","0990999841");
     insert into Mascota values(default,"Cuy","Mestizo","Translado a domicilio","0990999841");
     insert into Mascota values(default,"Gato","Mestizo","Translado a sucursal","0990999841");
 
+	insert into Forma_Pago values(200,3.5,"Efectivo");
+    
+    insert into Pago_Efectivo values(200,6);
+    
+    insert into Venta values(default,"2020-01-02",02302,4.0,10,3.4,"0975368545",200,"0927389243");
+	
+
+	
 -- views
 -- views producto
 drop view if exists V_Productos;
@@ -383,12 +394,12 @@ FROM Servicio as s;
 drop view if exists V_Ventas;
 CREATE VIEW V_Ventas
 AS SELECT Venta.*,cliente.direccion, cliente.telefono,persona.nombre,
-persona.apellido,Forma_Pago.descripcion as pago_descripcion ,Personal_Caja.*  FROM Venta
+persona.apellido,Forma_Pago.descripcion as pago_descripcion ,Usuario.usuario ,Personal_Caja.*  FROM Venta
 JOIN Cliente on venta.id_cliente = Cliente.cedula
 JOIN Persona on Cliente.cedula = Persona.cedula
 JOIN Forma_Pago on Forma_Pago.forma_pago_ID = Venta.forma_pago_ID
-JOIN Personal_Caja on Venta.personal_cajas_ID = Personal_Caja.cedula;
-
+JOIN Personal_Caja on Venta.personal_cajas_ID = Personal_Caja.cedula
+JOIN Usuario on Personal_Caja.cedula = Usuario.usuario_ID;
 
 -- view cotizacion
 drop view if exists V_Cotizacion;
@@ -397,7 +408,8 @@ AS SELECT Cotizacion.*,cliente.direccion, cliente.telefono,persona.nombre,
 persona.apellido, Personal_Caja.cedula  FROM Cotizacion
 JOIN Cliente on cotizacion.cliente_ID = Cliente.cedula
 JOIN Persona on Cliente.cedula = Persona.cedula
-JOIN Personal_Caja on cotizacion.personal_caja_ID = Personal_Caja.cedula;
+JOIN Personal_Caja on cotizacion.personal_caja_ID = Personal_Caja.cedula
+JOIN Usuario on Personal_Caja.cedula = Usuario.usuario_ID;
 
 
     # Creacion de usuario
