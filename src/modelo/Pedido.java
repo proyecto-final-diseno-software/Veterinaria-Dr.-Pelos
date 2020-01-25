@@ -11,6 +11,7 @@ package modelo;
  */
 public class Pedido {
     private int pedido_ID;
+    protected String descripcion;
     protected Sucursal remitente;
     protected Cliente destinatario;
     protected Ruta ruta;
@@ -36,8 +37,12 @@ public class Pedido {
     public void setRuta(Ruta ruta) {
         this.ruta = ruta;
     }
+    
+    public String getDescripcion() {
+        return descripcion;
+    }
 
-    public Object getRemitente() {
+    public Sucursal getRemitente() {
         return remitente;
     }
 
@@ -45,7 +50,7 @@ public class Pedido {
         this.remitente = remitente;
     }
 
-    public Object getDestinatario() {
+    public Cliente getDestinatario() {
         return destinatario;
     }
 

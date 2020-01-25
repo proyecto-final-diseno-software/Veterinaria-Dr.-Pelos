@@ -174,6 +174,7 @@ CREATE TABLE Ruta(
  DROP TABLE IF EXISTS Pedido;
   CREATE TABLE Pedido(
 	pedido_ID int NOT NULL AUTO_INCREMENT,
+    descripcion varchar(40) NOT NULL,
     remitente_ID int NOT NULL,
     destinatario_ID varchar(10) NOT NULL,
     ruta_ID int,
@@ -182,6 +183,7 @@ CREATE TABLE Ruta(
     CONSTRAINT _destinatario_ID FOREIGN KEY (destinatario_ID) REFERENCES Persona (cedula) ON DELETE NO ACTION,
     CONSTRAINT _ruta_ID FOREIGN KEY (ruta_ID) REFERENCES Ruta(ruta_ID)
     );
+    
     
 DROP TABLE IF EXISTS Pedido_traslado;
   CREATE TABLE Pedido_traslado(
@@ -234,7 +236,7 @@ CREATE TABLE Pago_PayPal(
 DROP TABLE IF EXISTS Pago_Tarjeta;
 CREATE TABLE Pago_Tarjeta(
   tarjeta_ID integer(3)  NOT NULL AUTO_INCREMENT ,
-  num_cuenta varchar(15) NOT NULL,
+  num_cuenta varchar(20) NOT NULL,
   PRIMARY KEY(tarjeta_ID),
   CONSTRAINT _pago_tarjeta_ID FOREIGN KEY (tarjeta_ID) REFERENCES Forma_Pago(forma_pago_ID)
   );
@@ -360,23 +362,52 @@ CREATE TABLE DetalleVentaServicio(
 	insert into Persona values("0990999841","Eduardo","Gonzalez");
 	insert into Persona values("0927389243","Mariana","Ortiz");
 	insert into Persona values("0994854756","Jose","Castro");
-
+    insert into Persona values("0987478445","Alex","Gomez");
+    insert into Persona values("0987743422","Alejandra","Morales");
+	
     insert into Cliente values("0990999841","Guayacanes","042859384");
     insert into Cliente values("0927389243","Sur","016548654");
-    -- insert into Cliente values("0994854756");
+    insert into Cliente values("0994854756","Atarazana","24949343");
+    insert into Cliente values("0987478445","Samanes","254856158");
+    insert into Cliente values("0987743422","Acuarelas del rio","2564865");
     
     insert into Mascota values(default,"Coffe","Mestizo","Sucursal","0990999841");
     insert into Mascota values(default,"Filomeno","Mestizo","Domicilio","0990999841");
     insert into Mascota values(default,"Cuy","Mestizo","Translado a domicilio","0990999841");
     insert into Mascota values(default,"Gato","Mestizo","Translado a sucursal","0990999841");
+	insert into Mascota values(default, "Blanquita","Mestizo","Domicilio","0927389243");
+	insert into Mascota values(default, "Leo","Mestizo","Traslado a sucursal","0994854756");
+	insert into Mascota values(default, "Laika","Mestizo","Domicilio","0987478445");
+	insert into Mascota values(default, "Jack","Mestizo","Sucursal","0987743422");
 
-	insert into Forma_Pago values(200,3.5,"Efectivo");
+	insert into Forma_Pago values(200,0,"Efectivo");
+    insert into Forma_Pago values(201,4.2,"Tarjeta");
+    insert into Forma_Pago values(202,5,"Paypal");
+    insert into Forma_Pago values(203,6,"Efectivo");
     
     insert into Pago_Efectivo values(200,6);
+    insert into Pago_Efectivo values(203,6);
     
+<<<<<<< HEAD
     insert into Venta values(default,"2020-01-02",02302,4.0,10,3.4,"0975368545",200,"0927389243", null);
+=======
+    insert into Pago_Tarjeta values(201, "5543-3434-5434-8557");
+    
+    insert into Pago_PayPal values(202,"amorales@correo.com");
+    
+    insert into Venta values(default,"2020-01-02",000-2302,4.0,10,6,"0975368545",200,"0927389243");
+    insert into Venta values(default,"2020-01-02",000-2303,4.0,10,10.5,"0945343504",201,"0994854756");
+    insert into Venta values(default,"2019-11-10",000-024,4.0,10,24.9,"0945343504",202,"0987743422");
+    insert into Venta values(default,"2019-09-11",000-2339,4.0,10,6,"0924940396",203,"0927389243");
+>>>>>>> af6d760451f7fae236340bacf08e842a7241d093
 	
-
+    insert into Cotizacion values(default, "2020-01-10",10.0,"0994854756","0924940396");
+    insert into Cotizacion values(default, "2019-10-14",25.5,"0994854756","0935843645");
+		
+	insert into Ruta values(default, "Gómez Rendón 3318 E/ La 11ava y La 10ma");
+    insert into Ruta values(default, "Av. Francisco de Orellana y calle Justino Cornejo");
+    insert into Ruta values(default, "Cdla Garzota Mz 130 Villa 12 Esq");
+    insert into Ruta values(default, "Cdla Guayacanes Mz 63 Villa 34 Esq");
 	
 -- views
 -- views producto

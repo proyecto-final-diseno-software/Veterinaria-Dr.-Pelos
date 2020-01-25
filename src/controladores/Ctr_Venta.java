@@ -27,10 +27,12 @@ import modelo.Venta;
 public class Ctr_Venta {
     private final Connection con;
     private final Ctr_BaseDatosProxy controlDataBase;
+    private final Ctr_Pedido controlPedido;
 
     public Ctr_Venta() {
         this.controlDataBase = new Ctr_BaseDatosProxy();
         this.con = controlDataBase.getConnection();
+        this.controlPedido = new Ctr_Pedido();
     }
     
     private int maxVenta(){
@@ -52,9 +54,12 @@ public class Ctr_Venta {
         try {
             insertForma_Pago(v.getForma_pago_ID());
             
+            if(v.getPedido() != null)
+                this.controlPedido.insertPedido(v.getPedido());
+            
             v.setId_documento(maxVenta() + 1);
             
-            PreparedStatement ps = con.prepareStatement("insert into venta(fecha, n_factura, sub_total, total, descuento, personal_cajas_ID, forma_pago_ID, id_cliente) values(?,?,?,?,?,?,?,?);");
+            PreparedStatement ps = con.prepareStatement("insert into venta(fecha, n_factura, sub_total, total, descuento, personal_cajas_ID, forma_pago_ID, id_cliente, pedido_ID) values(?,?,?,?,?,?,?,?,?);");
             
             LocalDate fecha = v.getFecha();
             Date fechasql = Date.valueOf(fecha);
@@ -66,6 +71,10 @@ public class Ctr_Venta {
             ps.setString(6, v.getPersonalCaja().getCedula());
             ps.setInt(7, v.getForma_pago_ID().getId_FormaPago());
             ps.setString(8, v.getCliente().getCedula());
+            if(v.getPedido() != null)
+                ps.setInt(9, v.getPedido().getPedido_ID());
+            else
+                ps.setNull(9, 0);
             
             ps.executeUpdate();
             
