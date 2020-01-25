@@ -9,11 +9,30 @@ package modelo;
  *
  * @author paula
  */
-public class PayPal {
+public class PayPal implements Forma_pago{
+    private int forma_pago_ID;
+    private float impuesto;
+    private String descripcion;
+    
     private String correo_electronico;
     
     public boolean confirmarCorreo(){
         return true;
+    }
+
+    @Override
+    public boolean pagar() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void registrar_monto() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int getId_FormaPago() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

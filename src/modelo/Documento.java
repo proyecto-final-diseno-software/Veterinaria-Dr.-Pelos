@@ -19,6 +19,16 @@ public abstract class Documento {
     protected Personal_Caja personalCaja;
     protected Cliente cliente;
     protected List<Detalle_Venta> carrito;
+    
+    protected Documento(){}
+
+    protected Documento(LocalDate fecha, int numeroFactura, Personal_Caja personalCaja, Cliente cliente, List<Detalle_Venta> carrito) {
+        this.fecha = fecha;
+        this.numeroFactura = numeroFactura;
+        this.personalCaja = personalCaja;
+        this.cliente = cliente;
+        this.carrito = carrito;
+    }
 
     public int getId_documento() {
         return id_documento;
@@ -27,4 +37,43 @@ public abstract class Documento {
     public void setId_documento(int id_documento) {
         this.id_documento = id_documento;
     }
+
+    public List<Detalle_Venta> getCarrito() {
+        return carrito;
+    }
+
+    public LocalDate getFecha() {
+        return fecha;
+    }
+
+    public void setFecha(LocalDate fecha) {
+        this.fecha = fecha;
+    }
+
+    public int getNumeroFactura() {
+        return numeroFactura;
+    }
+
+    public void setNumeroFactura(int numeroFactura) {
+        this.numeroFactura = numeroFactura;
+    }
+
+    public Personal_Caja getPersonalCaja() {
+        return personalCaja;
+    }
+
+    public void setPersonalCaja(Personal_Caja personalCaja) {
+        this.personalCaja = personalCaja;
+    }
+
+    public Cliente getCliente() {
+        return cliente;
+    }
+
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
+    }
+    
+    public abstract void calcularMonto(List<Detalle_Venta> itemsCarrito);
+    public abstract boolean comprobarValides();
 }

@@ -216,29 +216,26 @@ insert into Forma_Pago values(123, 17.0,"Dinero en efectio");
     
 DROP TABLE IF EXISTS Pago_Efectivo;
 CREATE TABLE Pago_Efectivo(
-  efectivo_ID integer(3)  NOT NULL AUTO_INCREMENT ,
-  forma_pago int(3) NOT NULL,
+  efectivo_ID integer(3)  NOT NULL AUTO_INCREMENT,
   cantidad_efectivo FLOAT NOT NULL,
   PRIMARY KEY(efectivo_ID),
-  CONSTRAINT _pago_efectivo_ID FOREIGN KEY (forma_pago) REFERENCES Forma_Pago(forma_pago_ID)
+  CONSTRAINT _pago_efectivo_ID FOREIGN KEY (efectivo_ID) REFERENCES Forma_Pago(forma_pago_ID)
   );
   
 DROP TABLE IF EXISTS Pago_PayPal;
 CREATE TABLE Pago_PayPal(
   payPal_ID integer(3)  NOT NULL AUTO_INCREMENT ,
-  forma_pago int(3) NOT NULL,
   correoElectronico varchar(20) NOT NULL,
   PRIMARY KEY(payPal_ID),
-  CONSTRAINT _pago_paypal_ID FOREIGN KEY (forma_pago) REFERENCES Forma_Pago(forma_pago_ID)
+  CONSTRAINT _pago_paypal_ID FOREIGN KEY (payPal_ID) REFERENCES Forma_Pago(forma_pago_ID)
   );
   
 DROP TABLE IF EXISTS Pago_Tarjeta;
 CREATE TABLE Pago_Tarjeta(
   tarjeta_ID integer(3)  NOT NULL AUTO_INCREMENT ,
-  forma_pago int(3) NOT NULL,
   num_cuenta varchar(15) NOT NULL,
   PRIMARY KEY(tarjeta_ID),
-  CONSTRAINT _pago_tarjeta_ID FOREIGN KEY (forma_pago) REFERENCES Forma_Pago(forma_pago_ID)
+  CONSTRAINT _pago_tarjeta_ID FOREIGN KEY (tarjeta_ID) REFERENCES Forma_Pago(forma_pago_ID)
   );
     
 DROP TABLE IF EXISTS Venta;

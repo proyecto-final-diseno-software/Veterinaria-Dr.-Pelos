@@ -120,9 +120,10 @@ public class Ctr_Personal_Caja implements Control_Session{
         return true;
     }
     
-    private boolean insertCotizacion(Cotizacion c){
+    public boolean insertCotizacion(Cotizacion c){
         try {
             c.setId_documento(maxCotizacion()+1);
+            
             PreparedStatement ps = con.prepareStatement("insert into Cotizacion(cotizacion_ID,fecha,valor,cliente_ID,personal_cajas_ID) values(?,?,?,?,?);");
             
             ps.setInt(1, c.getId_documento());
@@ -131,7 +132,7 @@ public class Ctr_Personal_Caja implements Control_Session{
             ps.setDate(2, fechasql);
             ps.setFloat(3, (float)c.getValor());
             ps.setString(4, c.getCliente().getCedula());
-            ps.setString(5, c.getPersonal_caja().getCedula());
+            ps.setString(5, c.getPersonalCaja().getCedula());
             
             ps.executeUpdate();
             ps.close();
@@ -176,6 +177,7 @@ public class Ctr_Personal_Caja implements Control_Session{
     public boolean insertVenta(Venta v){
         try {
             v.setId_documento(maxVenta()+1);
+            
             PreparedStatement ps = con.prepareStatement("insert into venta(fecha, n_factura, sub_total, total, descuento, personal_cajas_ID, forma_pago_ID, id_cliente) values(?,?,?,?,?,?,?,?);");
             
             LocalDate fecha = v.getFecha();

@@ -9,7 +9,6 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.util.List;
 import java.util.Iterator;
 import java.util.logging.Level;
@@ -25,7 +24,8 @@ public class Venta extends Documento{
     private double descuento;
     private Forma_pago forma_pago_ID;
     
-    public void calcularMontoApagar(List<Detalle_Venta> itemsCarrito){
+    @Override
+    public void calcularMonto(List<Detalle_Venta> itemsCarrito){
         this.carrito = itemsCarrito;
         
         Iterator<Detalle_Venta> it = itemsCarrito.iterator();
@@ -42,7 +42,8 @@ public class Venta extends Documento{
         this.total = subtotal - descuento;
     }
     
-    public boolean comprobarValidesVenta(){
+    @Override
+    public boolean comprobarValides(){
         if(this.fecha == null)
             return false;
         if(this.numeroFactura == 0)
@@ -52,8 +53,6 @@ public class Venta extends Documento{
         if(this.total == 0)
             return false;
         if(this.personalCaja == null)
-            return false;
-        if(this.forma_pago_ID == null)
             return false;
         if(this.cliente == null)
             return false;
@@ -100,10 +99,6 @@ public class Venta extends Documento{
 
         return sb.toString();
     }
-
-    public List<Detalle_Venta> getCarrito() {
-        return carrito;
-    }
     
     public double getSubtotal() {
         return subtotal;
@@ -111,31 +106,6 @@ public class Venta extends Documento{
 
     public void setSubtotal(double subtotal) {
         this.subtotal = subtotal;
-    }
-
-    public int getNumeroFactura() {
-        return numeroFactura;
-    }
-
-    public void setNumeroFactura(int numeroFactura) {
-        this.numeroFactura = numeroFactura;
-    }
-
-
-    public Personal_Caja getPersonalCaja() {
-        return personalCaja;
-    }
-
-    public void setPersonalCaja(Personal_Caja personalCaja) {
-        this.personalCaja = personalCaja;
-    }
-
-    public LocalDate getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
     }
 
     public double getTotal() {
@@ -161,14 +131,4 @@ public class Venta extends Documento{
     public void setForma_pago_ID(Forma_pago forma_pago_ID) {
         this.forma_pago_ID = forma_pago_ID;
     }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-    
-    
 }

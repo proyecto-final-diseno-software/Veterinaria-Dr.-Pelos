@@ -8,7 +8,6 @@ package view.contenido;
 import controladores.Ctr_Personal_Caja;
 import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
 import javafx.geometry.Pos;
@@ -19,9 +18,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.FontWeight;
 import modelo.Cliente;
+import modelo.Cotizacion;
 import modelo.Detalle_Venta;
 import modelo.Detalle_VentaProducto;
 import modelo.Detalle_VentaServicio;
+import modelo.Documento;
 import modelo.Personal_Caja;
 import modelo.Venta;
 import view.tool.BotonTool;
@@ -36,7 +37,7 @@ import view.tool.Tool;
  * @author ADMIN
  */
 public class ContenidoVentas extends Contenido implements ContenidoCentral{
-    private Venta nuevaVenta;
+    private Documento documento;
     
     private Ctr_Personal_Caja ctr;
     
@@ -84,13 +85,16 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
     public void crearContenidoCentral(List<Tool> toolUsados) {
         List<Detalle_Venta> itemsCarrito = new ArrayList<>();
         
-        nuevaVenta = new Venta();
+        documento = new Venta();
         
-        nuevaVenta.setPersonalCaja(personal);
+        documento.setPersonalCaja(personal);
         
         TableVentaTool tablaPago = new TableVentaTool(anchoColunma2, titulo3);
-        nuevaVenta.calcularMontoApagar(itemsCarrito);
-        tablaPago.actualizarMonto(nuevaVenta.getSubtotal());
+        documento.calcularMonto(itemsCarrito);
+        if(documento instanceof Venta)
+            tablaPago.actualizarMonto(((Venta) documento).getSubtotal());
+        else
+            tablaPago.actualizarMonto(((Cotizacion) documento).getValor());
         
         List<String> lista = new ArrayList<>();
         lista.add("Nombre"); lista.add("Precio"); lista.add("Cantidad"); lista.add("Total");
@@ -108,8 +112,12 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
             cerrar.setOnMousePressed(cerrar_ventana -> {
                 getChildren().remove(ventana_busqueda);
                 insertarItems(itemsCarrito, tablaRegistro, tablaPago);
-                nuevaVenta.calcularMontoApagar(itemsCarrito);
-                tablaPago.actualizarMonto(nuevaVenta.getSubtotal());
+                documento.calcularMonto(itemsCarrito);
+                
+                if(documento instanceof Venta)
+                    tablaPago.actualizarMonto(((Venta) documento).getSubtotal());
+                else
+                    tablaPago.actualizarMonto(((Cotizacion) documento).getValor());
             });
             
             getChildren().add(ventana_busqueda);
@@ -133,7 +141,7 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
                 List<Cliente> clientes = ctr.selectCliente((String) textFieldBuscadorCliente.getValue());
                 if(!clientes.isEmpty()){
                     dataCliente.getChildren().clear();
-                    nuevaVenta.setCliente(clientes.get(0));
+                    documento.setCliente(clientes.get(0));
                     BoxTextTool dataNombreCliente = new BoxTextTool("Nombre: " + clientes.get(0).getNombre() + clientes.get(0).getApellido(), Color.BLACK, titulo3, FontWeight.NORMAL);
                     BoxTextTool dataCedulaCliente = new BoxTextTool("Cedula: " + clientes.get(0).getCedula(), Color.BLACK, titulo3, FontWeight.NORMAL);
                     dataCliente.setAlignment(Pos.CENTER_LEFT);
@@ -143,18 +151,14 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
         });
         botonBuscarCliente.setTranslateY(15);
         
-        BotonTool botonConfirmarVenta = new BotonTool("Confirmar venta", titulo2 - 1, 200, 40, Color.GREEN);
+        BotonTool botonConfirmarVenta = new BotonTool("Confirmar detalles", titulo2 - 1, 200, 40, Color.GREEN);
         botonConfirmarVenta.setOnMousePressed(validarVenta -> {
             paneError.getChildren().clear();
-            nuevaVenta.setFecha(LocalDate.now());
-            nuevaVenta.setForma_pago_ID(ctr.retornaMetodoPago());
-            nuevaVenta.setNumeroFactura(123456789);
-            nuevaVenta.setPersonalCaja(personal);
-            if(nuevaVenta.comprobarValidesVenta()){
-                if(ctr.insertVenta(nuevaVenta))
-                    guardarDetallesVenta(itemsCarrito);
-                else
-                    paneError.getChildren().add(new BoxTextTool("\nError al registrar venta", Color.RED, titulo2, FontWeight.NORMAL));
+            documento.setFecha(LocalDate.now());
+            documento.setNumeroFactura(123456789);
+            documento.setPersonalCaja(personal);
+            if(documento.comprobarValides()){
+                System.out.println("hola");
             } else
                 paneError.getChildren().add(new BoxTextTool("\nFalta informacion", Color.RED, titulo2, FontWeight.NORMAL));
         });
@@ -171,31 +175,23 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
         this.getChildren().add(paneCentral);
     }
     
-    private void guardarDetallesVenta(List<Detalle_Venta> itemsCarrito){
-        Iterator<Detalle_Venta> it = itemsCarrito.iterator();
+    
+    private void insertarItems(List<Detalle_Venta> itemsCarrito, TableTool table, TableVentaTool tablaPago){
+        table.limpiarContenido();
+        
+        ListIterator<Detalle_Venta> it = itemsCarrito.listIterator();
         
         while(it.hasNext()){
             Detalle_Venta det = it.next();
-            ctr.guardarDetalleVenta(det);
-        }
-    }
-        
-        private void insertarItems(List<Detalle_Venta> itemsCarrito, TableTool table, TableVentaTool tablaPago){
-            table.limpiarContenido();
             
-            ListIterator<Detalle_Venta> it = itemsCarrito.listIterator();
-
-            while(it.hasNext()){
-                Detalle_Venta det = it.next();
-                
-                List<String> dataItem = new ArrayList<>();
-                
-                if(det instanceof Detalle_VentaProducto ){
+            List<String> dataItem = new ArrayList<>();
+            
+            if(det instanceof Detalle_VentaProducto ){
                     dataItem.add(((Detalle_VentaProducto) det).getProducto().getNombre());
                     dataItem.add(Double.toString(((Detalle_VentaProducto) det).getProducto().getPrecioUnitario()));
                     dataItem.add(Integer.toString(det.getCantidad()));
                     dataItem.add(Double.toString(((Detalle_VentaProducto) det).calcularPrecio()));
-                } else if(det instanceof Detalle_VentaServicio){
+            } else if(det instanceof Detalle_VentaServicio){
                     dataItem.add(((Detalle_VentaServicio) det).getServicio().getNombre());
                     dataItem.add(Double.toString(((Detalle_VentaServicio) det).getServicio().getPrecio()));
                     dataItem.add(Integer.toString(det.getCantidad()));
@@ -216,22 +212,28 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
                         getChildren().remove(detalleArticulo);
                         detalleArticulo.setCantidad();
                         insertarItems(itemsCarrito, table, tablaPago);
-                        nuevaVenta.calcularMontoApagar(itemsCarrito);
-                        tablaPago.actualizarMonto(nuevaVenta.getSubtotal());
+                        documento.calcularMonto(itemsCarrito);
+                        if(documento instanceof Venta)
+                            tablaPago.actualizarMonto(((Venta) documento).getSubtotal());
+                        else
+                            tablaPago.actualizarMonto(((Cotizacion) documento).getValor());
                     });
                     
                     botonEliminar.setOnMousePressed(eleiminarDeCarrito -> {
                         getChildren().remove(detalleArticulo);
                         itemsCarrito.remove(det);
                         insertarItems(itemsCarrito, table, tablaPago);
-                        nuevaVenta.calcularMontoApagar(itemsCarrito);
-                        tablaPago.actualizarMonto(nuevaVenta.getSubtotal());
+                        documento.calcularMonto(itemsCarrito);
+                        if(documento instanceof Venta)
+                            tablaPago.actualizarMonto(((Venta) documento).getSubtotal());
+                        else
+                            tablaPago.actualizarMonto(((Cotizacion) documento).getValor());
                     });
                     
                     getChildren().add(detalleArticulo);
                 });
                 
                 table.anadirItem(dataItem, especificarDetalles);
-            }
+        }
     }
 }

@@ -26,6 +26,11 @@ public class Cotizacion extends Documento{
         this.fecha = LocalDate.now();
         carrito = new LinkedList<>();
     }
+
+    public Cotizacion(double valor, LocalDate fecha, int numeroFactura, Personal_Caja personalCaja, Cliente cliente, List<Detalle_Venta> carrito) {
+        super(fecha, numeroFactura, personalCaja, cliente, carrito);
+        this.valor = valor;
+    }
     
     public void agregarDetalle(Detalle_Venta detalle){
         detalle.setDocumento(this);
@@ -61,7 +66,7 @@ public class Cotizacion extends Documento{
         return s;
     }
     private static String productosCotizacion(Cotizacion cotizacion){
-        java.util.Iterator<Detalle_Venta> it = cotizacion.getDetalles().listIterator();
+        java.util.Iterator<Detalle_Venta> it = cotizacion.getCarrito().listIterator();
         StringBuilder sb = new StringBuilder();
         while(it.hasNext()){
             Detalle_Venta d = it.next();
@@ -71,45 +76,6 @@ public class Cotizacion extends Documento{
 
         return sb.toString();
     }
-    
-    
-    
-//    public void agregarServicio(VentaServicio detalleS){
-//        valor += detalleS.precioServicio();
-//    }
-    
-//    private void calcularValorTotal(){
-//        
-//    }
-
-    public List<Detalle_Venta> getDetalles() {
-        return carrito;
-    }
-    
-    public Personal_Caja getPersonal_caja() {
-        return personalCaja;
-    }
-
-    public void setPersonal_caja(Personal_Caja personal_caja) {
-        this.personalCaja = personal_caja;
-    }
-
-    public Cliente getCliente() {
-        return cliente;
-    }
-
-    public void setCliente(Cliente cliente) {
-        this.cliente = cliente;
-    }
-
-    public LocalDate getFecha() {
-        return fecha;
-    }
-
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
-
 
     public double getValor() {
         return valor;
@@ -117,5 +83,38 @@ public class Cotizacion extends Documento{
 
     public void setValor(double valor) {
         this.valor = valor;
+    }
+
+    @Override
+    public void calcularMonto(List<Detalle_Venta> itemsCarrito) {
+        this.carrito = itemsCarrito;
+        
+        java.util.Iterator<Detalle_Venta> it = itemsCarrito.iterator();
+        
+        double monto = 0;
+        
+        while(it.hasNext()){
+            Detalle_Venta det = it.next();
+            det.setDocumento(this);
+            monto += det.calcularPrecio();
+        }
+        
+        this.setValor(monto);
+    }
+
+    @Override
+    public boolean comprobarValides() {
+        if(this.fecha == null)
+            return false;
+        if(this.numeroFactura == 0)
+            return false;
+        if(this.valor == 0)
+            return false;
+        if(this.personalCaja == null)
+            return false;
+        if(this.cliente == null)
+            return false;
+        
+        return this.personalCaja != null;
     }
 }

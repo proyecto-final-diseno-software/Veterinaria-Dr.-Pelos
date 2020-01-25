@@ -10,6 +10,11 @@ package modelo;
  * @author paula
  */
 public class Tarjeta implements Forma_pago {
+    private int forma_pago_ID;
+    private float impuesto;
+    private String descripcion;
+    
+    private String num_cuenta;
 
     @Override
     public boolean pagar() {
