@@ -440,12 +440,23 @@ public class Ctr_Personal_Caja implements Control_Session{
     //Este metodo tiene que retornar todas las mascota que tengan como cable foranea al cliente enviado
     public List<Mascota> selectMascotasCliente(Cliente cli){
         List<Mascota> listMascota = new ArrayList<>();
-        
-        listMascota.add(new Mascota(20, "Coffe", "Mestozo", "Sucursal", cli));
-        listMascota.add(new Mascota(21, "Filomeno", "Mestizo", "Domicilio",cli));
-        listMascota.add(new Mascota(22, "Cuy", "Mestizo", "Translado a domicilio",cli));
-        listMascota.add(new Mascota(22, "Gato", "Mestizo", "Translado a sucursal",cli));
-        
+        Statement stmt;
+        try {
+            stmt = con.createStatement();
+            String q = "select * from Mascota where dueno_id = \""+cli.getCedula()+"\"";
+            ResultSet rs = stmt.executeQuery(q);
+            while(rs.next()){
+                int mascota_id = rs.getInt(1);
+                String nombre = rs.getString(2);
+                String raza = rs.getString(3);
+                String estado = rs.getString(4);
+                
+                Mascota m = new Mascota(mascota_id,nombre,raza,estado,cli);
+                listMascota.add(m);
+            }
+        } catch (SQLException ex) {
+            Logger.getLogger(Ctr_Personal_Caja.class.getName()).log(Level.SEVERE, null, ex);
+        }
         return listMascota;
     }
     
