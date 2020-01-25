@@ -6,6 +6,7 @@
 
 import controladores.Ctr_BaseDatosProxy;
 import controladores.Ctr_Personal_Caja;
+import modelo.Efectivo;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -46,10 +47,22 @@ public class PruebaTest {
     // @Test
     // public void hello() 
     
-    
+    // Prueba Unitaria 1
     @Test
     public void CompararCedula() {
         String Cedula= base.isUser("mromero", "caja");
         assertEquals("0975368545",Cedula);
     }
+    
+    //Prueba Unitaria 2
+    @Test
+    public void ComprobarInsercionEfectivo() {
+        Efectivo efec = new Efectivo((float)1.5,6.0);
+        boolean Inserta =cp.insertEfectivo(efec);
+        assertTrue(Inserta);
+       
+    }
+    
+    
+    
 }
