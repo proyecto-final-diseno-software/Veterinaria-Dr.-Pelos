@@ -171,8 +171,6 @@ CREATE TABLE Ruta(
     PRIMARY KEY(ruta_id)
 );
     
-    select * from ruta;
-    
  DROP TABLE IF EXISTS Pedido;
   CREATE TABLE Pedido(
 	pedido_ID int NOT NULL AUTO_INCREMENT,
@@ -390,18 +388,15 @@ CREATE TABLE DetalleVentaServicio(
     insert into Pago_Efectivo values(200,6);
     insert into Pago_Efectivo values(203,6);
     
-<<<<<<< HEAD
     insert into Venta values(default,"2020-01-02",02302,4.0,10,3.4,"0975368545",200,"0927389243", null);
-=======
     insert into Pago_Tarjeta values(201, "5543-3434-5434-8557");
     
     insert into Pago_PayPal values(202,"amorales@correo.com");
     
-    insert into Venta values(default,"2020-01-02",000-2302,4.0,10,6,"0975368545",200,"0927389243");
-    insert into Venta values(default,"2020-01-02",000-2303,4.0,10,10.5,"0945343504",201,"0994854756");
-    insert into Venta values(default,"2019-11-10",000-024,4.0,10,24.9,"0945343504",202,"0987743422");
-    insert into Venta values(default,"2019-09-11",000-2339,4.0,10,6,"0924940396",203,"0927389243");
->>>>>>> af6d760451f7fae236340bacf08e842a7241d093
+    insert into Venta values(default,"2020-01-02",000-2302,4.0,10,6,"0975368545",200,"0927389243", null);
+    insert into Venta values(default,"2020-01-02",000-2303,4.0,10,10.5,"0945343504",201,"0994854756", null);
+    insert into Venta values(default,"2019-11-10",000-024,4.0,10,24.9,"0945343504",202,"0987743422", null);
+    insert into Venta values(default,"2019-09-11",000-2339,4.0,10,6,"0924940396",203,"0927389243", null);
 	
     insert into Cotizacion values(default, "2020-01-10",10.0,"0994854756","0924940396");
     insert into Cotizacion values(default, "2019-10-14",25.5,"0994854756","0935843645");

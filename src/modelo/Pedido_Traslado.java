@@ -13,8 +13,8 @@ public class Pedido_Traslado extends Pedido{
     private int id_pedidoTraslado;
     private Jefe_Bodega jefeBodega;
 
-    public Pedido_Traslado(Sucursal remitente, Cliente destinatario, Ruta ruta) {
-        super(remitente, destinatario, ruta);
+    public Pedido_Traslado(String descripcion, Sucursal remitente, Cliente destinatario, Ruta ruta) {
+        super(descripcion, remitente, destinatario, ruta);
     }
     
     

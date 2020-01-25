@@ -45,9 +45,12 @@ public class Ctr_Ruta {
     
     public boolean insertRuta(Ruta ruta){
         try {
-            String q = "insert into Ruta(ruta_ID,direccion) values(default,?);";
+            ruta.setId_ruta(maxRuta() + 1);
+            
+            String q = "insert into Ruta(ruta_ID,direccion) values(?,?);";
             PreparedStatement ps = con.prepareStatement(q);
-            ps.setString(1,ruta.getDireccion());
+            ps.setInt(1,ruta.getId_ruta());
+            ps.setString(2,ruta.getDireccion());
             ps.executeUpdate();
             ps.close();
             

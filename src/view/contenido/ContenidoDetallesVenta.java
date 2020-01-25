@@ -230,7 +230,7 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
             case "Si":
                 text.setVisible(true);
                 ((Venta) documento).setMontoExtraEnvio(montoExtraEnvio);
-                ((Venta) documento).setPedido(new Pedido(documento.getPersonalCaja().getSucursal(), documento.getCliente(), new Ruta(documento.getCliente().getDireccion())));
+                ((Venta) documento).setPedido(new Pedido("Entrega cliente:" + documento.getCliente().getCedula(),documento.getPersonalCaja().getSucursal(), documento.getCliente(), new Ruta(documento.getCliente().getDireccion())));
             break;
             
             case "No":

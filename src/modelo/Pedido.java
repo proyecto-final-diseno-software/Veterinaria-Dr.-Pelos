@@ -16,7 +16,8 @@ public class Pedido {
     protected Cliente destinatario;
     protected Ruta ruta;
 
-    public Pedido(Sucursal remitente, Cliente destinatario, Ruta ruta) {
+    public Pedido(String descripcion, Sucursal remitente, Cliente destinatario, Ruta ruta) {
+        this.descripcion = descripcion;
         this.remitente = remitente;
         this.destinatario = destinatario;
         this.ruta = ruta;
@@ -66,9 +67,7 @@ public class Pedido {
         return true;
     }
     
-    //REV
     public boolean listaPedido(){
         return true;
     }
-    
 }

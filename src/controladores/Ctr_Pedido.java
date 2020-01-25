@@ -21,10 +21,12 @@ import modelo.Pedido;
 public class Ctr_Pedido {
     private final Connection con;
     private final Ctr_BaseDatosProxy controlDataBase;
+    private final Ctr_Ruta controlRuta;
     
     public Ctr_Pedido(){
         this.controlDataBase = new Ctr_BaseDatosProxy();
         this.con = controlDataBase.getConnection();
+        this.controlRuta = new Ctr_Ruta();
     }
     
     public int maxPedido(){
@@ -44,6 +46,8 @@ public class Ctr_Pedido {
     
     public boolean insertPedido(Pedido pedido){
         try {
+            this.controlRuta.insertRuta(pedido.getRuta());
+            
             pedido.setPedido_ID(maxPedido() + 1);
             
             String q = "insert into Pedido(pedido_ID,descripcion,remitente_ID,destinatario_ID,ruta_ID) values(?,?,?,?,?);";
