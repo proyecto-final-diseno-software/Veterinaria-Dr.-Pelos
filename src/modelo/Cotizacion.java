@@ -23,14 +23,13 @@ public class Cotizacion extends Documento{
     private double valor;
 
     public Cotizacion() {
-        this.fecha = LocalDate.now();
-        carrito = new LinkedList<>();
     }
 
     public Cotizacion(double valor, LocalDate fecha, int numeroFactura, PersonalCaja personalCaja, Cliente cliente, List<DetalleVenta> carrito) {
         super(fecha, numeroFactura, personalCaja, cliente, carrito);
         this.valor = valor;
     }
+    
     
     public void agregarDetalle(DetalleVenta detalle){
         detalle.setDocumento(this);

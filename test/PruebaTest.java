@@ -6,6 +6,7 @@
 
 import controladores.CtrAdministrador;
 import controladores.CtrBaseDatosProxy;
+import controladores.CtrCotizacion;
 import controladores.CtrDirectivos;
 import controladores.CtrJefeBodega;
 import controladores.CtrMascota;
@@ -14,8 +15,11 @@ import controladores.CtrRuta;
 import controladores.CtrSucursal;
 import controladores.CtrVenta;
 import controladores.UserType;
+import controladores.Verification;
 import modelo.Cliente;
+import modelo.Cotizacion;
 import modelo.DetalleVentaServicio;
+import modelo.Documento;
 import modelo.Efectivo;
 import modelo.Mascota;
 import modelo.PayPal;
@@ -45,6 +49,7 @@ public class PruebaTest {
      CtrSucursal sur= new CtrSucursal();
      CtrRuta r= new CtrRuta();
      CtrMascota mascota= new CtrMascota();
+     Verification verifica= new Verification();
     public PruebaTest() {
     }
     
@@ -65,7 +70,7 @@ public class PruebaTest {
     }
     
     // Prueba Unitaria 1
-    //Esta prueba compruena si una persona es un usuario tipo admin
+    //Esta prueba compruena si una persona es un usuario tipo admin en la base de datos
     @Test
     public void CompararIsUserAdmin() {
         String Cedula= base.isUser("mromero", "caja");
@@ -73,8 +78,8 @@ public class PruebaTest {
     }
     
     //Prueba unitaria 2
-    //Esta prueba se encarga de verificar si el metodo verificarSesion del administrador funciona
-    //Es decir  el codigo del metodo verificarSesion realizar un select de la base de datos
+    //Esta prueba se encarga de verificar si el metodo verificarSesion del controlador del administrador funciona
+    //Es decir  el codigo del metodo verificarSesion verifica que el administrado logro iniciar sesion
     //para bsucar aquel administrador de acuerdo a una cedula esta prueba ademas de confirar que es un administrador 
     // validad que se este comunicando el programa con la base correctamente.
     @Test
@@ -85,6 +90,7 @@ public class PruebaTest {
         assertEquals(esperado,type);
         
     }
+    
     //Prueba unitaria 3
     // Esta prueba comprueba si se realiza correctamente la seleccion de la sucursal en la base
     //con esto se puede ver que el programa se comunica correctamente con la base y nos muestra que de 
@@ -102,16 +108,15 @@ public class PruebaTest {
     @Test
     public void ComprobarPersonaCaja(){
         PersonalCaja persona = cp.selectPersonalCaja("SEspinoza");
-        assertNull(persona);
-        
-        
+        assertNull(persona);    
     }
     
     //Prueba Unitaria 5
-    //Esta prueba se encarga de verificar si el metodo verificarSesion del jefeDeBodega funciona
-    //Es decir  el codigo del metodo verificarSesion realizar un select de la base de datos
+    //Esta prueba se encarga de verificar si el metodo verificarSesion del controlador del jefeDeBodega funciona
+    //Es decir  el codigo del metodo verificarSesion verifica que el jefe de bodega logro iniciar sesion
+    //realizar un select de la base de datos
     //para bsucar aquel jefe de acuerdo a su cedula esta prueba ademas de confirmar que es un jefeBodega 
-    // validad que se este comunicando el programa con la base correctamente.
+    //valida que se este comunicando el programa con la base correctamente.
     
     @Test
     public void ComprobarSesionJefeBodega(){
@@ -160,20 +165,24 @@ public class PruebaTest {
     }
     
     // Prueba 9
-    //Se encarga de comprobar si funciona bien el cambio del estado de una mascota de un cliente
-    @Test
-    public void ComprobarCotizacion() {
-        Mascota ma= new Mascota();
-        Cliente c = new Cliente("0990999841","Guayacanes","042859384","Eduardo","Gonzalez");
-        ma.setNombre("Ema");
-        ma.setRaza("Labradora");
-        ma.setCliente(c);
-        boolean valor= mascota.setEstadoMascota(ma, "Domiccilio");
-        assertTrue(valor);
-       
-    }
+    @Test    
+   //Esta prueba se encarga de verificar si el metodo verificarSesion del controlador del personal caja funciona
+    //Es decir  el codigo del metodo verificarSesion verifica que el personal de caja a logro iniciar sesion
+    public void ComprobarVersionPersonalCaja(){
+        UserType typePersonaCaja = cp.verificarSesion("0935843645");
+        String type= String.valueOf(typePersonaCaja);
+        String esperado = "PERSONAL_CAJA";
+        assertEquals(esperado,type);
+    }  
     
     //Prueba Unitaria 10
+    // comprueba si es usaura independiente del tipo solo verifica si forma parte d elos usuarios en el sistema(base)
+    @Test
+    public void ComprobarUsuario(){   
+        UserType type = verifica.verificacionDatosSession("jalvarez", "jefebodega");
+        assertNotNull(type);
+        
+    }
     
     
     
