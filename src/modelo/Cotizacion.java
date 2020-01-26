@@ -10,7 +10,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.time.LocalDate;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,8 +21,7 @@ import java.util.logging.Logger;
 public class Cotizacion extends Documento{
     private double valor;
 
-    public Cotizacion() {
-    }
+    public Cotizacion() {}
 
     public Cotizacion(double valor, LocalDate fecha, int numeroFactura, PersonalCaja personalCaja, Cliente cliente, List<DetalleVenta> carrito) {
         super(fecha, numeroFactura, personalCaja, cliente, carrito);

@@ -15,7 +15,6 @@ import javafx.scene.paint.Color;
  */
 public class TableVentaTool extends StackPane implements Tool{
     private VBox panelCentral;
-    private int ancho;
     
     private int anchoColumna;
     private int altura;
@@ -26,7 +25,6 @@ public class TableVentaTool extends StackPane implements Tool{
         panelCentral = new VBox();
        
         this.titulo3 = titulo3;
-        this.ancho = ancho;
         this.anchoColumna = ancho / 2 - 15;
         this.altura = 55;
        

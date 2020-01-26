@@ -25,8 +25,8 @@ public class View extends Application{
     
     @Override
     public void start(Stage theStage) throws Exception{
-        ViewSsesion PaginaPrincipal = new ViewSsesion();
-        PaginaPrincipal.crearVentana(theStage, 1280, 720);
+        ViewSsesion paginaPrincipal = new ViewSsesion();
+        paginaPrincipal.crearVentana(theStage, 1280, 720);
     }
     
 }

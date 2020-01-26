@@ -20,13 +20,13 @@ import javafx.scene.text.FontWeight;
 public class FilaTool extends StackPane implements Tool{
     private HBox pane;
     
-    public FilaTool(List<String> elementos, int ancho,int altura, Color colorFondo, Color ColorBordes, Color colorLetras, int titulo3){
+    public FilaTool(List<String> elementos, int ancho,int altura, Color colorFondo, Color colorBordes, Color colorLetras, int titulo3){
         pane = new HBox();
         
         ListIterator<String> it = elementos.listIterator();
         
         while(it.hasNext()){
-            BoxTextTool nuevoCuadro = new BoxTextTool( it.next(), ancho, altura,  colorFondo, ColorBordes, colorLetras, titulo3, FontWeight.NORMAL, Pos.CENTER);
+            BoxTextTool nuevoCuadro = new BoxTextTool( it.next(), ancho, altura,  colorFondo, colorBordes, colorLetras, titulo3, FontWeight.NORMAL, Pos.CENTER);
             pane.getChildren().add(nuevoCuadro);
         }
         

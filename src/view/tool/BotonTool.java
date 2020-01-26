@@ -22,10 +22,12 @@ public class BotonTool extends StackPane implements Tool{
     private Text simbolo;
     private boolean presionado;
     private Rectangle bg;
+    private String tipoLetra = "Arial";
     
     public BotonTool(String texto, int tamanoLetra, int base,int altura, Color color){
+        
         text = new Text(texto);
-        text.setFont(text.getFont().font("Arial" ,FontWeight.BOLD, tamanoLetra));
+        text.setFont(text.getFont().font(tipoLetra ,FontWeight.BOLD, tamanoLetra));
         text.setFill(Color.WHITE);
             
         bg = new Rectangle(base, altura);
@@ -45,13 +47,13 @@ public class BotonTool extends StackPane implements Tool{
         
         public BotonTool(String texto, int tamanoLetra, int base, int altura, boolean desplegable){
             text = new Text(texto);
-            text.setFont(text.getFont().font("Arial" , tamanoLetra));
+            text.setFont(text.getFont().font(tipoLetra , tamanoLetra));
             text.setFill(Color.rgb(255, 255, 255));
             text.setTranslateX(20);
             
             if(desplegable){
                 simbolo = new Text("<");
-                simbolo.setFont(text.getFont().font("Arial" , tamanoLetra));
+                simbolo.setFont(text.getFont().font(tipoLetra, tamanoLetra));
                 simbolo.setFill(Color.rgb(255, 255, 255));
                 simbolo.setTranslateX(base - 30);
                 getChildren().add(simbolo);

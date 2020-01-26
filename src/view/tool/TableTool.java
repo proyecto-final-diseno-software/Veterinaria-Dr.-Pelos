@@ -19,7 +19,6 @@ import javafx.scene.text.FontWeight;
 public class TableTool extends StackPane implements Tool{
     private VBox panelCentral;
     private VBox panelProductos;
-    private int ancho;
     
     private final Color colorCabecera = Color.rgb(249, 249, 249);
     private final Color colorElementos = Color.rgb(253, 253, 253);
@@ -36,7 +35,6 @@ public class TableTool extends StackPane implements Tool{
        
        panelProductos = new VBox(2);
        
-       this.ancho = ancho;
        this.anchoColumna = ancho / lista.size();
        this.altura = 35;
        this.titulo3 = titulo3;
