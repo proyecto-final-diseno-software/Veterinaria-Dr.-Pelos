@@ -11,8 +11,8 @@ package modelo;
  */
 public interface FormaPago {
     boolean pagar();
-    void registrar_monto();
-    int getId_FormaPago();
+    void registrarMonto();
+    int getIdFormaPago();
     String getDescripcion();
     float getImpuesto();
     void setFormaPagoID(int forma_pago_ID);

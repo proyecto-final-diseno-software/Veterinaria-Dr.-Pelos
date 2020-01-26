@@ -84,9 +84,9 @@ public class CtrCliente {
         return lista;
     }
     
-    private void tryCliente(Statement st,String cedula,String stbuscarCliente,List<Cliente> lista){
+    private void tryCliente(Statement st,String cedula,String stbuscarCliente, List<Cliente> lista){
         String stbuscarPersona = "SELECT * FROM Persona where cedula = '" + cedula + "';";
-        ResultSet rsCliente = null;
+        
         try(ResultSet rsPersona = st.executeQuery(stbuscarPersona)){
                 
                 String cedulaPersona = null;
@@ -100,28 +100,30 @@ public class CtrCliente {
                     apellidoPersona = rsPersona.getString("apellido");
                 }
                 
-                try{
-                    rsCliente = st.executeQuery(stbuscarCliente);
-                    Cliente cliente;
-                    
-                    while (rsCliente.next()) {
-                        String direccionCliente = rsCliente.getString("direccion");
-                        String telefonoCliente = rsCliente.getString("telefono");
-                        cliente = new Cliente(cedulaPersona, nombrePersona, apellidoPersona, direccionCliente, telefonoCliente);
-                        lista.add(cliente);
-                    }
-                    
-                } catch (SQLException ex) {
-                    Logger.getLogger(CtrCliente.class.getName()).log(Level.SEVERE, null, ex);
-                }finally{
-                    if(rsCliente != null){
-                        rsCliente.close();
-                    }
-                }
+                encontrarPersona(st, cedulaPersona, nombrePersona, apellidoPersona, lista, stbuscarCliente);
                 
             } catch (SQLException ex) {
             Logger.getLogger(CtrCliente.class.getName()).log(Level.SEVERE, null, ex);
             }
+    }
+    
+    private void encontrarPersona(Statement st, String cedulaPersona, String nombrePersona, String apellidoPersona, List<Cliente> lista,String stbuscarCliente){
+        ResultSet rsCliente = null;
+        
+        try{
+            rsCliente = st.executeQuery(stbuscarCliente);
+            Cliente cliente;
+
+            while (rsCliente.next()) {
+                String direccionCliente = rsCliente.getString("direccion");
+                String telefonoCliente = rsCliente.getString("telefono");
+                cliente = new Cliente(cedulaPersona, nombrePersona, apellidoPersona, direccionCliente, telefonoCliente);
+                lista.add(cliente);
+            }
+            rsCliente.close();
+        } catch (SQLException ex) {
+            Logger.getLogger(CtrCliente.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public List<Mascota> selectMascotasCliente(Cliente cli){
@@ -131,12 +133,12 @@ public class CtrCliente {
         try (Statement stmt = con.createStatement()){
             rs = stmt.executeQuery(q);
             while(rs.next()){
-                int mascota_id = rs.getInt(1);
+                int mascotaId = rs.getInt(1);
                 String nombre = rs.getString(2);
                 String raza = rs.getString(3);
                 String estado = rs.getString(4);
                 
-                Mascota m = new Mascota(mascota_id,nombre,raza,estado,cli);
+                Mascota m = new Mascota(mascotaId,nombre,raza,estado,cli);
                 listMascota.add(m);
             }
         } catch (SQLException ex) {

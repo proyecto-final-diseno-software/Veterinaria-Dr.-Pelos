@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  * @author paula
  */
 public class CtrBaseDatos implements BaseDatos {
-    private static Connection con;
+    private static Connection conecionDateBase;
     
     private static final String DRIVER = "com.mysql.cj.jdbc.Driver";
     private static final String DBMS     = "mysql";
@@ -29,7 +29,7 @@ public class CtrBaseDatos implements BaseDatos {
     public CtrBaseDatos() {
         try{
             Class.forName(DRIVER);
-            con = DriverManager.getConnection("jdbc:" + DBMS + "://" + HOST + ":" + PORT + "/" + DATABASE + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=US/Eastern&useSSL=false&allowPublicKeyRetrieval=true&useSSL=false", USER, PASS);
+            conecionDateBase = DriverManager.getConnection("jdbc:" + DBMS + "://" + HOST + ":" + PORT + "/" + DATABASE + "?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=US/Eastern&useSSL=false&allowPublicKeyRetrieval=true&useSSL=false", USER, PASS);
             
         }catch(ClassNotFoundException | SQLException e){
             Logger.getLogger(CtrBaseDatos.class.getName()).log(Level.SEVERE, null, e);
@@ -38,12 +38,12 @@ public class CtrBaseDatos implements BaseDatos {
     
     @Override
     public Connection getConnection() {
-        return con;
+        return conecionDateBase;
     }
 
     @Override
     public void disconnect() {
-        con = null;
+        conecionDateBase = null;
     }
     
 }

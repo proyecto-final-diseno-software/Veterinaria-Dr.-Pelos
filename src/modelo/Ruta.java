@@ -20,8 +20,8 @@ public class Ruta {
     public Ruta(){
     }
     
-    public Ruta(int id_ruta, String direccion) {
-        this.idRuta = id_ruta;
+    public Ruta(int idRuta, String direccion) {
+        this.idRuta = idRuta;
         this.direccion = direccion;
     }
     

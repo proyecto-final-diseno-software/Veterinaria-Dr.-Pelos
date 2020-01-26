@@ -19,8 +19,8 @@ public class Mascota{
     private String estado;
     private Cliente cliente;
 
-    public Mascota(int mascota_id, String nombre, String raza, String estado, Cliente cliente) {
-        this.mascotaId = mascota_id;
+    public Mascota(int mascotaId, String nombre, String raza, String estado, Cliente cliente) {
+        this.mascotaId = mascotaId;
         this.nombre = nombre;
         this.raza = raza;
         this.estado = estado;

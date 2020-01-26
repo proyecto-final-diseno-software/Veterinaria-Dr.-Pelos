@@ -24,17 +24,16 @@ import view.tool.TextFieldTool;
  * @author ADMIN
  */
 public class ViewSsesion extends Ventana{
-    private PrincipalContenedor ventana;
     private Verification verificacion;
     
     @Override
-    public void mostrar_ventana(Stage primaryStage){
+    public void mostrarVentana(Stage primaryStage){
         verificacion = new Verification();
         
         this.root = new Pane();
         this.root.setPrefSize(anchoVentana, altoVentana);
         
-        this.ventana = new PrincipalContenedor();
+        PrincipalContenedor ventana = new PrincipalContenedor();
         
         this.root.getChildren().add(ventana);
         Scene scene = new Scene(this.root);
@@ -44,13 +43,13 @@ public class ViewSsesion extends Ventana{
     }
 
     @Override
-    public void close() {
-        
+    void cambiarVentana(Pane root) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    void cambiar_ventana(Pane newContenido) {
-        
+    void close() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     private class PrincipalContenedor extends Parent{
@@ -77,38 +76,40 @@ public class ViewSsesion extends Ventana{
             cuadroCentral.setArcWidth(30);
             cuadroCentral.setArcHeight(30);
             
-            //CuadroColaMensaje cuadroPruebaInferior = new CuadroColaMensaje("Veterinaria Dr.Pelos.", 1140, 50, Pos.CENTER_LEFT, Color.rgb(88, 180, 228), Color.WHITE);
-            
             TextFieldTool entradoUser = new TextFieldTool("Ingrese su usuario" ,20 , Pos.CENTER, anchoVentana / 4, 50);
             
             TextFieldTool entradoPassword = new TextFieldTool("Ingrese su contraseña", 20 , Pos.CENTER, anchoVentana / 4, 50);
             
-            BotonTool buttonLogin = new BotonTool("Login", 25, anchoVentana / 4, 45, ColorOscuro);
+            BotonTool buttonLogin = new BotonTool("Login", 25, anchoVentana / 4, 45, colorOscuro);
             
             buttonLogin.setOnMousePressed(cambioVentana -> {
                 if(!entradoUser.isEmplyTool() && !entradoPassword.isEmplyTool()){
                     switch(verificacion.verificacionDatosSession((String) entradoUser.getValue(),(String) entradoPassword.getValue())){
                         case PERSONAL_CAJA:
                             ViewPersonalCaja newContent = new ViewPersonalCaja((String) entradoUser.getValue());
-                            newContent.crear_ventana(null, anchoVentana, altoVentana);
-                            newContent.cambiar_ventana(root);
+                            newContent.crearVentana(null, anchoVentana, altoVentana);
+                            newContent.cambiarVentana(root);
                             break;
                             
                         case ADMINISTRADOR:
-                            ViewJefeBodega newContentBodega = new ViewJefeBodega();
-                            newContentBodega.crear_ventana(null, anchoVentana, altoVentana);
-                            newContentBodega.cambiar_ventana(root);
+                            ViewAdministrador newContentAdmin = new ViewAdministrador();
+                            newContentAdmin.crearVentana(null, anchoVentana, altoVentana);
+                            newContentAdmin.cambiarVentana(root);
                             break;
                             
                         case DIRECTIVO:
-                            
+                            ViewDirectivos newContentDirectivos = new ViewDirectivos();
+                            newContentDirectivos.crearVentana(null, anchoVentana, altoVentana);
+                            newContentDirectivos.cambiarVentana(root);
                             break;
                             
                         case JEFE_BODEGA:
-                            
+                            ViewJefeBodega newContentBodega = new ViewJefeBodega();
+                            newContentBodega.crearVentana(null, anchoVentana, altoVentana);
+                            newContentBodega.cambiarVentana(root);
                             break;
                         
-                        case INVALIDO:
+                        default:
                             
                             break;
                     }

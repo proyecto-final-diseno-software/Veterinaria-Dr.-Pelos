@@ -13,10 +13,10 @@ public class Cliente extends Persona{
     private String direccion;
     private String numTelefonico;
 
-    public Cliente(String cedula, String nombre, String apellido, String direccion, String num_telefonico) {
+    public Cliente(String cedula, String nombre, String apellido, String direccion, String numTelefonico) {
         super(cedula, nombre, apellido);
         this.direccion = direccion;
-        this.numTelefonico = num_telefonico;
+        this.numTelefonico = numTelefonico;
     }
     
     @Override

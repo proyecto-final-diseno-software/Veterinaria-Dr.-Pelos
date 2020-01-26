@@ -11,11 +11,9 @@ package modelo;
  */
 public class Usuario extends Persona{
     private String idUsuario;
-    private String usuario;
+    private String usuarioSistema;
     private String contrasena;
-    private Sucursal sucur;
     private boolean permisoAdministrador;
-    private Persona persona;
 
     public Usuario(String cedula, String nombre, String apellido) {
         super(cedula, nombre, apellido);
@@ -30,11 +28,11 @@ public class Usuario extends Persona{
     }
 
     public String getUsuario() {
-        return usuario;
+        return usuarioSistema;
     }
 
     public void setUsuario(String usuario) {
-        this.usuario = usuario;
+        this.usuarioSistema = usuario;
     }
 
     public String getContrasena() {

@@ -15,8 +15,8 @@ public class Sucursal {
     private String direccion;
     private boolean ofreceServicios;
 
-    public Sucursal(int id_sucursal, String nombre, String direccion, boolean ofreceServicios) {
-        this.idSucursal = id_sucursal;
+    public Sucursal(int idSucursal, String nombre, String direccion, boolean ofreceServicios) {
+        this.idSucursal = idSucursal;
         this.nombre = nombre;
         this.direccion = direccion;
         this.ofreceServicios = ofreceServicios;

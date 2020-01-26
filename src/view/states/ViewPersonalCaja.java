@@ -39,8 +39,6 @@ import view.contenido.ContenidoVentas;
  * @author paula
  */
 public class ViewPersonalCaja extends Ventana{
-    private PrincipalContenedorCaja ventana;
-    
     private Sucursal sucursal;
     
     private PersonalCaja personalCaja;
@@ -54,17 +52,21 @@ public class ViewPersonalCaja extends Ventana{
     }
 
     @Override
-    void mostrar_ventana(Stage primaryStage) {}
-
-    @Override
-    void close() {}
-
-    @Override
-    void cambiar_ventana(Pane root) {
+    void cambiarVentana(Pane root) {
         this.root = root;
         this.root.getChildren().clear();
-        this.ventana = new PrincipalContenedorCaja();
+        PrincipalContenedorCaja ventana = new PrincipalContenedorCaja();
         this.root.getChildren().add(ventana);
+    }
+    
+    @Override
+    void mostrarVentana(Stage primaryStage) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    void close() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     private class PrincipalContenedorCaja extends Parent{
@@ -105,7 +107,7 @@ public class ViewPersonalCaja extends Ventana{
             logo.setFitWidth(anchoLateral);
             
             Rectangle barraSuperior = new Rectangle(anchoVentana, altoSuperior);
-            barraSuperior.setFill(ColorOscuro);
+            barraSuperior.setFill(colorOscuro);
             barraSuperior.setOpacity(0.7);
             
             Rectangle barraLateral = new Rectangle(anchoLateral, altoVentana);
@@ -244,7 +246,7 @@ public class ViewPersonalCaja extends Ventana{
             Pane mensajeError = new Pane();            
             HBox botonesPane = new HBox(5);
             
-            BotonTool guardarCliente = new BotonTool("Guardar Cliente", titulo2, 200, titulo2 * 2, ColorOscuro);
+            BotonTool guardarCliente = new BotonTool("Guardar Cliente", titulo2, 200, titulo2 * 2, colorOscuro);
             guardarCliente.setOnMousePressed(guardarNuevoCliente -> {
                 mensajeError.getChildren().clear();
                 if(comprobarCampos(toolUsados)){
@@ -262,7 +264,7 @@ public class ViewPersonalCaja extends Ventana{
             
             botonesPane.getChildren().addAll(cancelarCliente, guardarCliente);
             
-            ventanaAnadirUsuario.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
+            ventanaAnadirUsuario.establecerFuente(titulo3, titulo2, titulo1, colorOscuro, colorClaro);
             ventanaAnadirUsuario.contenidoAdicional((anchoVentana - reduccionX) / 2 - 25);
             ventanaAnadirUsuario.crearContenidoCentral(toolUsados);
             ventanaAnadirUsuario.anadirSellecionInferior(botonesPane);
@@ -277,7 +279,7 @@ public class ViewPersonalCaja extends Ventana{
         
         private void establecerContenidoVentas(){
             contenVentas = new ContenidoVentas(reduccionX, reduccionY, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior, personalCaja);
-            contenVentas.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
+            contenVentas.establecerFuente(titulo3, titulo2, titulo1, colorOscuro, colorClaro);
             contenVentas.establecerPaneles();
             contenVentas.crearContenidoCentral(new ArrayList<>());
             
@@ -294,7 +296,7 @@ public class ViewPersonalCaja extends Ventana{
         private void establecerContenidoTraslado(String tipo, String cabeceraField){
             
             ventanaTraslado = new ContenidoTraslado(reduccionX, 0, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior);
-            ventanaTraslado.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
+            ventanaTraslado.establecerFuente(titulo3, titulo2, titulo1, colorOscuro, colorClaro);
             ventanaTraslado.establecerDatosAdicionales(tipo, cabeceraField);
             ventanaTraslado.crearContenidoCentral(null);
             
@@ -310,7 +312,7 @@ public class ViewPersonalCaja extends Ventana{
         
         private void establecerConsultantregas(){
             ventanaConsultaEntrega = new ContenidoConsultaEntregas(reduccionX, reduccionY, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior);
-            ventanaConsultaEntrega.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
+            ventanaConsultaEntrega.establecerFuente(titulo3, titulo2, titulo1, colorOscuro, colorClaro);
             ventanaConsultaEntrega.crearContenidoCentral(new ArrayList<>());
            
             paneFondo.getChildren().add(ventanaConsultaEntrega);
@@ -320,7 +322,7 @@ public class ViewPersonalCaja extends Ventana{
         
         private void establecerEnConstracion(){
             ventaEnConstratuccion = new ContenidoConstruccion(reduccionX, reduccionY, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior);
-            ventaEnConstratuccion.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
+            ventaEnConstratuccion.establecerFuente(titulo3, titulo2, titulo1, colorOscuro, colorClaro);
             ventaEnConstratuccion.crearContenidoCentral(new ArrayList<>());
            
             paneFondo.getChildren().add(ventaEnConstratuccion);
@@ -346,7 +348,7 @@ public class ViewPersonalCaja extends Ventana{
         
         private void establecerPefilCliente(){
             ventanaPerfil = new ContenidoPerfil(reduccionX, 0, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior);
-            ventanaPerfil.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
+            ventanaPerfil.establecerFuente(titulo3, titulo2, titulo1, colorOscuro, colorClaro);
             ventanaPerfil.crearContenidoCentral(null);
             
             paneFondo.getChildren().add(ventanaPerfil);

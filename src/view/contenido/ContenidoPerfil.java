@@ -25,13 +25,10 @@ import view.tool.Tool;
  * @author ADMIN
  */
 public class ContenidoPerfil extends Contenido implements ContenidoCentral{
-    private int anchoVentanaConenido;
-    
     private VBox panelFondoPerfil;
     
     public ContenidoPerfil(int reduccionx, int reduccionY, int anchoVentana, int altoVentana, int anchoColunma1, int anchoColunma2, int anchoLateral, int altoSuperior){
         super(reduccionx, reduccionY, anchoVentana, altoVentana, anchoColunma1, anchoColunma2, anchoLateral, altoSuperior);
-        this.anchoVentanaConenido = anchoVentana - reduccionx;
         
         this.panelFondoPerfil = new VBox(20);
         this.paneCentral = new HBox();

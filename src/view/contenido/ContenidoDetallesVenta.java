@@ -54,7 +54,6 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
     private CtrPersonalCaja ctr;
     
     private HBox paneDatosPago;
-    private HBox paneBotones;
     private HBox adomiciolio;
     
     private ContenidoVentas parentPerteneciente;
@@ -142,15 +141,23 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
             subtotal.add(Double.toString(((Cotizacion) documento).getValor()));
         tablaRegistros.anadirItem(subtotal, null);
         
-        paneBotones = new HBox(5);
+        HBox paneBotones = new HBox(5);
         BotonTool botonCancelar = new BotonTool("Cancelar", titulo2 - 1, 150, 40, Color.RED);
         botonCancelar.setOnMousePressed(cerrar -> parentPerteneciente.getPaneFondo().getChildren().remove(this));
         
         BotonTool botonConfirmar = new BotonTool("Confirmar", titulo2 - 1, 150, 40, this.colorClaro);
         paneBotones.getChildren().addAll(botonCancelar, botonConfirmar);
         
-        botonConfirmar.setOnMousePressed(confirmaVenta -> {
-            if(this.comprobarCampos(this.toolUsados)){
+        botonConfirmar.setOnMousePressed(confirmaVenta -> comprobarValides(comboDomicilio));
+        
+        colunma1.getChildren().addAll(cabecera, primero, adomiciolio, tablaRegistros, paneBotones);
+        paneFondo.getChildren().addAll(bg, colunma1);
+        
+        getChildren().add(paneFondo);
+    }
+    
+    private void comprobarValides(ComBoxTool comboDomicilio){
+        if(this.comprobarCampos(this.toolUsados)){
                 if(documento instanceof Venta){
                     if(!comboDomicilio.isEmplyTool()){
                         ((Venta) documento).sumarExtra();
@@ -176,12 +183,6 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
                     }
                 }
             }
-        });
-        
-        colunma1.getChildren().addAll(cabecera, primero, adomiciolio, tablaRegistros, paneBotones);
-        paneFondo.getChildren().addAll(bg, colunma1);
-        
-        getChildren().add(paneFondo);
     }
     
     private void cambiarMetodoPago(ComBoxTool combo){
@@ -202,9 +203,9 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
                 adomiciolio.setVisible(true);
                 if(documento instanceof Cotizacion)
                     inventirRefrencias();
-                TextFieldTool num_cuenta = new TextFieldTool("Ingrese numero cuenta", "Numero cuenta:", titulo2, Pos.CENTER_LEFT, 400, titulo2);
-                this.toolUsados.add(num_cuenta);
-                paneDatosPago.getChildren().add(num_cuenta);
+                TextFieldTool numCuenta = new TextFieldTool("Ingrese numero cuenta", "Numero cuenta:", titulo2, Pos.CENTER_LEFT, 400, titulo2);
+                this.toolUsados.add(numCuenta);
+                paneDatosPago.getChildren().add(numCuenta);
                 formaPago = new Tarjeta();
             break;
             
@@ -218,7 +219,7 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
                 formaPago = new PayPal();
             break; 
                
-            case "Cotizacion":
+            default:
                 adomiciolio.setVisible(false);
                 if(documento instanceof Venta)
                     inventirRefrencias();
@@ -234,7 +235,7 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
                 ((Venta) documento).setPedido(new Pedido("Entrega cliente:" + documento.getCliente().getCedula(),documento.getPersonalCaja().getSucursal(), documento.getCliente(), new Ruta(documento.getCliente().getDireccion())));
             break;
             
-            case "No":
+            default:
                 text.setVisible(false);
                 ((Venta) documento).setPedido(null);
                 ((Venta) documento).setMontoExtraEnvio(0);
@@ -243,20 +244,21 @@ public class ContenidoDetallesVenta extends Contenido implements ContenidoCentra
     }
     
     private boolean crearFormaPago(){
+        String nmbre =  " A nombre de ";
         if(this.comprobarCampos(this.toolUsados)){
             if(formaPago instanceof Efectivo){
                 ((Efectivo) formaPago).setCantidad_efectivo(((Venta) documento).getTotal());
-                ((Efectivo) formaPago).setDescripcion("Se pago en efecto: " + ((Venta) documento).getTotal() + " A nombre de " + documento.getCliente().getCedula());
+                ((Efectivo) formaPago).setDescripcion("Se pago en efecto: " + ((Venta) documento).getTotal() + nmbre + documento.getCliente().getCedula());
                 ((Efectivo) formaPago).setImpuesto(0.12f);
                 return true;
             } else if(formaPago instanceof Tarjeta){
-                ((Tarjeta) formaPago).setNum_cuenta((String) toolUsados.get(1).getValue());
-                ((Tarjeta) formaPago).setDescripcion("Se pago con targeta: " + ((Tarjeta) formaPago).getNum_cuenta() + " A nombre de " + documento.getCliente().getCedula());
+                ((Tarjeta) formaPago).setNumCuenta((String) toolUsados.get(1).getValue());
+                ((Tarjeta) formaPago).setDescripcion("Se pago con targeta: " + ((Tarjeta) formaPago).getNumCuenta() + nmbre + documento.getCliente().getCedula());
                 ((Tarjeta) formaPago).setImpuesto(0.12f);
                 return true;
             } else if(formaPago instanceof PayPal){
                 ((PayPal) formaPago).setCorreoElectronico((String) toolUsados.get(1).getValue());
-                ((PayPal) formaPago).setDescripcion("Se pago con el correo: " + ((PayPal) formaPago).getCorreoElectronico() + " A nombre de " + documento.getCliente().getCedula());
+                ((PayPal) formaPago).setDescripcion("Se pago con el correo: " + ((PayPal) formaPago).getCorreoElectronico() + nmbre + documento.getCliente().getCedula());
                 ((PayPal) formaPago).setImpuesto(0.12f);
                 return true;
             }

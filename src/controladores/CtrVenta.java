@@ -58,7 +58,7 @@ public class CtrVenta {
     }
     
     public boolean insertVenta(Venta v){
-        insertForma_Pago(v.getFormaPagoID());
+        insertFormaPago(v.getFormaPagoID());
         controlFactura.insertFactura(v);
         if(v.getPedido() != null)
             this.controlPedido.insertPedido(v.getPedido());
@@ -73,7 +73,7 @@ public class CtrVenta {
             ps.setFloat(4, (float)v.getTotal() );
             ps.setFloat(5, (float)v.getDescuento());
             ps.setString(6, v.getPersonalCaja().getCedula());
-            ps.setInt(7, v.getFormaPagoID().getId_FormaPago());
+            ps.setInt(7, v.getFormaPagoID().getIdFormaPago());
             ps.setString(8, v.getCliente().getCedula());
             if(v.getPedido() != null)
                 ps.setInt(9, v.getPedido().getPedidoID());
@@ -89,7 +89,7 @@ public class CtrVenta {
         } 
     }
     
-    private int maxForma_Pago(){
+    private int maxFormaPago(){
         int max = 0;
         ResultSet rs = null;
         try (Statement stmt = con.createStatement()){
@@ -108,11 +108,11 @@ public class CtrVenta {
         return max;
     }
     
-     private boolean insertForma_Pago(FormaPago formpago){
-        formpago.setFormaPagoID(maxForma_Pago() + 1);
+     private boolean insertFormaPago(FormaPago formpago){
+        formpago.setFormaPagoID(maxFormaPago() + 1);
         try (PreparedStatement ps = con.prepareStatement("insert into Forma_Pago(forma_pago_ID,impuesto,descripcion) values(?,?,?);");
 ) {
-            ps.setFloat(1, formpago.getId_FormaPago());
+            ps.setFloat(1, formpago.getIdFormaPago());
             ps.setFloat(2, formpago.getImpuesto());
             ps.setString(3, formpago.getDescripcion());
             
@@ -141,8 +141,8 @@ public class CtrVenta {
         try (PreparedStatement ps = con.prepareStatement("insert into Pago_Efectivo(efectivo_ID,cantidad_efectivo) values(?,?);");
 ) {
             
-            ps.setInt(1, efectivo.getId_FormaPago());
-            ps.setFloat(2,(float) efectivo.getCantidad_efectivo());
+            ps.setInt(1, efectivo.getIdFormaPago());
+            ps.setFloat(2,(float) efectivo.getCantidadEfectivo());
             ps.executeUpdate();
             return true;
         } catch (Exception ex) {
@@ -155,8 +155,8 @@ public class CtrVenta {
         
             Tarjeta pago = (Tarjeta) formpago;
         try (PreparedStatement ps = con.prepareStatement("insert into Pago_Tarjeta(tarjeta_ID,num_cuenta) values(?,?);")) {
-            ps.setInt(1, pago.getId_FormaPago());
-            ps.setString(2, pago.getNum_cuenta());
+            ps.setInt(1, pago.getIdFormaPago());
+            ps.setString(2, pago.getNumCuenta());
             ps.executeUpdate();
             return true;
         } catch (Exception ex) {
@@ -171,7 +171,7 @@ public class CtrVenta {
         try (PreparedStatement ps = con.prepareStatement("insert into Pago_PayPal(payPal_ID,correoElectronico) values(?,?);");
 )
             {
-            ps.setInt(1, pago.getId_FormaPago());
+            ps.setInt(1, pago.getIdFormaPago());
             ps.setString(2, pago.getCorreoElectronico());
             ps.executeUpdate();
             return true;

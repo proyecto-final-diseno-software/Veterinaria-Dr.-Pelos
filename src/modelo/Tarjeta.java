@@ -14,11 +14,11 @@ public class Tarjeta implements FormaPago {
     private float impuesto;
     private String descripcion;
     
-    private String num_cuenta;
+    private String numCuenta;
 
     public Tarjeta(float impuesto, String num_cuenta) {
         this.impuesto = impuesto;
-        this.num_cuenta = num_cuenta;
+        this.numCuenta = num_cuenta;
     }
     
     public Tarjeta(){}
@@ -29,7 +29,7 @@ public class Tarjeta implements FormaPago {
     }
 
     @Override
-    public void registrar_monto() {
+    public void registrarMonto() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
@@ -38,13 +38,13 @@ public class Tarjeta implements FormaPago {
     }
 
     @Override
-    public int getId_FormaPago() {
+    public int getIdFormaPago() {
         return formaPagoID;
     }
 
     @Override
-    public void setFormaPagoID(int forma_pago_ID) {
-        this.formaPagoID = forma_pago_ID;
+    public void setFormaPagoID(int formaPagoID) {
+        this.formaPagoID = formaPagoID;
     }
     
     public void setImpuesto(float impuesto) {
@@ -55,12 +55,12 @@ public class Tarjeta implements FormaPago {
         this.descripcion = descripcion;
     }
 
-    public void setNum_cuenta(String num_cuenta) {
-        this.num_cuenta = num_cuenta;
+    public void setNumCuenta(String num_cuenta) {
+        this.numCuenta = num_cuenta;
     }
 
-    public String getNum_cuenta() {
-        return num_cuenta;
+    public String getNumCuenta() {
+        return numCuenta;
     }
     
     @Override

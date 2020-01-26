@@ -45,7 +45,6 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
     
     private TableVentaTool tablaPago;
     private TableTool tablaRegistro;
-    private VBox paneCliente;
     
     public ContenidoVentas(int reduccionx, int reduccionY, int anchoVentana, int altoVentana, int anchoColunma1, int anchoColunma2, int anchoLateral, int altoSuperior, PersonalCaja personal){
         super(reduccionx, reduccionY, anchoVentana, altoVentana, anchoColunma1, anchoColunma2, anchoLateral, altoSuperior);
@@ -107,14 +106,14 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
         HBox secionBuscador = new HBox();
         
         TextFieldTool textFieldBuscador = new TextFieldTool("Buscar Producto" ,titulo2, Pos.CENTER, 3 * anchoColunma1 / 5, 44);
-        BotonTool botonBuscar = new BotonTool("Buscar", titulo2, 130, 44, ColorOscuro);
+        BotonTool botonBuscar = new BotonTool("Buscar", titulo2, 130, 44, colorOscuro);
         botonBuscar.setOnMousePressed(buscarArticulo -> {
             BotonTool cerrar = new BotonTool("X", titulo2, titulo2 * 2, titulo2 * 2, Color.RED);
             
-            ContenidoBusqueda ventana_busqueda = new ContenidoBusqueda(anchoVentana - reduccionX - 10, altoVentana - reduccionY - 10, titulo2, cerrar, documento.getCarrito(), personal.getSucursal().isOfreceServicios());
+            ContenidoBusqueda ventanaBusqueda = new ContenidoBusqueda(anchoVentana - reduccionX - 10, altoVentana - reduccionY - 10, titulo2, cerrar, documento.getCarrito(), personal.getSucursal().isOfreceServicios());
             
-            cerrar.setOnMousePressed(cerrar_ventana -> {
-                getChildren().remove(ventana_busqueda);
+            cerrar.setOnMousePressed(cerrarVentana -> {
+                getChildren().remove(ventanaBusqueda);
                 insertarItems();
                 documento.calcularMonto(documento.getCarrito());
                 
@@ -124,13 +123,13 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
                     tablaPago.actualizarMonto(((Cotizacion) documento).getValor());
             });
             
-            getChildren().add(ventana_busqueda);
+            getChildren().add(ventanaBusqueda);
             
-            ventana_busqueda.setTranslateX(15);
-            ventana_busqueda.setTranslateY(5);
+            ventanaBusqueda.setTranslateX(15);
+            ventanaBusqueda.setTranslateY(5);
         });
             
-        paneCliente = new VBox(10);
+        VBox paneCliente = new VBox(10);
         paneCliente.setAlignment(Pos.CENTER);
         
         VBox dataCliente = new VBox(5);
@@ -139,7 +138,7 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
         HBox ssecionBuscadorCliente = new HBox();
         
         TextFieldTool textFieldBuscadorCliente = new TextFieldTool("Buscar Cliente", "Busqueda por cedula:" ,titulo2, Pos.CENTER, 3 * anchoColunma2 / 6, 40);
-        BotonTool botonBuscarCliente = new BotonTool("Buscar", titulo2 - 1, 90, 40, ColorOscuro);
+        BotonTool botonBuscarCliente = new BotonTool("Buscar", titulo2 - 1, 90, 40, colorOscuro);
         botonBuscarCliente.setOnMousePressed(buscarCliente -> {
             if(!textFieldBuscadorCliente.isEmplyTool()){
                 List<Cliente> clientes = ctr.selectCliente((String) textFieldBuscadorCliente.getValue());
@@ -163,7 +162,7 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
             documento.setPersonalCaja(personal);
             if(documento.comprobarValides()){
                 ContenidoDetallesVenta confirmaDocuemnto = new ContenidoDetallesVenta(reduccionX, reduccionY, anchoVentana, altoVentana, 0, 0, anchoLateral, altoSuperior, documento, this);
-                confirmaDocuemnto.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
+                confirmaDocuemnto.establecerFuente(titulo3, titulo2, titulo1, colorOscuro, colorClaro);
                 confirmaDocuemnto.crearContenidoCentral(new ArrayList<>());
                 
                 this.paneFondo.getChildren().add(confirmaDocuemnto);
@@ -208,13 +207,13 @@ public class ContenidoVentas extends Contenido implements ContenidoCentral{
                     dataItem.add(Double.toString(((DetalleVentaServicio) det).calcularPrecio()));
                 }
                 
-                BotonTool especificarDetalles = new BotonTool("Editar", titulo2, 100, titulo2 + 10, ColorOscuro);
+                BotonTool especificarDetalles = new BotonTool("Editar", titulo2, 100, titulo2 + 10, colorOscuro);
                 especificarDetalles.setOnMousePressed(cambiarDetalle -> {
-                    BotonTool botonSacarDetalles = new BotonTool("Aceptar", titulo2 - 1, 90, 40, ColorOscuro);
+                    BotonTool botonSacarDetalles = new BotonTool("Aceptar", titulo2 - 1, 90, 40, colorOscuro);
                     BotonTool botonEliminar = new BotonTool("Eliminar", titulo2 - 1, 90, 40, Color.RED);
                     
                     ContenidoEspecificarDetalle detalleArticulo = new ContenidoEspecificarDetalle(reduccionX, reduccionY, anchoVentana, altoVentana, anchoColunma1, anchoColunma2, anchoLateral, altoSuperior, det);
-                    detalleArticulo.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
+                    detalleArticulo.establecerFuente(titulo3, titulo2, titulo1, colorOscuro, colorClaro);
                     detalleArticulo.crearContenidoCentral(new ArrayList<>());
                     detalleArticulo.anadirBotones(botonSacarDetalles, botonEliminar);
                     

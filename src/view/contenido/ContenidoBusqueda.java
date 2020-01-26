@@ -39,8 +39,6 @@ public class ContenidoBusqueda extends Parent{
     private VBox filas;
     private Pane paneTabla;
     
-    private BotonTool cerrar;
-    
     private TableTool tablaProductos;
     
     private CtrPersonalCaja ctrCaja;
@@ -77,7 +75,6 @@ public class ContenidoBusqueda extends Parent{
         ComBoxTool<String> comboCategorias = new ComBoxTool(anchoField, "Categoria:" , listCategorias, titulo2);
         toolsUsado.add(comboCategorias);
         
-        this.cerrar = cerrar;
         cerrar.setTranslateX(anchoField - 130);
         cerrar.setTranslateY(-35);
         
@@ -89,14 +86,12 @@ public class ContenidoBusqueda extends Parent{
             listaTipo.add("Servicio");
         listaTipo.add("Producto");
         ComBoxTool<String> comboTipo = new ComBoxTool(anchoField, "Tipo:" , listaTipo, titulo2);
-        comboTipo.getCombo().setOnAction(comprobar -> {
-            quitarCategoria(comboTipo, comboCategorias);
-        });
+        comboTipo.getCombo().setOnAction(comprobar -> quitarCategoria(comboTipo, comboCategorias));
         
-        BotonTool BotonBuscarProducto = new BotonTool("Buscar", titulo2, 100, titulo2 * 2 + 3, Color.GAINSBORO);
-        BotonBuscarProducto.setTranslateY(16);
+        BotonTool botonBuscarProducto = new BotonTool("Buscar", titulo2, 100, titulo2 * 2 + 3, Color.GAINSBORO);
+        botonBuscarProducto.setTranslateY(16);
         
-        cabecera.getChildren().addAll(busquedaNombre, comboCategorias, busquedaDescripcion, comboTipo, BotonBuscarProducto,cerrar);
+        cabecera.getChildren().addAll(busquedaNombre, comboCategorias, busquedaDescripcion, comboTipo, botonBuscarProducto,cerrar);
         
         List<String> camposProductos = new ArrayList<>();
         camposProductos.add("Codigo");
@@ -111,7 +106,7 @@ public class ContenidoBusqueda extends Parent{
         camposServicios.add("Costo");
         camposServicios.add("");
         
-        BotonBuscarProducto.setOnMousePressed(buscarProducto -> {
+        botonBuscarProducto.setOnMousePressed(buscarProducto -> {
             if(comprobarCampos(toolsUsado) && !comboTipo.isEmplyTool()){
                 if(((String) comboTipo.getValue()).equals("Producto"))
                     insertarProductosBusqueda(ancho, camposProductos, itemsCarrito);
@@ -126,22 +121,6 @@ public class ContenidoBusqueda extends Parent{
         filas.getChildren().addAll(cabecera, paneTabla);
         
         getChildren().add(filas);
-    }
-    
-    private void filtarMercaderia(int ancho, List<String> camposMercaderia){
-        paneTabla.getChildren().clear();
-                
-        tablaProductos = new TableTool(ancho, camposMercaderia, "Este cliente no ha solicitado servicio a domicilio",titulo2);
-        
-        paneTabla.getChildren().add(tablaProductos);
-    }
-    
-    private void filtarMascota(int ancho, List<String> camposMascota){
-        paneTabla.getChildren().clear();
-                
-        tablaProductos = new TableTool(ancho, camposMascota, "Este cliente no posee mascotas",titulo2);
-        
-        paneTabla.getChildren().add(tablaProductos);
     }
     
     private void insertarProductosBusqueda(int ancho, List<String> camposProductos, List<DetalleVenta> itemsCarrito){
@@ -197,10 +176,7 @@ public class ContenidoBusqueda extends Parent{
     }
     
     private void quitarCategoria(ComBoxTool<String> combo,ComBoxTool<String> combo2){
-        if(((String) combo.getValue()).equals("Producto"))
-            combo2.setVisible(true);
-        else
-            combo2.setVisible(false);
+        combo2.setVisible(((String) combo.getValue()).equals("Producto"));
     }
     
     private boolean comprobarCampos(List<Tool> toolUsados){

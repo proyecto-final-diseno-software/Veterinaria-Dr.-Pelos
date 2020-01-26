@@ -12,10 +12,10 @@ package modelo;
 public class DetallePedido {
     private int idDetalleProducto;
     private int cantidad;
-    private Producto p;
+    private Producto producto;
     
     public DetallePedido(Producto p, int cantidad){
-        this.p = p;
+        this.producto = p;
         this.cantidad = cantidad;
     }
     
@@ -35,6 +35,22 @@ public class DetallePedido {
 
     public void setCantidad(int cantidad) {
         this.cantidad = cantidad;
+    }
+
+    public int getIdDetalleProducto() {
+        return idDetalleProducto;
+    }
+
+    public void setIdDetalleProducto(int idDetalleProducto) {
+        this.idDetalleProducto = idDetalleProducto;
+    }
+
+    public Producto getProducto() {
+        return producto;
+    }
+
+    public void setProducto(Producto producto) {
+        this.producto = producto;
     }
     
     

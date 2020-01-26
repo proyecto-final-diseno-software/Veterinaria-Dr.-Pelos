@@ -30,7 +30,7 @@ public abstract class Ventana {
     protected List<BotonTool> botonesLateral = new ArrayList<>();
     
     protected final Color colorClaro = Color.rgb(40, 171, 223);
-    protected final Color ColorOscuro = Color.rgb(25, 141, 216);
+    protected final Color colorOscuro = Color.rgb(25, 141, 216);
         
     protected ImageView logo;
         
@@ -42,12 +42,12 @@ public abstract class Ventana {
     protected int titulo2;
     protected int titulo3;
     
-    public void crear_ventana(Stage primaryStage, int anchoVentana, int altoVentana){
+    public void crearVentana(Stage primaryStage, int anchoVentana, int altoVentana){
         this.anchoVentana = anchoVentana;
         this.altoVentana = altoVentana;
         
         if(primaryStage != null)
-            mostrar_ventana(primaryStage);
+            mostrarVentana(primaryStage);
     }
     
     protected boolean comprobarCampos(List<Tool> tools){
@@ -72,7 +72,7 @@ public abstract class Ventana {
             boton.marcar();
     }
     
-    abstract void mostrar_ventana(Stage primaryStage);
-    abstract void cambiar_ventana(Pane root);
+    abstract void mostrarVentana(Stage primaryStage);
+    abstract void cambiarVentana(Pane root);
     abstract void close();
 }

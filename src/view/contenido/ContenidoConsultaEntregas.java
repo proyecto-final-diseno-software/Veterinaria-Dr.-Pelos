@@ -31,8 +31,6 @@ import view.tool.Tool;
  */
 public class ContenidoConsultaEntregas extends Contenido implements ContenidoCentral{
     
-    private TableTool tablaProductos;
-    
     public ContenidoConsultaEntregas(int reduccionx, int reduccionY, int anchoVentana, int altoVentana, int anchoColunma1, int anchoColunma2, int anchoLateral, int altoSuperior){
         super(reduccionx, reduccionY, anchoVentana, altoVentana, anchoColunma1, anchoColunma2, anchoLateral, altoSuperior);
         
@@ -51,9 +49,9 @@ public class ContenidoConsultaEntregas extends Contenido implements ContenidoCen
     public void crearContenidoCentral(List<Tool> toolUsados) {
         int anchoField = (anchoVentana - 80) / 4;
         
-        HBox Tutuo = new HBox(5);
+        HBox titulo=  new HBox(5);
         BoxTextTool cabeceraTexto = new BoxTextTool("Busqueda de envios", Color.BLACK, titulo1, FontWeight.BOLD);
-        Tutuo.getChildren().add(cabeceraTexto);
+        titulo.getChildren().add(cabeceraTexto);
         
         HBox cabecera = new HBox(5);
         
@@ -69,10 +67,10 @@ public class ContenidoConsultaEntregas extends Contenido implements ContenidoCen
         ComBoxTool<String> comboTipo = new ComBoxTool(anchoField, "Tipo:" , listaTipo, titulo2);
         toolUsados.add(comboTipo);
         
-        BotonTool BotonBuscarProducto = new BotonTool("Buscar", titulo2, 100, titulo2 * 2 + 3, Color.GAINSBORO);
-        BotonBuscarProducto.setTranslateY(16);
+        BotonTool botonBuscarProducto=  new BotonTool("Buscar", titulo2, 100, titulo2 * 2 + 3, Color.GAINSBORO);
+        botonBuscarProducto.setTranslateY(16);
         
-        cabecera.getChildren().addAll(busquedaID, busquedaCliente, comboTipo, BotonBuscarProducto);
+        cabecera.getChildren().addAll(busquedaID, busquedaCliente, comboTipo, botonBuscarProducto);
         
         List<String> camposMercaderia = new ArrayList<>();
         camposMercaderia.add("Codigo");
@@ -88,14 +86,14 @@ public class ContenidoConsultaEntregas extends Contenido implements ContenidoCen
         camposMascotas.add("Raza");
         camposMascotas.add("");
         
-        BotonBuscarProducto.setOnMousePressed(buscarProducto -> {
+        botonBuscarProducto.setOnMousePressed(buscarProducto -> {
             
         });
         
-        tablaProductos = new TableTool(anchoVentana - this.reduccionX - 40, camposMercaderia, "No hay articulos con esta descripcion", titulo2);
+        TableTool tablaProductos = new TableTool(anchoVentana - this.reduccionX - 40, camposMercaderia, "No hay articulos con esta descripcion", titulo2);
         pane1.getChildren().add(tablaProductos);
         
-        colunma1.getChildren().addAll(Tutuo, cabecera, pane1);
+        colunma1.getChildren().addAll(titulo, cabecera, pane1);
         
         paneFondo.getChildren().add(colunma1);
         

@@ -15,7 +15,7 @@ public class Efectivo implements FormaPago{
     private String descripcion;
     private double cantidad_efectivo;
 
-    public double getCantidad_efectivo() {
+    public double getCantidadEfectivo() {
         return cantidad_efectivo;
     }
 
@@ -23,10 +23,10 @@ public class Efectivo implements FormaPago{
         
     }
     
-    public Efectivo(float impuesto, double cantidad_efectivo) {
+    public Efectivo(float impuesto, double cantidadEfectivo) {
         this.descripcion  = "Efectivo";
         this.impuesto = impuesto;
-        this.cantidad_efectivo = cantidad_efectivo;
+        this.cantidad_efectivo = cantidadEfectivo;
     }
     
     @Override
@@ -40,12 +40,12 @@ public class Efectivo implements FormaPago{
     }
 
     @Override
-    public void registrar_monto() {
+    public void registrarMonto() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public int getId_FormaPago() {
+    public int getIdFormaPago() {
         return formaPagoID;
     }
 
@@ -57,8 +57,8 @@ public class Efectivo implements FormaPago{
         this.descripcion = descripcion;
     }
 
-    public void setCantidad_efectivo(double cantidad_efectivo) {
-        this.cantidad_efectivo = cantidad_efectivo;
+    public void setCantidad_efectivo(double cantidadEfectivo) {
+        this.cantidad_efectivo = cantidadEfectivo;
     }
 
     @Override

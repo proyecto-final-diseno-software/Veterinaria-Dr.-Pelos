@@ -48,7 +48,7 @@ public abstract class Contenido extends Parent{
     protected int titulo3;
     protected int titulo2;
     protected int titulo1;
-    protected Color ColorOscuro;
+    protected Color colorOscuro;
     protected Color colorClaro;
     
     public Contenido(int reduccionx, int reduccionY, int anchoVentana, int altoVentana, int anchoColunma1, int anchoColunma2, int anchoLateral, int altoSuperior){
@@ -62,11 +62,11 @@ public abstract class Contenido extends Parent{
         this.altoSuperior = altoSuperior;
     }
     
-    public void establecerFuente(int titulo3, int titulo2, int titulo1, Color ColorOscuro, Color colorClaro){
+    public void establecerFuente(int titulo3, int titulo2, int titulo1, Color colorOscuro, Color colorClaro){
         this.titulo3 = titulo3;
         this.titulo2 = titulo2;
         this.titulo1 = titulo1;
-        this.ColorOscuro = ColorOscuro;
+        this.colorOscuro = colorOscuro;
         this.colorClaro = colorClaro;
     }
     

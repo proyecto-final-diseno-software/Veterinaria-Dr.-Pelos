@@ -35,7 +35,6 @@ import view.tool.Tool;
 public class ContenidoTraslado extends Contenido implements ContenidoCentral{
     private CtrPersonalCaja ctrCaja;
     
-    private List<Tool> toolUsados;
     private List<Mascota> mascotasCliente;
     
     private BoxTextTool datoCliente;
@@ -52,7 +51,6 @@ public class ContenidoTraslado extends Contenido implements ContenidoCentral{
         this.error = new BoxTextTool("Hubo un error con el estado de esta mascota", Color.RED, titulo2, FontWeight.BOLD);
         this.ctrCaja = new CtrPersonalCaja();
         
-        this.toolUsados = new ArrayList<>();
         this.colunma1 = new VBox(20);
         
         this.pane1 = new FlowPane();
@@ -85,7 +83,7 @@ public class ContenidoTraslado extends Contenido implements ContenidoCentral{
         
         HBox primero = new HBox(20);
         TextFieldTool textFieldCliente = new TextFieldTool(cabeceraField ,titulo2, Pos.CENTER, mitadVentanaActiva, 40);
-        BotonTool botonBuscar = new BotonTool("Buscar", titulo2 - 1, 90, 40, ColorOscuro);
+        BotonTool botonBuscar = new BotonTool("Buscar", titulo2 - 1, 90, 40, colorOscuro);
         botonBuscar.setOnMousePressed(buscar -> {
             paneError.getChildren().clear();
             if(!textFieldCliente.isEmplyTool()){
@@ -129,28 +127,20 @@ public class ContenidoTraslado extends Contenido implements ContenidoCentral{
             
             switch (mas.getEstado()) {
                 case "Translado a sucursal":
-                    accionBoton = new BotonTool("Finalizar Traslado", titulo2 - 1, 200, 40, ColorOscuro);
-                    accionBoton.setOnMousePressed(cambiarEstado -> {
-                        cambiarEstado(mas, "Sucursal");
-                    });
+                    accionBoton = new BotonTool("Finalizar Traslado", titulo2 - 1, 200, 40, colorOscuro);
+                    accionBoton.setOnMousePressed(cambiarEstado -> cambiarEstado(mas, "Sucursal"));
                     break;
                 case "Translado a domicilio":
-                    accionBoton = new BotonTool("Finalizar Traslado", titulo2 - 1, 200, 40, ColorOscuro);
-                    accionBoton.setOnMousePressed(cambiarEstado -> {
-                        cambiarEstado(mas, "Domicilio");
-                    });
+                    accionBoton = new BotonTool("Finalizar Traslado", titulo2 - 1, 200, 40, colorOscuro);
+                    accionBoton.setOnMousePressed(cambiarEstado ->  cambiarEstado(mas, "Domicilio"));
                     break;
                 case "Sucursal":
                     accionBoton = new BotonTool("Transladar domicilio", titulo2 - 1, 200, 40, Color.BLUE);
-                    accionBoton.setOnMousePressed(cambiarEstado -> {
-                        cambiarEstado(mas, "Translado a domicilio");
-                    });
+                    accionBoton.setOnMousePressed(cambiarEstado ->  cambiarEstado(mas, "Translado a domicilio"));
                     break;
                 case "Domicilio":
                     accionBoton = new BotonTool("Transladar sucursal", titulo2 - 1, 200, 40, Color.GREEN);
-                    accionBoton.setOnMousePressed(cambiarEstado -> {
-                        cambiarEstado(mas, "Translado a sucursal");
-                    });
+                    accionBoton.setOnMousePressed(cambiarEstado ->  cambiarEstado(mas, "Translado a sucursal"));
                     break;
                 default:
                     accionBoton = new BotonTool("Error", titulo2 , 200, 40, Color.RED);

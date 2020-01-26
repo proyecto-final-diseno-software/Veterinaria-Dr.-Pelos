@@ -15,12 +15,12 @@ import java.util.List;
  * @author paula
  */
 public class Verification {
-    private Connection con;
+    private Connection conexionDataBase;
     private CtrBaseDatosProxy controlDataBase;
 
     public Verification() {
         this.controlDataBase = new CtrBaseDatosProxy();
-        this.con = controlDataBase.getConnection();
+        this.conexionDataBase = controlDataBase.getConnection();
     }
     
     public UserType verificacionDatosSession(String user, String pass){
@@ -37,12 +37,12 @@ public class Verification {
             metodos.add(new CtrPersonalCaja());
 
             Iterator<ControlSession> it = metodos.iterator();
-            ControlSession control_session;
+            ControlSession controlSession;
 
             while(it.hasNext()){
-                control_session = it.next();
+                controlSession = it.next();
 
-                tipoUsuario = control_session.verificarSesion(cedula);
+                tipoUsuario = controlSession.verificarSesion(cedula);
 
                 if(tipoUsuario != null)
                     return tipoUsuario;

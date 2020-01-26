@@ -18,11 +18,11 @@ public class Servicio {
     private String nombre;
     private String descripcion;
 
-    public Servicio(int id_servicio, String nombre, String descripcion, Double precio_unitario) {
-        this.idServicio = id_servicio;
+    public Servicio(int idServicio, String nombre, String descripcion, Double precioUnitario) {
+        this.idServicio = idServicio;
         this.nombre = nombre;
         this.descripcion = descripcion;
-        this.precioUnitario = precio_unitario;
+        this.precioUnitario = precioUnitario;
     }
     
     public boolean cambiarPrecio(Double precio){

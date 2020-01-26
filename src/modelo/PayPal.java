@@ -16,9 +16,9 @@ public class PayPal implements FormaPago{
     
     private String correoElectronico;
 
-    public PayPal(float impuesto, String correo_electronico) {
+    public PayPal(float impuesto, String correoElectronico) {
         this.impuesto = impuesto;
-        this.correoElectronico = correo_electronico;
+        this.correoElectronico = correoElectronico;
     }
     
     public PayPal(){}
@@ -29,8 +29,8 @@ public class PayPal implements FormaPago{
     }
 
     @Override
-    public void setFormaPagoID(int forma_pago_ID) {
-        this.formaPagoID = forma_pago_ID;
+    public void setFormaPagoID(int formapagoID) {
+        this.formaPagoID = formapagoID;
     }
     
     @Override
@@ -39,12 +39,12 @@ public class PayPal implements FormaPago{
     }
 
     @Override
-    public void registrar_monto() {
+    public void registrarMonto() {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
     @Override
-    public int getId_FormaPago() {
+    public int getIdFormaPago() {
         return formaPagoID;
     }
     

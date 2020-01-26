@@ -29,15 +29,15 @@ public class ContenidoConstruccion extends Contenido implements ContenidoCentral
     }
 
     @Override
-    public void limpirarContenido() {
-        
-    }
-
-    @Override
     public void crearContenidoCentral(List<Tool> toolUsados) {
         BoxTextTool cabeceraTexto = new BoxTextTool("Funcionalidad en construccion", Color.BLACK, 50, FontWeight.BOLD);
         paneCentral.getChildren().add(cabeceraTexto);
         this.getChildren().add(paneCentral);
+    }
+
+    @Override
+    public void limpirarContenido() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

@@ -15,33 +15,34 @@ import view.contenido.ContenidoConstruccion;
  * @author paula
  */
 public class ViewDirectivos extends Ventana{
-    private PrincipalContenedorCaja ventana;
 
-    public ViewDirectivos() {
+    @Override
+    void cambiarVentana(Pane root) {
+        this.root = root;
+        this.root.getChildren().clear();
+        PrincipalContenedorCaja ventana = new PrincipalContenedorCaja();
+        this.root.getChildren().add(ventana);
     }
 
     @Override
-    void mostrar_ventana(Stage primaryStage) {}
+    void mostrarVentana(Stage primaryStage) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 
     @Override
-    void close() {}
-
-    @Override
-    void cambiar_ventana(Pane root) {
-        this.root = root;
-        this.root.getChildren().clear();
-        this.ventana = new PrincipalContenedorCaja();
-        this.root.getChildren().add(ventana);
+    void close() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
     private class PrincipalContenedorCaja extends Parent{
-        private ContenidoConstruccion ventanEnCostrucion;
         
-        public PrincipalContenedorCaja(){}
+        public PrincipalContenedorCaja(){
+            establecerContenidoAnadirUser();
+        }
         
         private void establecerContenidoAnadirUser(){
-            ventanEnCostrucion = new ContenidoConstruccion(0, 0, anchoVentana, altoVentana, 0, 0, 0, 0);
-            ventanEnCostrucion.establecerFuente(titulo3, titulo2, titulo1, ColorOscuro, colorClaro);
+            ContenidoConstruccion ventanEnCostrucion = new ContenidoConstruccion(0, 0, anchoVentana, altoVentana, 0, 0, 0, 0);
+            ventanEnCostrucion.establecerFuente(titulo3, titulo2, titulo1, colorOscuro, colorClaro);
             ventanEnCostrucion.crearContenidoCentral(null);
             
             this.getChildren().add(ventanEnCostrucion);
