@@ -396,7 +396,6 @@ CREATE TABLE DetalleVentaServicio(
     insert into Pago_Efectivo values(200,6);
     insert into Pago_Efectivo values(203,6);
     
-    insert into Venta values(default,"2020-01-02",02302,4.0,10,3.4,"0975368545",200,"0927389243", null);
     insert into Pago_Tarjeta values(201, "5543-3434-5434-8557");
     
     insert into Pago_PayPal values(202,"amorales@correo.com");
