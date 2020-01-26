@@ -8,15 +8,19 @@ import controladores.CtrAdministrador;
 import controladores.CtrBaseDatosProxy;
 import controladores.CtrDirectivos;
 import controladores.CtrJefeBodega;
+import controladores.CtrMascota;
 import controladores.CtrPersonalCaja;
+import controladores.CtrRuta;
 import controladores.CtrSucursal;
 import controladores.CtrVenta;
 import controladores.UserType;
 import modelo.Cliente;
 import modelo.DetalleVentaServicio;
 import modelo.Efectivo;
+import modelo.Mascota;
 import modelo.PayPal;
 import modelo.PersonalCaja;
+import modelo.Ruta;
 import modelo.Servicio;
 import modelo.Sucursal;
 import modelo.Tarjeta;
@@ -39,6 +43,8 @@ public class PruebaTest {
      CtrJefeBodega jefe=new CtrJefeBodega();
      CtrDirectivos directivo=new CtrDirectivos();
      CtrSucursal sur= new CtrSucursal();
+     CtrRuta r= new CtrRuta();
+     CtrMascota mascota= new CtrMascota();
     public PruebaTest() {
     }
     
@@ -66,17 +72,7 @@ public class PruebaTest {
         assertEquals("0975368545",Cedula);
     }
     
-    //Prueba Unitaria 2
-    //Esta prueba validad si se reliza un pago en efectivo y si se inserta a la base de datos
-    @Test
-    public void ComprobarInsercionEfectivo() {
-        Efectivo efec = new Efectivo((float)1.5,6.0);
-        boolean Inserta =cp.insertEfectivo(efec);
-        assertTrue(Inserta);
-       
-    }
-    
-    //Prueba unitaria 3
+    //Prueba unitaria 2
     //Esta prueba se encarga de verificar si el metodo verificarSesion del administrador funciona
     //Es decir  el codigo del metodo verificarSesion realizar un select de la base de datos
     //para bsucar aquel administrador de acuerdo a una cedula esta prueba ademas de confirar que es un administrador 
@@ -89,7 +85,7 @@ public class PruebaTest {
         assertEquals(esperado,type);
         
     }
-    //Prueba unitaria 4
+    //Prueba unitaria 3
     // Esta prueba comprueba si se realiza correctamente la seleccion de la sucursal en la base
     //con esto se puede ver que el programa se comunica correctamente con la base y nos muestra que de 
     // acuerdo a id de la surusal retorna el objeto existente y no null
@@ -99,7 +95,7 @@ public class PruebaTest {
         assertNotNull(valorPrueba);   
     }
     
-    //Prueba Unitaria 5
+    //Prueba Unitaria 4
     // Esta prueba validad si existe en la base de datos Sespinoza como persona de caja
     // si no existe retorna null y como se puede observa este no existe por tal motivo
     // el metodo SelectPersonalCaja funciona correctamente.
@@ -110,16 +106,8 @@ public class PruebaTest {
         
         
     }
-    //Prueba unitaria 6
-    ///Esta prueba validad si se realiza un pago con tarjeta y si se sinserta a la base de datos correctamente
-    @Test
-    public void ComprobarInsercionPagoTarjeta() {
-        Tarjeta t = new Tarjeta(5,"923092343");
-        boolean Inserta =v.insertTarjeta(t);
-        assertTrue(Inserta);
-       
-    }
-    //Prueba Unitaria 7
+    
+    //Prueba Unitaria 5
     //Esta prueba se encarga de verificar si el metodo verificarSesion del jefeDeBodega funciona
     //Es decir  el codigo del metodo verificarSesion realizar un select de la base de datos
     //para bsucar aquel jefe de acuerdo a su cedula esta prueba ademas de confirmar que es un jefeBodega 
@@ -134,7 +122,7 @@ public class PruebaTest {
         
     }
     
-    //Prueba unitaria 8
+    //Prueba unitaria 6
     //Esta prueba se encarga de verificar si el metodo verificarSesion del directivo funciona
     //Es decir  el codigo del metodo verificarSesion realizar un select de la base de datos
     //para bsucar aquel directivo de acuerdo a su cedula esta prueba ademas de confirmar que es un directivo 
@@ -147,15 +135,44 @@ public class PruebaTest {
         assertEquals(esperado,type);
         
     }
-    
-     //Prueba unitaria 9
-    ///Esta prueba validad si se realiza un pago con Paypal y si se sinserta a la base de datos correctamente
-    public void ComprobarInsercionPayPal() {
-        PayPal pl = new PayPal((float)3, "aaa@hotmail.com");
-        boolean Inserta =cp.insertPaypal(pl);;
-        assertTrue(Inserta);
+    //Prueba Unitaria 7
+    // Comprueba que se inserte una ruta y a su validad el funcionamiento con la base
+    @Test
+    public void ComprobarInsercionRuta() {
+        Ruta ru = new Ruta();
+        ru.setDireccion("Orquideas");
+        boolean valor= r.insertRuta(ru);
+        assertTrue(valor);
        
     }
+    // Prueba 8
+    //Se encarga de comprobar si funciona bien el cambio del estado de una mascota de un cliente
+    @Test
+    public void ComprobarSetMascota() {
+        Mascota ma = new Mascota();
+        Cliente c = new Cliente("0990999841","Guayacanes","042859384","Eduardo","Gonzalez");
+        ma.setNombre("Ema");
+        ma.setRaza("Labradora");
+        ma.setCliente(c);
+        boolean valor= mascota.setEstadoMascota(ma, "Domiccilio");
+        assertTrue(valor);
+       
+    }
+    
+    // Prueba 9
+    //Se encarga de comprobar si funciona bien el cambio del estado de una mascota de un cliente
+    @Test
+    public void ComprobarCotizacion() {
+        Mascota ma= new Mascota();
+        Cliente c = new Cliente("0990999841","Guayacanes","042859384","Eduardo","Gonzalez");
+        ma.setNombre("Ema");
+        ma.setRaza("Labradora");
+        ma.setCliente(c);
+        boolean valor= mascota.setEstadoMascota(ma, "Domiccilio");
+        assertTrue(valor);
+       
+    }
+    
     //Prueba Unitaria 10
     
     

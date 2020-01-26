@@ -27,6 +27,9 @@ public class Mascota{
         this.cliente = cliente;
     }
 
+    public Mascota() {
+    }
+
     public int getMascotaId() {
         return mascotaId;
     }
